@@ -1,4 +1,4 @@
-"""Pre-trade mandate enforcement (SPEC.md Mandate Enforcement §5–�?).
+"""Pre-trade mandate enforcement (SPEC.md Mandate Enforcement §5–§8).
 
 This module owns the broker-agnostic order representation
 (:class:`OrderIntent`), the breach contract the consent layer consumes
@@ -8,8 +8,8 @@ on every live order before forwarding it to the broker.
 
 Every check is **fail-closed**: any unparseable input, missing market data, or
 ambiguous field denies the order rather than waving it through. Checks run in a
-fixed order �?exclude-list �?instrument �?asset-class �?single-order notional �?
-total exposure �?leverage �?daily count �?funding (defense-in-depth). The first
+fixed order — exclude-list → instrument → asset-class → single-order notional →
+total exposure → leverage → daily count → funding (defense-in-depth). The first
 failing check produces the verdict; the broker-side funding ceiling remains the
 backstop the agent physically cannot breach regardless of any data staleness on
 our side.
@@ -17,10 +17,10 @@ our side.
 The verdict is a :class:`BreachEvent` whose ``kind`` is one of
 ``"universe"`` / ``"instrument"`` / ``"quantitative"``:
 
-* ``universe`` / ``instrument`` �?structural violation; the gate DENIES outright
+* ``universe`` / ``instrument`` — structural violation; the gate DENIES outright
   (no widening short of editing the mandate could permit it, and the agent may
   never edit the mandate).
-* ``quantitative`` �?the gate emits the event and PAUSES for re-authorization.
+* ``quantitative`` — the gate emits the event and PAUSES for re-authorization.
 
 ``check_mandate`` returns ``None`` when the order is fully in-mandate (ALLOW).
 """
@@ -45,7 +45,7 @@ logger = logging.getLogger(__name__)
 class UniverseDataUnavailable(Exception):
     """Raised when no data loader can return a usable universe figure.
 
-    Callers treat this exactly like a ``None`` result �?fail-closed DENY �?but
+    Callers treat this exactly like a ``None`` result — fail-closed DENY — but
     it lets the market-cap / liquidity helpers distinguish "loader said the
     figure is missing" from "loader chain is entirely unavailable".
     """
@@ -58,7 +58,7 @@ BREACH_KIND_UNIVERSE = "universe"
 BREACH_KIND_INSTRUMENT = "instrument"
 BREACH_KIND_QUANTITATIVE = "quantitative"
 
-#: InstrumentType �?the AssetClass bucket it belongs to. OPTION has no
+#: InstrumentType — the AssetClass bucket it belongs to. OPTION has no
 #: universe-level asset-class bucket (the user permits asset classes, not
 #: option chains), so an option is gated purely by ``allowed_instruments``.
 _INSTRUMENT_ASSET_CLASS: dict[InstrumentType, AssetClass] = {
@@ -126,7 +126,7 @@ class BreachEvent:
             breach.
         remote_tool: Broker remote tool name the agent invoked.
         created_at: ISO-8601 UTC timestamp.
-        kind: One of ``"universe"`` / ``"instrument"`` / ``"quantitative"`` �?
+        kind: One of ``"universe"`` / ``"instrument"`` / ``"quantitative"`` —
             the gate routes structural kinds to DENY and quantitative to
             PAUSE_FOR_REAUTH.
         detail: Human-readable explanation, mainly for structural breaches whose
@@ -194,7 +194,7 @@ def _resolve_order_notional(intent: OrderIntent) -> float | None:
 
     Returns:
         The order notional in USD, or ``None`` when it cannot be resolved
-        (�?fail-closed DENY upstream).
+        (— fail-closed DENY upstream).
     """
     notional = intent.notional_usd
     if notional is None:
@@ -223,7 +223,7 @@ def last_price_usd(symbol: str, asset_class: AssetClass) -> float | None:
 
     Returns:
         Last close price in USD, or ``None`` when no loader can return a usable
-        price (�?fail-closed DENY upstream �?never a wave-through).
+        price (— fail-closed DENY upstream — never a wave-through).
     """
     try:
         loader = _resolve_loader(asset_class)

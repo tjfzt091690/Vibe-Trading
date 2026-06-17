@@ -70,7 +70,7 @@ def _rolling_correlation_matrix(
     if aligned.empty:
         raise ValueError("No overlapping return data between assets")
 
-    # Apply the trailing window �?only use the last `window` rows of aligned data
+    # Apply the trailing window — only use the last `window` rows of aligned data
     if len(aligned) > window:
         aligned = aligned.iloc[-window:]
 

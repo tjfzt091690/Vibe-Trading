@@ -236,7 +236,7 @@ def _validate_signal_engine_source(file_path: Path) -> None:
         if isinstance(node, ast.ImportFrom) and node.module == "signal_engine":
             raise ValueError(
                 "Circular import: 'from signal_engine import ...' imports the file from itself. "
-                "Remove this import �?SignalEngine is defined in this same file."
+                "Remove this import — SignalEngine is defined in this same file."
             )
         if isinstance(node, (ast.Import, ast.ImportFrom)):
             continue
@@ -593,7 +593,7 @@ def _fetch_auto(codes: List[str], config: dict, interval: str = "1D") -> dict:
         except NoAvailableSourceError as exc:
             # Fallback: try legacy source mapping
             legacy_src = _MARKET_TO_SOURCE.get(market, "tushare")
-            logger.warning("Fallback chain failed for %s: %s �?trying %s", market, exc, legacy_src)
+            logger.warning("Fallback chain failed for %s: %s — trying %s", market, exc, legacy_src)
             LoaderCls = _get_loader(legacy_src)
             loader = LoaderCls()
 

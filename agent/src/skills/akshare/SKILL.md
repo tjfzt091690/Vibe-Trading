@@ -68,7 +68,7 @@ AKShare returns Chinese column names by default:
 
 ## Built-in Loader
 
-The project has a built-in AKShare DataLoader at `backtest/loaders/akshare_loader.py`. When backtesting, the runner automatically falls back to AKShare when tushare is unavailable.
+The project has a built-in AKShare DataLoader at `backtest/loaders/akshare_loader.py`. When backtesting, the runner automatically falls back to AKShare when tushare/mootdx are unavailable.
 
 ## Reference Docs
 
