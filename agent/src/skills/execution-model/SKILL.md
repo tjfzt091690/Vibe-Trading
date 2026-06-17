@@ -209,8 +209,8 @@ Implicit cost:
 | Commission (one way) | 0.025% |
 | Stamp duty | 0.05% (sell) |
 | Bid-ask spread | 0.03-0.1% |
-| Total one-way | ~0.1% | ~0.2% | ~0.03% | ~0.1% |
-| Total round-trip | ~0.2% | ~0.4% | ~0.06% | ~0.2% |
+| Total one-way | ~0.1% |
+| Total round-trip | ~0.2% |
 
 ### Cost Settings in Backtests
 

@@ -52,7 +52,7 @@
 <details>
 <summary>更早的更新</summary>
 
-- **2026-05-27** 📊 **mootdx A 股数据源 + 输出排版**：新增 `mootdx` loader，走原生通达信 TCP 协议拉 A 股 OHLCV（无需 token，无 IP 速率限制，日线 + 分钟线 25 页 walk-back 分页），在 fallback chain 中位于 tushare 和 akshare 之间（[#107](https://github.com/HKUDS/Vibe-Trading/issues/107)）。CCXT loader 现在会读取 `HTTP_PROXY/HTTPS_PROXY/ALL_PROXY`，使 Binance/OKX 公开数据可在受限网络下拉取（[#126](https://github.com/HKUDS/Vibe-Trading/pull/126)，感谢 @ruok808）。最终回答的渲染也去掉了 CLI 和 Web 上丑陋的全宽 `---` 分隔符：系统提示鼓励 agent 用 markdown 表格和 `##` 标题，CLI 渲染端兜底 strip 孤立 HR，前端 chat 气泡隐藏任何漏过去的 `<hr>`（[#139](https://github.com/HKUDS/Vibe-Trading/issues/139)，感谢 @sdwxm188）。
+- **2026-05-27** 📊 **mootdx A 股数据源 + 输出排版**：新增 `mootdx` loader，走原生通达信 TCP 协议拉 A 股 OHLCV（无需 token，无 IP 速率限制，日线 + 分钟线 25 页 walk-back 分页），在 fallback chain 中位于 tushare 和 akshare 之间（[#107](https://github.com/HKUDS/Vibe-Trading/issues/107)）。最终回答的渲染也去掉了 CLI 和 Web 上丑陋的全宽 `---` 分隔符：系统提示鼓励 agent 用 markdown 表格和 `##` 标题，CLI 渲染端兜底 strip 孤立 HR，前端 chat 气泡隐藏任何漏过去的 `<hr>`（[#139](https://github.com/HKUDS/Vibe-Trading/issues/139)，感谢 @sdwxm188）。
 - **2026-05-26** ✅ **Research Goal 生命周期闭环**：Goal 模式现在像真正的任务运行器：Web UI 创建 goal 会创建或绑定 session，并立刻发出 kickoff turn；active goal 可在 Web/API/CLI/MCP 中继续、编辑、取消和完成；agent loop 会按当前 goal snapshot（criteria、evidence、claims、open items）推进，而不是只按最初 prompt。criteria 已 covered 但 goal 仍 active 时，会进入 audit/status 更新，不再静默停住，并用 backend、CLI、MCP 与 frontend events 回归覆盖固定。
 
 - **2026-05-25** 🧼 **更干净的 Chat UI + composer 工作流**：Web UI 现在把注意力留给下一步输入：upload、swarm 和 research-goal 模式都收进 composer 的 `+` 菜单，不再用漂浮面板打断聊天。当前上下文会以紧凑 chip 附在输入框上方，goal 详情只在点击 chip 时原地展开。UI 也移除了旧的自定义 i18n 层，改用直接英文文案；Full Report card 只在真正有报告价值的 run 出现；本地 dev 启动与状态报告也加固，方便稳定做浏览器 smoke test。
