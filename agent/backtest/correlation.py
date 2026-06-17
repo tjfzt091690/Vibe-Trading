@@ -16,20 +16,11 @@ from scipy.stats import spearmanr
 def infer_market(code: str) -> str:
     """Infer market key from a ticker symbol."""
     code_upper = code.upper()
-    crypto_suffixes = ("USDT", "BTC", "ETH", "BNB", "SOL", "ADA", "DOGE")
-    if any(code_upper.endswith(s) for s in crypto_suffixes) or "/" in code:
-        return "crypto"
-    # Check .HK suffix FIRST so leading-zero tickers like 0700.HK / 0005.HK
-    # are correctly classified before the A-share prefix checks
-    if code_upper.endswith(".HK"):
-        return "hk_equity"
     if code_upper.startswith(("6", "000", "001", "002")):
         return "a_share"
     if code_upper.startswith(("0", "399")):
         return "a_share"
-    if code_upper.startswith(("0", "1", "2", "3", "4")):
-        return "hk_equity"
-    return "us_equity"
+    return "a_share"
 
 
 def _rolling_correlation_matrix(
@@ -79,7 +70,7 @@ def _rolling_correlation_matrix(
     if aligned.empty:
         raise ValueError("No overlapping return data between assets")
 
-    # Apply the trailing window â€?only use the last `window` rows of aligned data
+    # Apply the trailing window ï¿½?only use the last `window` rows of aligned data
     if len(aligned) > window:
         aligned = aligned.iloc[-window:]
 
@@ -137,15 +128,7 @@ def compute_correlation_matrix(
         try:
             loader = resolve_loader(market)
         except Exception:
-            # Fall back to yfinance for us_equity / hk_equity
-            try:
-                from backtest.loaders.registry import LOADER_REGISTRY
-                if "yfinance" in LOADER_REGISTRY:
-                    loader = LOADER_REGISTRY["yfinance"]()
-                else:
-                    continue
-            except Exception:
-                continue
+            continue
 
         try:
             result = loader.fetch(

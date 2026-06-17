@@ -41,10 +41,6 @@ from src.agent.tools import BaseTool
 
 logger = logging.getLogger(__name__)
 
-# Date the SP500 constituent list was sampled from Wikipedia (best-effort label
-# for the survivorship-bias warning in the bench summary's ``meta`` block).
-_SP500_CONSTITUENT_SOURCE_DATE = "2026-05-17"
-
 # Concurrent Tushare ``pro.daily`` fetches when building CSI300. Free tier
 # allows ~200 calls/min; 4 workers stays well under that with a 300-name list.
 _CSI300_FETCH_WORKERS = 4
@@ -61,8 +57,6 @@ _PERIOD_DATE = re.compile(r"^(\d{4}-\d{2}-\d{2})/(\d{4}-\d{2}-\d{2})$")
 # defined contract; everything else returns "not yet implemented".
 _UNIVERSE_TAG = {
     "csi300": "equity_cn",
-    "sp500": "equity_us",
-    "btc-usdt": "crypto",
 }
 
 
@@ -117,10 +111,6 @@ def _load_universe_panel(
 
     if universe == "csi300":
         panel = _load_csi300_panel(start, end)
-    elif universe == "sp500":
-        panel = _load_sp500_panel(start, end)
-    elif universe == "btc-usdt":
-        panel = _load_btc_panel(start, end)
     else:  # pragma: no cover — guarded above
         raise ValueError(f"unhandled universe {universe!r}")
 
@@ -128,17 +118,6 @@ def _load_universe_panel(
         raise RuntimeError(
             f"universe {universe!r} produced empty panel for {start}..{end}; "
             "check network / token / date range"
-        )
-
-    # btc-usdt loader returns a single-column close (one instrument). Cross-
-    # sectional IC needs >= 2 instruments — short-circuit with a clean error
-    # that propagates to API (400) and CLI.
-    close_df = panel["close"]
-    if universe == "btc-usdt" and close_df.shape[1] < 2:
-        raise ValueError(
-            "btc-usdt is single-asset; cross-sectional IC needs >=2 instruments. "
-            "Use a multi-symbol crypto basket (e.g. multiple OKX pairs) for "
-            "meaningful results."
         )
 
     if use_cache:
@@ -233,17 +212,6 @@ _CSI300_FALLBACK_CODES = [
 ]
 
 
-# Hand-picked US large-cap representatives. Used when Wikipedia fetch fails.
-_SP500_FALLBACK_CODES = [
-    "AAPL", "MSFT", "NVDA", "GOOGL", "AMZN", "META", "TSLA", "BRK-B",
-    "JPM", "JNJ", "V", "PG", "UNH", "MA", "HD", "XOM", "LLY", "MRK",
-    "PEP", "KO", "ABBV", "AVGO", "CVX", "WMT", "COST", "ADBE", "MCD",
-    "CRM", "ACN", "BAC", "TMO", "ORCL", "CSCO", "ABT", "WFC", "DHR",
-    "VZ", "PFE", "INTC", "DIS", "CMCSA", "AMD", "TXN", "PM", "QCOM",
-    "NEE", "RTX", "HON", "T", "IBM",
-]
-
-
 def _load_csi300_panel(start: str, end: str) -> dict[str, pd.DataFrame]:
     """CSI 300 panel via Tushare. Includes ``amount`` (required by gtja191).
 
@@ -325,96 +293,6 @@ def _load_csi300_panel(start: str, end: str) -> dict[str, pd.DataFrame]:
         panel["vwap"] = safe_div(
             panel["amount"] * 1000.0, panel["volume"] * 100.0 + 1.0
         )
-    return panel
-
-
-def _load_sp500_panel(start: str, end: str) -> dict[str, pd.DataFrame]:
-    """SP500 panel via yfinance. Adds vwap = (O+H+L+C)/4 fallback for alpha101.
-
-    Survivorship-bias warning: ``_fetch_sp500_constituents`` returns Wikipedia's
-    *current* member list, not a point-in-time snapshot. Names that dropped out
-    of the index during ``start..end`` (delistings, mergers, downgrades) are
-    silently excluded — so IC stats are biased upward. The caller (bench
-    runner) surfaces this in the bench summary's ``meta`` block via the
-    ``_meta`` panel key set below.
-    """
-    codes = _fetch_sp500_constituents()
-    constituent_source = "wikipedia"
-    if not codes:
-        codes = list(_SP500_FALLBACK_CODES)
-        constituent_source = "hand-picked fallback"
-        logger.warning("sp500: using %d-name fallback (degraded run)", len(codes))
-
-    logger.warning(
-        "SP500 universe uses current constituents (%s @ %s) → survivorship-biased",
-        constituent_source, _SP500_CONSTITUENT_SOURCE_DATE,
-    )
-
-    # yfinance loader expects project-style symbols (``AAPL.US``).
-    project_codes = [f"{c}.US" for c in codes]
-    from backtest.loaders.registry import resolve_loader
-
-    loader = resolve_loader("us_equity")
-    fetched = _retry(lambda: loader.fetch(project_codes, start, end)) or {}
-
-    panel = _wide_from_fetched(fetched, include_amount=False)
-    # Synthetic vwap for alpha101 alphas that require it on US universe
-    if all(k in panel for k in ("open", "high", "low", "close")):
-        panel["vwap"] = (panel["open"] + panel["high"] + panel["low"] + panel["close"]) / 4.0
-
-    # Attach a non-DataFrame metadata blob. Registry.compute() only iterates
-    # required column names, so this extra key is ignored by the compute path.
-    panel["_meta"] = {
-        "universe": "sp500",
-        "survivorship_bias": True,
-        "constituent_source": constituent_source,
-        "constituent_source_date": _SP500_CONSTITUENT_SOURCE_DATE,
-        "constituent_count": len(codes),
-    }
-    return panel
-
-
-def _fetch_sp500_constituents() -> list[str]:
-    """Pull current S&P 500 tickers from Wikipedia. Returns [] on any failure."""
-    url = "https://en.wikipedia.org/wiki/List_of_S%26P_500_companies"
-    try:
-        import io
-
-        import requests
-
-        resp = requests.get(
-            url,
-            headers={
-                "User-Agent": (
-                    "Vibe-Trading/0.1 (research bench; "
-                    "https://github.com/HKUDS/Vibe-Trading)"
-                )
-            },
-            timeout=20,
-        )
-        resp.raise_for_status()
-        tables = pd.read_html(io.StringIO(resp.text))
-        for tbl in tables:
-            if "Symbol" in tbl.columns:
-                tickers = tbl["Symbol"].astype(str).str.strip().tolist()
-                # yfinance prefers ``BRK-B`` over ``BRK.B`` — normalise
-                tickers = [t.replace(".", "-") for t in tickers if t and t != "nan"]
-                logger.info("sp500: %d tickers from Wikipedia", len(tickers))
-                return tickers
-    except Exception as exc:  # noqa: BLE001
-        logger.warning("sp500 Wikipedia fetch failed: %s", exc)
-    return []
-
-
-def _load_btc_panel(start: str, end: str) -> dict[str, pd.DataFrame]:
-    """Single-instrument BTC-USDT panel via OKX. Adds vwap = typical price."""
-    from backtest.loaders.registry import resolve_loader
-
-    loader = resolve_loader("crypto")
-    fetched = _retry(lambda: loader.fetch(["BTC-USDT"], start, end)) or {}
-    panel = _wide_from_fetched(fetched, include_amount=False)
-    if all(k in panel for k in ("open", "high", "low", "close")):
-        panel["vwap"] = (panel["open"] + panel["high"] + panel["low"] + panel["close"]) / 4.0
     return panel
 
 

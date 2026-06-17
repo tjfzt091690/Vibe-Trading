@@ -414,7 +414,8 @@ def backtest(run_dir: str) -> str:
 
     Supported data sources (set in config.json "source" field):
     - "tushare": China A-shares (requires TUSHARE_TOKEN env var)
-    - "akshare": A-shares, US, HK, futures, forex (free, no API key)
+    - "akshare": A-shares, futures, forex (free, no API key)
+    - "mootdx": A-shares via 通达信 (free, no API key)
     - "auto": auto-detect based on symbol format (with fallback)
 
     Returns metrics (Sharpe, return, drawdown, etc.) and artifact paths.
@@ -452,7 +453,7 @@ def factor_analysis(
         factor_name: Factor column name in daily_basic data (e.g. "pe_ttm", "pb", "turnover_rate").
         start_date: Start date (YYYY-MM-DD).
         end_date: End date (YYYY-MM-DD).
-        source: Data source ("tushare", "yfinance", "auto").
+        source: Data source ("tushare", "akshare", "auto").
         top_n: Number of top-ranked stocks per period.
         bottom_n: Number of bottom-ranked stocks per period.
     """

@@ -20,15 +20,13 @@ class InstrumentType(str, Enum):
     EQUITY = "equity"
     ETF = "etf"
     OPTION = "option"
-    CRYPTO = "crypto"
 
 
 class AssetClass(str, Enum):
     """Universe-level asset class buckets the user may permit."""
 
-    US_EQUITY = "us_equity"
-    US_ETF = "us_etf"
-    CRYPTO = "crypto"
+    CN_EQUITY = "cn_equity"
+    CN_ETF = "cn_etf"
 
 
 @dataclass(frozen=True)

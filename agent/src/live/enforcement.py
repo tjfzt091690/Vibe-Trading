@@ -50,11 +50,7 @@ class UniverseDataUnavailable(Exception):
     figure is missing" from "loader chain is entirely unavailable".
     """
 
-_ASSET_CLASS_MARKET: dict[AssetClass, str] = {
-    AssetClass.US_EQUITY: "us_equity",
-    AssetClass.US_ETF: "us_equity",
-    AssetClass.CRYPTO: "crypto",
-}
+_ASSET_CLASS_MARKET: dict[AssetClass, str] = {}
 
 #: Breach ``kind`` values. ``universe``/``instrument`` are structural (DENY);
 #: ``quantitative`` pauses for re-authorization (SPEC §6).
@@ -66,9 +62,8 @@ BREACH_KIND_QUANTITATIVE = "quantitative"
 #: universe-level asset-class bucket (the user permits asset classes, not
 #: option chains), so an option is gated purely by ``allowed_instruments``.
 _INSTRUMENT_ASSET_CLASS: dict[InstrumentType, AssetClass] = {
-    InstrumentType.EQUITY: AssetClass.US_EQUITY,
-    InstrumentType.ETF: AssetClass.US_ETF,
-    InstrumentType.CRYPTO: AssetClass.CRYPTO,
+    InstrumentType.EQUITY: AssetClass.CN_EQUITY,
+    InstrumentType.ETF: AssetClass.CN_ETF,
 }
 
 

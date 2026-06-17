@@ -1,4 +1,4 @@
-"""W4.a bench driver: run 4 zoo×universe combinations and emit summary JSON.
+"""W4.a bench driver: run zoo×universe combinations and emit summary JSON.
 
 Usage:
     cd agent && python scripts/w4a_run_benches.py
@@ -9,7 +9,7 @@ Output:
     ~/.vibe-trading/reports/bench_summary.json      — aggregate summary
 
 Safe to re-run; each bench result is cached by ``_load_universe_panel`` so the
-expensive Tushare/yfinance fetches only happen once per (universe, period).
+expensive Tushare fetches only happen once per (universe, period).
 """
 
 from __future__ import annotations
@@ -46,9 +46,7 @@ REPORTS_DIR = Path.home() / ".vibe-trading" / "reports"
 
 BENCHES = [
     {"key": "gtja191_csi300", "zoo": "gtja191", "universe": "csi300", "period": "2018-2025"},
-    {"key": "alpha101_sp500", "zoo": "alpha101", "universe": "sp500", "period": "2020-2025"},
     {"key": "qlib158_csi300", "zoo": "qlib158", "universe": "csi300", "period": "2020-2025"},
-    {"key": "alpha101_btc", "zoo": "alpha101", "universe": "btc-usdt", "period": "2022-2025"},
 ]
 
 

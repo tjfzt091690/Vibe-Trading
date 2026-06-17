@@ -1,6 +1,6 @@
 """分钟级数据分析工具。
 
-通过 API 获取分钟 K 线，计算 VWAP/TWAP/成交量分布等日内指标。
+通过 tushare/akshare 获取分钟 K 线，计算 VWAP/TWAP/成交量分布等日内指标。
 仅供分析输出，不可用于回测引擎（仅支持日线）。
 """
 
@@ -8,43 +8,38 @@ from typing import Optional
 
 import numpy as np
 import pandas as pd
-import requests
 
 
-BASE_URL = "https://www.okx.com/api/v5"
-
-
-def fetch_minute_candles(
-    inst_id: str, bar: str = "5m", limit: int = 300
+def fetch_minute_candles_akshare(
+    code: str, period: str = "5", adjust: str = ""
 ) -> Optional[pd.DataFrame]:
-    """从 OKX 获取分钟级 K 线数据。
+    """从 akshare 获取 A 股分钟级 K 线数据。
 
     Args:
-        inst_id: 交易对，如 "BTC-USDT"。
-        bar: K 线周期（1m/5m/15m/30m/1H/4H）。
-        limit: 获取根数（最多 300）。
+        code: 股票代码，如 "000001"。
+        period: K 线周期（1/5/15/30/60）。
+        adjust: 复权类型（""不复权/"qfq"前复权/"hfq"后复权）。
 
     Returns:
         OHLCV DataFrame，index 为 datetime。None 表示获取失败。
     """
-    resp = requests.get(
-        f"{BASE_URL}/market/candles",
-        params={"instId": inst_id, "bar": bar, "limit": str(min(limit, 300))},
-        timeout=15,
-    )
-    data = resp.json()
-    if data.get("code") != "0" or not data.get("data"):
-        print(f"[WARN] 获取失败: {data.get('msg', 'unknown')}")
+    try:
+        import akshare as ak
+        df = ak.stock_zh_a_min_em(symbol=code, period=period, adjust=adjust)
+        if df is None or df.empty:
+            return None
+        df = df.rename(columns={
+            "时间": "ts", "开盘": "open", "最高": "high",
+            "最低": "low", "收盘": "close", "成交量": "volume",
+        })
+        df["ts"] = pd.to_datetime(df["ts"])
+        df = df.set_index("ts")
+        for col in ["open", "high", "low", "close", "volume"]:
+            df[col] = df[col].astype(float)
+        return df
+    except Exception as e:
+        print(f"[WARN] 获取失败: {e}")
         return None
-
-    columns = ["ts", "open", "high", "low", "close", "vol", "volCcy", "volCcyQuote", "confirm"]
-    df = pd.DataFrame(reversed(data["data"]), columns=columns)
-    df["ts"] = pd.to_datetime(df["ts"].astype("int64"), unit="ms")
-    df = df.set_index("ts")
-    for col in ["open", "high", "low", "close", "vol"]:
-        df[col] = df[col].astype(float)
-    df["volume"] = df["vol"]
-    return df
 
 
 def compute_vwap(df: pd.DataFrame) -> pd.Series:
