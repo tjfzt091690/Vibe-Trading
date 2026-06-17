@@ -1,7 +1,7 @@
 """Base class for all futures engines.
 
 Adds contract-multiplier awareness on top of BaseEngine.
-Only futures engines inherit from this; stocks/crypto/forex use BaseEngine directly.
+Only futures engines inherit from this; stocks/forex use BaseEngine directly.
 
 The multiplier affects:
   - PnL: direction * size * multiplier * (exit - entry)

@@ -1,6 +1,6 @@
 name: social_alpha_team
 title: "Social-Media Alternative Data Team"
-description: "Twitter, Telegram, and Reddit analyzed in parallel ‚Üí Alpha synthesizer extracts tradable social sentiment factors."
+description: "Twitter, Telegram, and Reddit analyzed in parallel ‚Ü?Alpha synthesizer extracts tradable social sentiment factors."
 
 agents:
   - id: twitter_analyst
@@ -16,12 +16,12 @@ agents:
       ### KOL monitoring
       - **Core KOL list** (finance influencers):
         - Macro: @RaoulGMI / @LukeGromen / @JeffSnider_ / @MacroAlf etc.
-        - Crypto: @elonmusk / @CathieDWood / @APompliano / @VitalikButerin etc.
+        - Markets: @elonmusk / @CathieDWood etc.
         - Quant/HF: @quantian1 / @RiskReversal / @Contrarian8 etc.
         - Chinese sphere: finance influencers (Snowball/Weibo voices on X)
       - **Stance**: buy / neutral / sell per KOL
       - **Reversals**: bullish‚Üíbearish pivot moments (often important)
-      - **Consensus**: bull/bear share; extreme unanimity ‚Üí contrarian cue
+      - **Consensus**: bull/bear share; extreme unanimity ‚Ü?contrarian cue
 
       ### Topic heat
       - **Cashtag trends**: $BTC / $AAPL / $SMIC mention volume
@@ -31,12 +31,12 @@ agents:
 
       ### Extremes
       - **Euphoria (top warning)**:
-        - ‚ÄúOnly up‚Äù / ‚Äúthis time is different‚Äù retail surge
+        - ‚ÄúOnly up‚Ä?/ ‚Äúthis time is different‚Ä?retail surge
         - KOLs unanimously bullish, no pushback
         - Topic spills from pros to mass accounts
       - **Capitulation (bottom reference)**:
         - Blame game among KOLs, negative volume dominates
-        - ‚ÄúNever going up‚Äù / ‚Äúproject is dead‚Äù
+        - ‚ÄúNever going up‚Ä?/ ‚Äúproject is dead‚Ä?
         - Discussion collapses (apathy = despair)
 
       ### Event chain
@@ -45,11 +45,11 @@ agents:
       - Listed-company account anomalies (deleted tweets / bio changes)
 
       ## Required outputs
-      1. **KOL table** ‚Äî Top 20 finance KOLs on "{target}": stance, tweet summary, influence score, confidence
-      2. **Heat trend** ‚Äî 7/30d cashtag volume vs price; flag spikes
-      3. **FinTwit sentiment index** ‚Äî bull account share vs history; overbought/oversold band
-      4. **Narratives** ‚Äî 3‚Äì5 dominant market narratives; novelty; stage (emerging / peak / late)
-      5. **Tradable signals** ‚Äî 1‚Äì3 observable, historically tested social signals (KOL consensus extreme / retail extreme / narrative stage) with rough historical hit rates
+      1. **KOL table** ‚Ä?Top 20 finance KOLs on "{target}": stance, tweet summary, influence score, confidence
+      2. **Heat trend** ‚Ä?7/30d cashtag volume vs price; flag spikes
+      3. **FinTwit sentiment index** ‚Ä?bull account share vs history; overbought/oversold band
+      4. **Narratives** ‚Ä?3‚Ä? dominant market narratives; novelty; stage (emerging / peak / late)
+      5. **Tradable signals** ‚Ä?1‚Ä? observable, historically tested social signals (KOL consensus extreme / retail extreme / narrative stage) with rough historical hit rates
 
       Use load_skill("social-media-intelligence"), load_skill("sentiment-analysis").
       Use read_url for X/FinTwit sources.
@@ -70,7 +70,7 @@ agents:
       ## Framework
 
       ### Channels
-      **Crypto**:
+      **Markets**:
       - Official project (announcements, updates, funding)
       - Top VC flows (a16z / Paradigm / Multicoin portfolio news)
       - On-chain alert feeds (Whale Alert / nansen.ai)
@@ -99,7 +99,7 @@ agents:
       ### On-chain linkage
       - Whale moves, exchange in/out
       - Smart-money address changes
-      - DeFi TVL flows
+      
       - Futures OI, funding
 
       ### Early alpha
@@ -108,16 +108,16 @@ agents:
       - Regulatory bullets (Telegram often ahead of formal channels)
 
       ## Required outputs
-      1. **Top-10 signals** ‚Äî Past {timeframe} on "{target}": credibility 1‚Äì10, type, market impact each
-      2. **On-chain summary** ‚Äî Whale/OI/funding anomalies vs historical mean
-      3. **Heat vs price** ‚Äî Channel activity {timeframe} correlated with price; lead/lag patterns
-      4. **Alpha lead list** ‚Äî 2‚Äì5 Telegram leads with source, content, confidence, expected impact; flag uncertainty
-      5. **Environment scorecard** ‚Äî Overall signal/noise; dense-signal vs noise-dominated regime
+      1. **Top-10 signals** ‚Ä?Past {timeframe} on "{target}": credibility 1‚Ä?0, type, market impact each
+      2. **On-chain summary** ‚Ä?Whale/OI/funding anomalies vs historical mean
+      3. **Heat vs price** ‚Ä?Channel activity {timeframe} correlated with price; lead/lag patterns
+      4. **Alpha lead list** ‚Ä?2‚Ä? Telegram leads with source, content, confidence, expected impact; flag uncertainty
+      5. **Environment scorecard** ‚Ä?Overall signal/noise; dense-signal vs noise-dominated regime
 
-      Use load_skill("social-media-intelligence"), load_skill("sentiment-analysis"), load_skill("onchain-analysis").
+      Use load_skill("social-media-intelligence"), load_skill("sentiment-analysis").
       Use read_url for Telegram and Nansen/Dune.
     tools: [bash, read_file, write_file, load_skill, read_url]
-    skills: [social-media-intelligence, sentiment-analysis, onchain-analysis]
+    skills: [social-media-intelligence, sentiment-analysis]
     max_iterations: 50
     timeout_seconds: 1800
     max_retries: 1
@@ -137,7 +137,7 @@ agents:
       - **r/WallStreetBets**: YOLO options, squeeze candidates (extreme retail)
       - **r/investing**: value, sectors, longer-term retail
       - **r/stocks**: single-name heat, quick fundamentals
-      - **r/cryptocurrency / r/Bitcoin / r/ethereum**
+      
       - **r/SecurityAnalysis**: higher-quality deep dives
 
       **Chinese analogs**:
@@ -147,8 +147,8 @@ agents:
       ### WSB metrics
       - **Hot rank**: 24h/7d mention frequency
       - **Options from screenshots**: strikes/expiry distribution
-      - **Squeeze**: high short + low float + rising WSB buzz ‚Üí gamma/short squeeze potential
-      - **Memes**: tendies / apes / diamond hands ‚Üí herd behavior
+      - **Squeeze**: high short + low float + rising WSB buzz ‚Ü?gamma/short squeeze potential
+      - **Memes**: tendies / apes / diamond hands ‚Ü?herd behavior
 
       ### Retail extremes
       - **Fear/greed from comments**: bull/bear word ratio
@@ -163,15 +163,15 @@ agents:
 
       ### Small caps / low price
       - Reddit heat vs fundamentals (meme warning)
-      - Lead time: Reddit often 1‚Äì3 days ahead of price
+      - Lead time: Reddit often 1‚Ä? days ahead of price
       - Institution underweight + retail heat = squeeze setup
 
       ## Required outputs
-      1. **Hot-ticker rank** ‚Äî Top 10 mentions {timeframe} per major sub; WoW/MoM deltas; sudden risers
-      2. **WSB dashboard** ‚Äî Bull/bear, activity, greed index vs historical extremes; contrarian warnings
-      3. **Options anomalies** ‚Äî Squeeze candidates from threads; short ratio, float, chain plausibility
-      4. **Attention lead** ‚Äî Historical lead/lag; names with rising attention but flat price
-      5. **Contrarian flag** ‚Äî At greed/fear extremes, explicit fade signal with historical stats
+      1. **Hot-ticker rank** ‚Ä?Top 10 mentions {timeframe} per major sub; WoW/MoM deltas; sudden risers
+      2. **WSB dashboard** ‚Ä?Bull/bear, activity, greed index vs historical extremes; contrarian warnings
+      3. **Options anomalies** ‚Ä?Squeeze candidates from threads; short ratio, float, chain plausibility
+      4. **Attention lead** ‚Ä?Historical lead/lag; names with rising attention but flat price
+      5. **Contrarian flag** ‚Ä?At greed/fear extremes, explicit fade signal with historical stats
 
       Use load_skill("social-media-intelligence"), load_skill("behavioral-finance"), load_skill("sentiment-analysis").
       Use read_url for Reddit pages/API data.
@@ -196,7 +196,7 @@ agents:
       ### Channel assessment
       - **Agreement**: do three channels align?
       - **Strength**: how extreme (consensus / participation)
-      - **Freshness**: decay (often 1‚Äì3 days)
+      - **Freshness**: decay (often 1‚Ä? days)
       - **Source quality**: KOL > pro communities > retail (contrarian use)
 
       ### Factors
@@ -205,17 +205,17 @@ agents:
       - Œ£(weight_i √ó sentiment_i) / Œ£ weight
       - Suggested weights: Twitter KOL 40% / Telegram pro 35% / Reddit WSB 25% (contrarian tilt)
       - Z-score on 60d rolling history
-      - Trade: MCSF > +1.5œÉ overheated (fade short); < ‚àí1.5œÉ ice cold (fade long)
+      - Trade: MCSF > +1.5œÉ overheated (fade short); < ‚à?.5œÉ ice cold (fade long)
 
       #### Attention momentum
-      - (this week mentions ‚àí last week) / last week
+      - (this week mentions ‚à?last week) / last week
       - >100% WoW = attention spike; historically price may follow within ~3 days
 
       #### KOL consensus flip
-      - Track historically bullish cluster tilting bearish; often leads turns by 1‚Äì5 days
+      - Track historically bullish cluster tilting bearish; often leads turns by 1‚Ä? days
 
       #### Reddit FOMO contrarian
-      - WSB greed index > 80th pct ‚Üí bearish fade; historically >65% prob of pullback within 10d
+      - WSB greed index > 80th pct ‚Ü?bearish fade; historically >65% prob of pullback within 10d
 
       ### Validation
       - **Event study**: T+1/3/7/30 excess after signal
@@ -225,16 +225,16 @@ agents:
 
       ### Strategy glue
       - Entry when composite score crosses threshold
-      - Hold 1‚Äì5d typical decay horizon
+      - Hold 1‚Ä?d typical decay horizon
       - Stop if sentiment reverses
-      - Size ‚àù signal strength
+      - Size ‚à?signal strength
 
       ## Required outputs
-      1. **Three-channel scorecard** ‚Äî Twitter / Telegram / Reddit scored ‚àí5 to +5; consistency high/med/low; net direction
-      2. **Four factor readings** ‚Äî MCSF, attention momentum, KOL flip, Reddit FOMO‚Äîvalues, in-trade zone?, direction
-      3. **Historical effectiveness** ‚Äî Per factor: T+1/3/7/30 mean excess and win rate; significance
-      4. **Combined alpha verdict** ‚Äî Buy / neutral / sell / contrarian for "{target}"; strength 1‚Äì5 stars; suggested holding horizon
-      5. **Monitoring plan** ‚Äî Refresh cadence, key thresholds, decay updates; blend with fundamental factors
+      1. **Three-channel scorecard** ‚Ä?Twitter / Telegram / Reddit scored ‚à? to +5; consistency high/med/low; net direction
+      2. **Four factor readings** ‚Ä?MCSF, attention momentum, KOL flip, Reddit FOMO‚Äîvalues, in-trade zone?, direction
+      3. **Historical effectiveness** ‚Ä?Per factor: T+1/3/7/30 mean excess and win rate; significance
+      4. **Combined alpha verdict** ‚Ä?Buy / neutral / sell / contrarian for "{target}"; strength 1‚Ä? stars; suggested holding horizon
+      5. **Monitoring plan** ‚Ä?Refresh cadence, key thresholds, decay updates; blend with fundamental factors
 
       Use load_skill("social-media-intelligence"), load_skill("factor-research"), load_skill("quant-statistics").
       Use factor_analysis for factor stats.
@@ -252,12 +252,12 @@ tasks:
 
   - id: task-telegram
     agent_id: telegram_analyst
-    prompt_template: "Analyze Telegram crypto/quant channels on \"{target}\": signal quality, heat, alpha clues. Horizon: {timeframe}."
+    prompt_template: "Analyze Telegram quant channels on \"{target}\": signal quality, heat, alpha clues. Horizon: {timeframe}."
     depends_on: []
 
   - id: task-reddit
     agent_id: reddit_analyst
-    prompt_template: "Analyze Reddit (WSB/investing/crypto) on \"{target}\": hot names, options anomalies, retail sentiment. Horizon: {timeframe}."
+    prompt_template: "Analyze Reddit (WSB/investing) on \"{target}\": hot names, options anomalies, retail sentiment. Horizon: {timeframe}."
     depends_on: []
 
   - id: task-alpha-synthesis
@@ -271,7 +271,7 @@ tasks:
 
 variables:
   - name: target
-    description: "Focus name or market (e.g. BTC, Tesla, A-share tech, Nasdaq)"
+    description: "Focus name or market (e.g. A-share tech, CSI 300)"
     required: true
   - name: timeframe
     description: "Horizon (real-time / daily / weekly)"

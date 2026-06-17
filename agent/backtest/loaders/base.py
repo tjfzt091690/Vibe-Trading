@@ -39,7 +39,7 @@ def validate_date_range(start_date: str, end_date: str) -> None:
 
 
 # ---------------------------------------------------------------------------
-# Bounded retry / budget helpers (shared by ccxt_loader, okx, and any future
+# Bounded retry / budget helpers (shared by any
 # loader calling a flaky external API).
 # ---------------------------------------------------------------------------
 
@@ -56,7 +56,7 @@ def check_budget(deadline: float, label: str, budget_s: float | None = None) -> 
     Args:
         deadline: ``time.monotonic()`` instant past which we abort.
         label: Free-form label used in the exception message
-            (e.g. ``"ccxt fetch for BTC/USDT"``).
+            (e.g. ``"akshare fetch for 000001.SZ"``).
         budget_s: Original budget in seconds, included verbatim in the
             message when present.
     """
@@ -81,8 +81,8 @@ def retry_with_budget(
 
     Between attempts sleeps ``min(backoff[attempt], remaining_budget)`` so a
     short remaining budget never spends the full backoff. The terminal
-    transient failure â€” whether ``max_retries`` is exhausted OR the deadline
-    has passed â€” is wrapped in :class:`TimeoutError`, preserving the original
+    transient failure â€?whether ``max_retries`` is exhausted OR the deadline
+    has passed â€?is wrapped in :class:`TimeoutError`, preserving the original
     exception as ``__cause__``. Anything not in ``transient`` propagates
     unchanged on the first occurrence (we never retry an exception class
     the caller didn't opt in to).
@@ -92,7 +92,7 @@ def retry_with_budget(
         transient: Exception class(es) considered transient and retryable.
         deadline: ``time.monotonic()`` instant past which retries are aborted.
         label: Free-form label used in the TimeoutError message
-            (e.g. ``"OKX fetch for BTC-USDT"``).
+            (e.g. ``"akshare fetch for 000001.SZ"``).
         max_retries: Additional attempts after the first call. Total
             attempts = ``max_retries + 1``.
         backoff: Per-retry sleep seconds. Must have at least

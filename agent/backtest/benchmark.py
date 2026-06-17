@@ -11,19 +11,16 @@ from typing import Optional
 
 import pandas as pd
 
-from backtest.loaders.yfinance_loader import DataLoader as YfinanceLoader
+from backtest.loaders.akshare_loader import DataLoader as AkshareLoader
 
 
 # -------------------------------------------------------------------
-# Benchmark map: market type → default ticker
+# Benchmark map: market type -> default ticker
 # -------------------------------------------------------------------
 
 MARKET_BENCHMARKS: dict[str, Optional[str]] = {
-    "us_equity":  "SPY",
-    "hk_equity":  "HK.03100",   # Hang Seng China Enterprises ETF
     "a_share":    "000300.SH",  # CSI 300 (China A-share core index)
-    "crypto":     "BTC-USDT",
-    "futures":    "ES.CME",      # E-mini S&P 500 futures
+    "futures":    "IF2506.CFFEX",
     "forex":      None,         # no universal benchmark
 }
 
@@ -47,11 +44,11 @@ def resolve_benchmark(
 
     Args:
         strategy_codes: Instruments being backtested (used for market inference).
-        source:         Data source name (tushare / yfinance / okx / akshare / ccxt).
+        source:         Data source name (tushare / akshare).
         start_date:     Backtest start date.
         end_date:       Backtest end date.
         interval:       Bar interval (1m / 5m / 15m / 30m / 1H / 4H / 1D).
-        explicit:       Override ticker (e.g. "SPY" passed via config).
+        explicit:       Override ticker (e.g. "000300.SH" passed via config).
 
     Returns:
         BenchmarkResult with return series and total return, or None if no
@@ -97,28 +94,16 @@ def _resolve_ticker(
     market = _infer_market(codes, source)
     ticker = MARKET_BENCHMARKS.get(market)
 
-    # yfinance is the universal fallback for benchmark fetch
-    # but it only works for us_equity / hk_equity market types
-    if ticker and market not in {"us_equity", "hk_equity"}:
-        # Only use benchmark if we can actually fetch it
-        pass
-
     return ticker
 
 
 def _infer_market(codes: list[str], source: str) -> str:
     """Rough market inference from symbol patterns and source."""
     if not codes:
-        return "us_equity"
+        return "a_share"
 
     first = codes[0].upper()
 
-    if source in ("okx", "ccxt") or "-" in first or "/" in first:
-        return "crypto"
-    if first.endswith(".US"):
-        return "us_equity"
-    if first.endswith(".HK"):
-        return "hk_equity"
     if source in ("tushare", "akshare"):
         if first.isdigit() and len(first) == 6:
             return "a_share"
@@ -126,7 +111,7 @@ def _infer_market(codes: list[str], source: str) -> str:
             return "futures"
         return "a_share"
 
-    return "us_equity"
+    return "a_share"
 
 
 def _fetch_benchmark(
@@ -135,8 +120,8 @@ def _fetch_benchmark(
     end_date:   str,
     interval:   str,
 ) -> pd.DataFrame:
-    """Fetch benchmark OHLCV data via yfinance (single symbol, no auth)."""
-    loader = YfinanceLoader()
+    """Fetch benchmark OHLCV data via akshare (single symbol, no auth)."""
+    loader = AkshareLoader()
     result = loader.fetch([ticker], start_date, end_date, interval=interval)
 
     if isinstance(result, dict):

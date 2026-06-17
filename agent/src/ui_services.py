@@ -6,7 +6,7 @@ This module centralizes the data shaping needed by the frontend workbench:
 - reconstruct market data for historical runs when artifacts are incomplete
 - compute indicator overlays and trade markers
 - read runner logs for the detail page
-- (LocalApiManager removed â€“ dead code)
+- (LocalApiManager removed â€?dead code)
 """
 
 from __future__ import annotations
@@ -39,7 +39,7 @@ def format_run_date(date_str: Optional[str]) -> Optional[str]:
         return value
     if len(value) == 8 and value.isdigit():
         return f"{value[:4]}-{value[4:6]}-{value[6:8]}"
-    # Handle datetime strings like "2022-04-13 16:00:00" â†’ extract date part
+    # Handle datetime strings like "2022-04-13 16:00:00" â†?extract date part
     if "-" in value and len(value) > 10 and value[4] == "-" and value[7] == "-":
         return value[:10]
     return value
@@ -424,10 +424,6 @@ def reconstruct_price_series(run_dir: Path) -> List[Dict[str, Any]]:
 
     try:
         source = context.get("source", "tushare")
-        if source == "okx":
-            from backtest.loaders.okx import DataLoader
-        elif source == "yfinance":
-            from backtest.loaders.yfinance_loader import DataLoader
         else:
             from backtest.loaders.tushare import DataLoader
         loader = DataLoader()

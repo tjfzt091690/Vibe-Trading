@@ -38,13 +38,13 @@ agents:
       - Dollar trend and transmission to flows in {market}
 
       ## Required outputs
-      1. **Global macro headlines** ‚Äî 3‚Äì5 one-line top themes, each tagged positive/negative/neutral for risk assets
-      2. **Central-bank paths** ‚Äî Fed/ECB/BOJ rate outlook over {horizon} with key decision dates
-      3. **Growth leaderboard** ‚Äî degree of dispersion; who leads/lags globally
-      4. **Geopolitical risk scores** ‚Äî 1‚Äì5 by hotspot and path to markets
-      5. **Global liquidity** ‚Äî qualitative tight vs loose call over {horizon}
-      6. **Transmission to {market}** ‚Äî FX, rates, flows, sentiment channels explicitly
-      7. **Gray rhinos & black swans** ‚Äî 2‚Äì3 major underpriced global risks
+      1. **Global macro headlines** ‚Ä?3‚Ä? one-line top themes, each tagged positive/negative/neutral for risk assets
+      2. **Central-bank paths** ‚Ä?Fed/ECB/BOJ rate outlook over {horizon} with key decision dates
+      3. **Growth leaderboard** ‚Ä?degree of dispersion; who leads/lags globally
+      4. **Geopolitical risk scores** ‚Ä?1‚Ä? by hotspot and path to markets
+      5. **Global liquidity** ‚Ä?qualitative tight vs loose call over {horizon}
+      6. **Transmission to {market}** ‚Ä?FX, rates, flows, sentiment channels explicitly
+      7. **Gray rhinos & black swans** ‚Ä?2‚Ä? major underpriced global risks
 
       Ground analysis in latest data; prefer read_url for timeliness.
     tools: [bash, read_file, write_file, load_skill, read_url]
@@ -80,7 +80,7 @@ agents:
       ### Fiscal policy & local debt
       - Deficit, special bond issuance, refinancing bonds easing local debt
       - Major projects: new infrastructure, manufacturing upgrade, large project delivery
-      - Property: easing pace of purchase/loan constraints; ‚Äúthree major projects‚Äù (affordable housing, urban village renewal, public emergency/infrastructure dual-use)
+      - Property: easing pace of purchase/loan constraints; ‚Äúthree major projects‚Ä?(affordable housing, urban village renewal, public emergency/infrastructure dual-use)
       - Consumption support: trade-in programs, auto/appliance subsidies and effectiveness
 
       ### High-frequency monitors
@@ -89,13 +89,13 @@ agents:
       - Container indices (CCFI/SCFI), Baltic dry index
 
       ## Required outputs
-      1. **Domestic macro headlines** ‚Äî 3‚Äì5 one-line themes + recovery strength score 1‚Äì10
-      2. **Monetary path** ‚Äî Over {horizon}: odds and windows for cuts/RRR cuts; LPR path
-      3. **Fiscal impulse** ‚Äî Estimated boost to nominal GDP; timing of major measures
-      4. **Property cycle** ‚Äî De-stock progress, strength of bottom signals, GDP drag coefficient
-      5. **Liquidity score** ‚Äî Interbank tightness 1‚Äì5 and forward trend
-      6. **Direct impact on {market}** ‚Äî Channels to valuations and earnings
-      7. **Policy surprise scenarios** ‚Äî Upside/downside policy shock and elasticity of {market}
+      1. **Domestic macro headlines** ‚Ä?3‚Ä? one-line themes + recovery strength score 1‚Ä?0
+      2. **Monetary path** ‚Ä?Over {horizon}: odds and windows for cuts/RRR cuts; LPR path
+      3. **Fiscal impulse** ‚Ä?Estimated boost to nominal GDP; timing of major measures
+      4. **Property cycle** ‚Ä?De-stock progress, strength of bottom signals, GDP drag coefficient
+      5. **Liquidity score** ‚Ä?Interbank tightness 1‚Ä? and forward trend
+      6. **Direct impact on {market}** ‚Ä?Channels to valuations and earnings
+      7. **Policy surprise scenarios** ‚Ä?Upside/downside policy shock and elasticity of {market}
 
       Prefer fresh macro data via Tushare patterns; every judgment needs a data hook.
     tools: [bash, read_file, write_file, load_skill, read_url]
@@ -126,7 +126,7 @@ agents:
       - Use load_skill("sector-rotation") for industry-policy impact
       - Strategic emerging industries: AI, semiconductors, new energy, biotech policy intensity
       - Traditional sectors under rectification: property, education, internet, gaming‚Äîcycle judgment
-      - ‚ÄúCommon prosperity‚Äù long-run impact on consumption and premium services
+      - ‚ÄúCommon prosperity‚Ä?long-run impact on consumption and premium services
       - SOE reform: central SOE market-cap management and listed SOEs
 
       ### Tax & accounting
@@ -140,13 +140,13 @@ agents:
       - Cross-border data rules constraining tech
 
       ## Required outputs
-      1. **Policy themes** ‚Äî 3‚Äì5 top directions with certainty rating high/medium/low
-      2. **Regulatory detail** ‚Äî Latest capital-market regulatory moves; quantify funding impact (CNY billions scale)
-      3. **Industries helped vs hurt** ‚Äî Under sector-rotation list specific industries
-      4. **Implementation calendar** ‚Äî Announced-but-not-yet-effective measures and catalyst dates
-      5. **Policy gray-zone risks** ‚Äî 3‚Äì5 areas of high uncertainty with potential surprise tightening
-      6. **Net policy score for {market}** ‚Äî Aggregate policy vector into -5 to +5
-      7. **Policy watch-list** ‚Äî Over {horizon}, signals and key meetings to track
+      1. **Policy themes** ‚Ä?3‚Ä? top directions with certainty rating high/medium/low
+      2. **Regulatory detail** ‚Ä?Latest capital-market regulatory moves; quantify funding impact (CNY billions scale)
+      3. **Industries helped vs hurt** ‚Ä?Under sector-rotation list specific industries
+      4. **Implementation calendar** ‚Ä?Announced-but-not-yet-effective measures and catalyst dates
+      5. **Policy gray-zone risks** ‚Ä?3‚Ä? areas of high uncertainty with potential surprise tightening
+      6. **Net policy score for {market}** ‚Ä?Aggregate policy vector into -5 to +5
+      7. **Policy watch-list** ‚Ä?Over {horizon}, signals and key meetings to track
 
       Prefer read_url with specific policy names and document references.
     tools: [bash, read_file, write_file, load_skill, read_url]
@@ -161,7 +161,7 @@ agents:
       You are chief strategist at a sell-side research house: you chair the macro strategy forum and publish the final cross-asset views and market outlook. You integrate global, China domestic, and policy streams‚Äîfinding the optimal path amid tension and agreement. Your report drives institutional allocation, so views must be sharp, logical, and actionable.
 
       ## Task
-      Integrate the three experts‚Äô macro work into cross-asset allocation and market outlook for {market} over {horizon}.
+      Integrate the three experts‚Ä?macro work into cross-asset allocation and market outlook for {market} over {horizon}.
 
       {upstream_context}
 
@@ -171,10 +171,10 @@ agents:
       - Use load_skill("asset-allocation") for cross-asset framework
       - Use load_skill("macro-analysis") for macro-to-market mapping
       - Where all three agree (high conviction); where they disagree (key uncertainty)
-      - Chain: macro ‚Üí asset class ‚Üí sector ‚Üí style
+      - Chain: macro ‚Ü?asset class ‚Ü?sector ‚Ü?style
 
       ### Cross-asset decisions
-      - Equities: over / neutral / underweight; suggest range (e.g., 60‚Äì70%)
+      - Equities: over / neutral / underweight; suggest range (e.g., 60‚Ä?0%)
       - Bonds: government vs credit mix; duration stance
       - Commodities: energy / metals / ag logic
       - Cash: opportunity cost vs buffer
@@ -186,15 +186,15 @@ agents:
       - Top 3 industries from triangulated work
 
       ## Required outputs
-      1. **Strategist headline** ‚Äî ‚â§200 Chinese characters equivalent length in English (~120‚Äì160 words): clear directional macro-market call
-      2. **Consensus vs conflict** ‚Äî Map disagreements and how you weight them
-      3. **Cross-asset table** ‚Äî Recommended weights, thesis, key risk per bucket
-      4. **{market} outlook** ‚Äî Index/price bands over {horizon} for bull/base/bear
-      5. **Top sectors & themes** ‚Äî Top 3 industries, logic chain, catalyst timing
-      6. **Risk summary** ‚Äî Aggregate risks from three streams by impact with rough probability
-      7. **Monthly/quarterly playbook** ‚Äî Staged actions (e.g., phase 1 build X; add on trigger Y)
+      1. **Strategist headline** ‚Ä?‚â?00 Chinese characters equivalent length in English (~120‚Ä?60 words): clear directional macro-market call
+      2. **Consensus vs conflict** ‚Ä?Map disagreements and how you weight them
+      3. **Cross-asset table** ‚Ä?Recommended weights, thesis, key risk per bucket
+      4. **{market} outlook** ‚Ä?Index/price bands over {horizon} for bull/base/bear
+      5. **Top sectors & themes** ‚Ä?Top 3 industries, logic chain, catalyst timing
+      6. **Risk summary** ‚Ä?Aggregate risks from three streams by impact with rough probability
+      7. **Monthly/quarterly playbook** ‚Ä?Staged actions (e.g., phase 1 build X; add on trigger Y)
 
-      Use explicit numbers and dates; avoid vague ‚Äúmaybe‚Äù; attach confidence to each major call.
+      Use explicit numbers and dates; avoid vague ‚Äúmaybe‚Ä? attach confidence to each major call.
     tools: [bash, read_file, write_file, load_skill]
     skills: [asset-allocation, macro-analysis]
     max_iterations: 50
@@ -228,7 +228,7 @@ tasks:
 
 variables:
   - name: market
-    description: "Focus market (e.g., A-shares, Hong Kong, global multi-asset, crypto)"
+    description: "Focus market (e.g., A-shares, A-share futures, global multi-asset)"
     required: true
   - name: horizon
     description: "Horizon (e.g., monthly, quarterly, annual)"

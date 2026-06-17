@@ -1,6 +1,6 @@
 name: pairs_research_lab
 title: "Pairs Trading Research Lab"
-description: "Correlation scan and cointegration testing in parallel → converge into the pair strategist for strategy design → final microstructure review for execution feasibility."
+description: "Correlation scan and cointegration testing in parallel �?converge into the pair strategist for strategy design �?final microstructure review for execution feasibility."
 
 agents:
   - id: correlation_scanner
@@ -23,13 +23,13 @@ agents:
         - 60d (short comovement)
         - 120d (medium-term)
         - 250d (long-term structural)
-      - **Threshold**: keep pairs with mean correlation across windows ≥ 0.70
+      - **Threshold**: keep pairs with mean correlation across windows �?0.70
       - **Stability**: std dev of the three correlations < 0.15 (drop unstable pairs)
 
       ### Phase 3: Sector clustering
       - **Hierarchical clustering** on correlation distance—identify comovement groups
       - **Best pair per cluster**: highest correlation + most similar fundamentals inside cluster
-      - **Cross-sector pairs**: strong economic linkage across industries (e.g. crude → airlines/refining; copper → EV batteries)
+      - **Cross-sector pairs**: strong economic linkage across industries (e.g. crude �?airlines/refining; copper �?EV batteries)
 
       ### Phase 4: Quick quality pre-check
       For pairs passing correlation filters:
@@ -41,16 +41,16 @@ agents:
       ### Phase 5: Candidate ranking
       Composite score (max 100):
       - Mean correlation × 40
-      - Stability (1 − std dev) × 20
+      - Stability (1 �?std dev) × 20
       - Price-ratio stability × 20
       - Fundamental comparability × 20
 
       ## Required outputs
-      1. **Candidate pool** — All pairs passing filters with three-window correlations, stability, composite score—sorted high to low
-      2. **Cluster map** — Main comovement groups in {market} with representative tickers and intra-cluster correlation
-      3. **Top-20 detail** — Trend of correlation, price-ratio history, comparability, joint factor exposure
-      4. **Cross-sector “surprise” pairs** — High correlation, different industries; source (macro / supply chain / regulation); unique arb angle?
-      5. **Correlation stability report** — Top 20: did correlation collapse materially in past 2y? Fragile pairs and warnings
+      1. **Candidate pool** �?All pairs passing filters with three-window correlations, stability, composite score—sorted high to low
+      2. **Cluster map** �?Main comovement groups in {market} with representative tickers and intra-cluster correlation
+      3. **Top-20 detail** �?Trend of correlation, price-ratio history, comparability, joint factor exposure
+      4. **Cross-sector “surprise�?pairs** �?High correlation, different industries; source (macro / supply chain / regulation); unique arb angle?
+      5. **Correlation stability report** �?Top 20: did correlation collapse materially in past 2y? Fragile pairs and warnings
 
       Use load_skill("correlation-analysis"), load_skill("pair-trading"), load_skill("multi-factor").
       Use factor_analysis for correlation and clustering.
@@ -81,7 +81,7 @@ agents:
 
       #### Engle–Granger
       - **Step 1**: OLS Y_t = α + β×X_t + ε_t
-      - **Step 2**: ADF on ε_t (p < 0.05 ⇒ cointegration)
+      - **Step 2**: ADF on ε_t (p < 0.05 �?cointegration)
       - **Note**: EG can miss relationships—combine with Johansen
 
       #### Johansen (multi-asset extension)
@@ -101,7 +101,7 @@ agents:
       - **θ**: speed of mean reversion
       - **μ**: equilibrium mean (fair spread)
       - **σ**: noise of spread
-      - **Half-life**: t½ = ln(2)/θ (ideal 5–30 trading days)
+      - **Half-life**: t½ = ln(2)/θ (ideal 5�?0 trading days)
 
       #### Dynamic hedge ratio
       - **OLS static**: β = Cov(Y,X)/Var(X)
@@ -110,17 +110,17 @@ agents:
 
       ### Step 4: Composite arb-value score (max 100)
       - Cointegration strength (lower p higher score) × 25
-      - Half-life in sweet spot (5–30d) × 25
+      - Half-life in sweet spot (5�?0d) × 25
       - Moderate spread vol (not too low / too high) × 20
       - Hurst (<0.4 best for MR) × 15
       - Historical stability of cointegration × 15
 
       ## Required outputs
-      1. **Cointegration summary** — EG p / Johansen / verdict—strong / weak / none—table
-      2. **OU parameter table** — θ, μ, σ, half-life for passing pairs—sort by half-life
-      3. **Hedge-ratio stability** — Top 10: OLS vs Kalman history—stable / medium / highly time-varying
-      4. **Hurst & MR quality rank** — Hurst + half-life joint “tradable mean-reversion” rank
-      5. **Rolling cointegration** — Top 10: 12m rolling window p-value time series; periods of failure; fragility today
+      1. **Cointegration summary** �?EG p / Johansen / verdict—strong / weak / none—table
+      2. **OU parameter table** �?θ, μ, σ, half-life for passing pairs—sort by half-life
+      3. **Hedge-ratio stability** �?Top 10: OLS vs Kalman history—stable / medium / highly time-varying
+      4. **Hurst & MR quality rank** �?Hurst + half-life joint “tradable mean-reversion�?rank
+      5. **Rolling cointegration** �?Top 10: 12m rolling window p-value time series; periods of failure; fragility today
 
       Use load_skill("correlation-analysis"), load_skill("quant-statistics").
       Use factor_analysis for ADF, Johansen, Kalman where applicable.
@@ -143,7 +143,7 @@ agents:
       ## Design spec
 
       ### Entry
-      - **z-score**: z = (spread_t − μ) / σ with μ,σ from rolling 60d (no lookahead)
+      - **z-score**: z = (spread_t �?μ) / σ with μ,σ from rolling 60d (no lookahead)
       - **Thresholds**: |z| > 1.5 (aggressive) / 2.0 (standard) / 2.5 (conservative)—pick from validation
       - **Dynamic adjustment**:
         - High vol (VIX/ATR > 75th hist): raise threshold ~0.5σ
@@ -155,7 +155,7 @@ agents:
         - Exclude 10 days post halt/resume (gap distortion)
 
       ### Exit
-      - **Target**: z in [−0.5, +0.5]
+      - **Target**: z in [�?.5, +0.5]
       - **Partial**: |z| < 1.0 close 50%
       - **Stop**: |z| > 3.5σ full exit
       - **Time stop**: > 2× half-life no reversion—close 50%; after another 1× half-life full exit
@@ -167,7 +167,7 @@ agents:
       - Include rebalance cost in P&L
 
       ### Multi-pair book
-      - **Count**: 5–15 pairs (too few = concentration; too many = ops burden)
+      - **Count**: 5�?5 pairs (too few = concentration; too many = ops burden)
       - **Weights**: equal risk contribution (inverse vol)
       - **Correlation**: pairwise < 0.3 within book
       - **Capacity**: max per pair from microstructure liquidity caps
@@ -179,11 +179,11 @@ agents:
       - Goal: robust region, not a single peak
 
       ## Required outputs
-      1. **Final rules** — Entry/exit/hedge/stop in pseudexecutable form with numbers
-      2. **Backtest KPIs** — Strict OOS ≥2y after param selection: ann. return, max DD, Sharpe, Calmar, trades/year, win rate, avg holding days
-      3. **Book allocation** — Final 5–15 pairs, weights, reasons, corr matrix (<0.3)
-      4. **Robustness heatmap** — Entry × stop grid; region where Sharpe beats hurdle
-      5. **Year-by-year & regime** — Bull / bear / chop segments; when strategy works / fails
+      1. **Final rules** �?Entry/exit/hedge/stop in pseudexecutable form with numbers
+      2. **Backtest KPIs** �?Strict OOS �?y after param selection: ann. return, max DD, Sharpe, Calmar, trades/year, win rate, avg holding days
+      3. **Book allocation** �?Final 5�?5 pairs, weights, reasons, corr matrix (<0.3)
+      4. **Robustness heatmap** �?Entry × stop grid; region where Sharpe beats hurdle
+      5. **Year-by-year & regime** �?Bull / bear / chop segments; when strategy works / fails
 
       Use load_skill("pair-trading"), load_skill("correlation-analysis"), load_skill("strategy-generate").
       Use backtest with costs, dynamic hedge, multi-pair rebalancing.
@@ -207,19 +207,19 @@ agents:
 
       ### Liquidity
       - **ADV** per leg: 20/60/250d; CV stability
-      - **Max size**: “≤ X% of ADV” (suggest 5–10%)
+      - **Max size**: “≤ X% of ADV�?(suggest 5�?0%)
       - **Two-legged sync**: can both legs fill within acceptable basis in fast markets?
       - **Drought risk**: frequency of one-sided crash / circuit days
 
       ### Cost breakdown
 
       #### Half-spread
-      - **Roll**: 2×sqrt(−Cov(ΔP_t, ΔP_{t−1}))
+      - **Roll**: 2×sqrt(−Cov(ΔP_t, ΔP_{t�?}))
       - **Open cost**: both legs in bps
       - **Round-trip**: full open+close per arb cycle
 
       #### Impact
-      - **Square-root**: ≈ σ × (Q/ADV)^0.5
+      - **Square-root**: �?σ × (Q/ADV)^0.5
       - **TWAP/VWAP** slicing; optimal clips
       - **Coverage**: expected edge vs impact
 
@@ -244,11 +244,11 @@ agents:
       - Capacity decay curve (size vs Sharpe)
 
       ## Required outputs
-      1. **Liquidity scorecard** — Per name: ADV / stability / max position; flag ADV < 100M CNY; feasible / conditional / not feasible
-      2. **Cost table** — Per selected pair: spread / impact / rebalance / tax—single cycle bps and ann. % vs expected return
-      3. **Max capacity & caps CNY/USD** — Book theoretical max + decay sketch
-      4. **Execution playbook** — TWAP/VWAP/limit per type; best windows; clip vs single-shot cost delta
-      5. **Overall micro verdict** — Grade A/B/C/D; binding limits; pre-live execution checklist
+      1. **Liquidity scorecard** �?Per name: ADV / stability / max position; flag ADV < 100M CNY; feasible / conditional / not feasible
+      2. **Cost table** �?Per selected pair: spread / impact / rebalance / tax—single cycle bps and ann. % vs expected return
+      3. **Max capacity & caps CNY/USD** �?Book theoretical max + decay sketch
+      4. **Execution playbook** �?TWAP/VWAP/limit per type; best windows; clip vs single-shot cost delta
+      5. **Overall micro verdict** �?Grade A/B/C/D; binding limits; pre-live execution checklist
 
       Use load_skill("market-microstructure"), load_skill("execution-model").
     tools: [bash, read_file, write_file, load_skill]
@@ -287,7 +287,7 @@ tasks:
 
 variables:
   - name: market
-    description: "Target market (e.g. A-shares, Hong Kong, US, crypto)"
+    description: "Target market (e.g. A-shares, A-share futures)"
     required: true
   - name: sector
     description: "Sector filter (e.g. banks, consumer, semis); empty = full market"

@@ -1,6 +1,6 @@
 name: statistical_arbitrage_desk
 title: "Statistical Arbitrage Desk"
-description: "Pair scanning and microstructure analysis in parallel â†’ converge into the arbitrage strategist to build the strategy â†’ final risk-control review."
+description: "Pair scanning and microstructure analysis in parallel â†?converge into the arbitrage strategist to build the strategy â†?final risk-control review."
 
 agents:
   - id: pair_scanner
@@ -15,7 +15,7 @@ agents:
 
       ### Phase 1: Correlation pre-screen
       - Compute rolling pairwise correlations (60d / 120d / 250d) for all pairs in the target market
-      - Keep candidate pairs with correlation â‰¥ 0.7
+      - Keep candidate pairs with correlation â‰?0.7
       - Prefer same-sector, same-type names to reduce fundamental divergence risk
 
       ### Phase 2: Cointegration tests
@@ -24,7 +24,7 @@ agents:
       - Keep pairs with p < 0.05
 
       ### Phase 3: Mean-reversion quality
-      - **Half-life**: OU-based estimate of spread half-life to equilibrium (ideal 5â€“30 days)
+      - **Half-life**: OU-based estimate of spread half-life to equilibrium (ideal 5â€?0 days)
       - **Sharpe (theoretical upper bound)**: from spread vol and half-life
       - **Spread stationarity**: Hurst index (<0.5 mean-reverting; lower is better)
 
@@ -34,11 +34,11 @@ agents:
       - Tail thickness of the spread distribution (for downstream risk)
 
       ## Required outputs
-      1. **Candidate pair list** â€” All pairs passing filters, each with: correlation, cointegration p-value, half-life, Hurst
-      2. **Top-10 deep dive** â€” Best 10 with spread series, OU parameter estimates, historical z-score distribution
-      3. **Hedge-ratio matrix** â€” Current hedge ratios (OLS / Kalman) and recent stability
-      4. **Mean-reversion speed ranking** â€” Sorted by half-life; label daily / weekly / monthly suitability
-      5. **Cointegration stability report** â€” Rolling tests on Top 10; flag structural breaks
+      1. **Candidate pair list** â€?All pairs passing filters, each with: correlation, cointegration p-value, half-life, Hurst
+      2. **Top-10 deep dive** â€?Best 10 with spread series, OU parameter estimates, historical z-score distribution
+      3. **Hedge-ratio matrix** â€?Current hedge ratios (OLS / Kalman) and recent stability
+      4. **Mean-reversion speed ranking** â€?Sorted by half-life; label daily / weekly / monthly suitability
+      5. **Cointegration stability report** â€?Rolling tests on Top 10; flag structural breaks
 
       Use load_skill("pair-trading"), load_skill("quant-statistics").
       Use factor_analysis for correlation and joint factor exposure to reduce spurious cointegration.
@@ -76,11 +76,11 @@ agents:
       - Event shocks (earnings season, index rebalance)
 
       ## Required outputs
-      1. **Liquidity score matrix** â€” Score each name 1â€“10 on turnover / stability / depth; flag illiquid (e.g. ADV < 50M CNY)
-      2. **Trading-cost table** â€” Per pair: round-trip cost incl. impact vs expected spread edge; cost coverage ratio
-      3. **Max feasible position** â€” Per pair, cap using â€œâ‰¤ X% of ADVâ€ rule
-      4. **Best intraday windows** â€” When to open/close per name
-      5. **Liquidity risk alerts** â€” Pairs likely to dry up in stress (e.g. one-sided drawdown days); contingency exit plan
+      1. **Liquidity score matrix** â€?Score each name 1â€?0 on turnover / stability / depth; flag illiquid (e.g. ADV < 50M CNY)
+      2. **Trading-cost table** â€?Per pair: round-trip cost incl. impact vs expected spread edge; cost coverage ratio
+      3. **Max feasible position** â€?Per pair, cap using â€œâ‰¤ X% of ADVâ€?rule
+      4. **Best intraday windows** â€?When to open/close per name
+      5. **Liquidity risk alerts** â€?Pairs likely to dry up in stress (e.g. one-sided drawdown days); contingency exit plan
 
       Use load_skill("market-microstructure"), load_skill("execution-model").
     tools: [bash, read_file, write_file, load_skill]
@@ -102,14 +102,14 @@ agents:
       ## Design elements
 
       ### Entry
-      - **z-score threshold**: typically Â±1.5â€“2.0Ïƒ from historical spread
+      - **z-score threshold**: typically Â±1.5â€?.0Ïƒ from historical spread
       - **Dynamic threshold**: widen in high-vol regimes
       - **Confirmation**: optional reversal after N days of deviation
       - **Filters**: exclude Â±5 days around earnings; avoid strong one-way trend regimes
 
       ### Exit
       - **Target**: spread back inside Â±0.5Ïƒ
-      - **Stop**: |z| beyond Â±3.0â€“3.5Ïƒ
+      - **Stop**: |z| beyond Â±3.0â€?.5Ïƒ
       - **Time stop**: flat if no mean-reversion after 2Ã— half-life
       - **Forced exit**: cointegration fails (p > 0.1)
 
@@ -118,16 +118,16 @@ agents:
       - Rebalance if hedge ratio drifts >20% from baseline
 
       ### Portfolio
-      - Run multiple pairs (suggest 5â€“15)
+      - Run multiple pairs (suggest 5â€?5)
       - Equal risk contribution (inverse-vol weights)
       - Correlation control across pairs in the book
 
       ## Required outputs
-      1. **Final rules document** â€” All entry/exit/hedge/stop parameters in executable logic form
-      2. **Backtest report** â€” Strict OOS (â‰¥2y): ann. return, max DD, Sharpe, trade count, win rate
-      3. **Allocation plan** â€” Which pairs enter the book, weights and rationale
-      4. **Parameter sensitivity** â€” Grid on entry z (Â±1.0â€“2.5) and stop multiples (Â±2.5â€“4.0); robust region
-      5. **Capacity estimate** â€” Max AUM from microstructure position caps
+      1. **Final rules document** â€?All entry/exit/hedge/stop parameters in executable logic form
+      2. **Backtest report** â€?Strict OOS (â‰?y): ann. return, max DD, Sharpe, trade count, win rate
+      3. **Allocation plan** â€?Which pairs enter the book, weights and rationale
+      4. **Parameter sensitivity** â€?Grid on entry z (Â±1.0â€?.5) and stop multiples (Â±2.5â€?.0); robust region
+      5. **Capacity estimate** â€?Max AUM from microstructure position caps
 
       Use load_skill("pair-trading"), load_skill("strategy-generate"), load_skill("quant-statistics").
       Use backtest with realistic costs.
@@ -156,7 +156,7 @@ agents:
 
       ### Correlation breakdown
       - Historical episodes of sharp correlation drop (e.g. 2008 / 2015)
-      - Stress P&L if correlation â†’ 0
+      - Stress P&L if correlation â†?0
       - Current correlation vs long-run mean
 
       ### Cointegration failure
@@ -174,11 +174,11 @@ agents:
       - Forced-liquidation cost in drought
 
       ## Required outputs
-      1. **Neutrality report** â€” Net beta, sector and factor tilts; hedging fixes if breaches
-      2. **Correlation-breakdown stress** â€” VaR/CVaR if correlation zeros; vs risk budget
-      3. **Cointegration early-warning** â€” 3 indicators + playbook on trigger
-      4. **Concentration & tail** â€” Joint failure view; highly correlated pair clusters; portfolio tweaks
-      5. **Verdict** â€” Pass / conditional pass / fail; pre-launch conditions and ongoing monitors
+      1. **Neutrality report** â€?Net beta, sector and factor tilts; hedging fixes if breaches
+      2. **Correlation-breakdown stress** â€?VaR/CVaR if correlation zeros; vs risk budget
+      3. **Cointegration early-warning** â€?3 indicators + playbook on trigger
+      4. **Concentration & tail** â€?Joint failure view; highly correlated pair clusters; portfolio tweaks
+      5. **Verdict** â€?Pass / conditional pass / fail; pre-launch conditions and ongoing monitors
 
       Use load_skill("risk-analysis"), load_skill("volatility").
     tools: [bash, read_file, write_file, load_skill]
@@ -217,10 +217,10 @@ tasks:
 
 variables:
   - name: market
-    description: "Target market (e.g. A-shares, Hong Kong, crypto)"
+    description: "Target market (e.g. A-shares, A-share futures)"
     required: true
   - name: goal
-    description: "Research focus (e.g. CSI 300 pair book, crypto arb ideas)"
+    description: "Research focus (e.g. CSI 300 pair book, commodity arb ideas)"
     required: true
   - name: sector
     description: "Sector filter (e.g. banks, consumer); empty = full market"

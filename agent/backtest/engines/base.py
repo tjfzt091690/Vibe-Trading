@@ -1,9 +1,9 @@
 """Base backtest engine with shared bar-by-bar execution loop.
 
 All market engines inherit from BaseEngine and override market-rule methods.
-The shared run_backtest() handles: data loading â†’ signal generation â†’
-pre-compute target weights (with optimizer) â†’ bar-by-bar execution with
-market rule enforcement â†’ metrics â†’ artifacts.
+The shared run_backtest() handles: data loading â†?signal generation â†?
+pre-compute target weights (with optimizer) â†?bar-by-bar execution with
+market rule enforcement â†?metrics â†?artifacts.
 """
 
 from __future__ import annotations
@@ -52,7 +52,7 @@ def _run_card_data_sources(config: Dict[str, Any], loader: Any) -> List[str]:
 
 # â”€â”€â”€ Market detection (lightweight, for signal alignment only) â”€â”€â”€
 
-_CRYPTO_RE = _re.compile(r"^[A-Z]+-USDT$|^[A-Z]+/USDT$", _re.I)
+
 _FOREX_RE = _re.compile(r"^[A-Z]{3}/[A-Z]{3}$|^[A-Z]{6}\.FX$")
 
 
@@ -396,7 +396,7 @@ class BaseEngine(ABC):
             from backtest.benchmark import resolve_benchmark
             bench_result = resolve_benchmark(
                 strategy_codes=codes,
-                source=config.get("source", "yfinance"),
+                source=config.get("source", "akshare"),
                 start_date=config.get("start_date", ""),
                 end_date=config.get("end_date", ""),
                 interval=interval,
@@ -418,7 +418,7 @@ class BaseEngine(ABC):
         m["by_symbol"] = by_symbol_stats(self.trades)
         m["by_exit_reason"] = by_exit_reason_stats(self.trades)
 
-        # 7. Validation (optional â€” triggered by config["validation"])
+        # 7. Validation (optional â€?triggered by config["validation"])
         if config.get("validation"):
             from backtest.validation import run_validation
             v_results = run_validation(
@@ -560,7 +560,7 @@ class BaseEngine(ABC):
             margin = self._calc_margin(symbol, size, slipped, leverage)
             comm = self.calc_commission(size, slipped, target_dir, is_open=True)
 
-            # Capital check â€” reduce if insufficient
+            # Capital check â€?reduce if insufficient
             if margin + comm > self.capital:
                 available = self.capital - comm
                 if available <= 0:

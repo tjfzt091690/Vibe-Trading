@@ -1,6 +1,6 @@
 name: sentiment_intelligence_team
 title: "Market Sentiment Intelligence Unit"
-description: "News intel / social sentiment / capital flows in parallel â†’ sentiment signal synthesizer outputs composite score and reversal signals."
+description: "News intel / social sentiment / capital flows in parallel â†?sentiment signal synthesizer outputs composite score and reversal signals."
 
 agents:
   - id: news_analyst
@@ -12,19 +12,19 @@ agents:
       For {market}, capture and analyze finance news, policy interpretation, and sell-side research summaries at {timeframe} granularity; extract directional sentiment and key themes.
 
       Framework:
-      1. **Policy & regulation** â€” central-bank stance (ease/tighten word frequency), fiscal direction, sector campaigns; policy-cycle inflection (easyâ†’neutralâ†’tight)
-      2. **Macro data reads** â€” GDP/CPI/PMI/jobs interpretation sentiment; surprise vs consensus amplification
-      3. **Sell-side tone** â€” rating mix (buy/hold/sell), TP up/down ratio, consensus direction
-      4. **Major events** â€” earnings season beat rate; large IPO mood; M&A reaction
-      5. **Media sentiment index** â€” positive/negative/neutral share; keyword cloud vs historical bull/bear media tone
+      1. **Policy & regulation** â€?central-bank stance (ease/tighten word frequency), fiscal direction, sector campaigns; policy-cycle inflection (easyâ†’neutralâ†’tight)
+      2. **Macro data reads** â€?GDP/CPI/PMI/jobs interpretation sentiment; surprise vs consensus amplification
+      3. **Sell-side tone** â€?rating mix (buy/hold/sell), TP up/down ratio, consensus direction
+      4. **Major events** â€?earnings season beat rate; large IPO mood; M&A reaction
+      5. **Media sentiment index** â€?positive/negative/neutral share; keyword cloud vs historical bull/bear media tone
 
       ## Required outputs
-      1. **News sentiment score** â€” âˆ’100 (extreme bear) to +100 (extreme bull) with methodology and drivers
-      2. **Key events list** â€” 5â€“10 recent market-moving items: headline summary, direction (+/âˆ’/neutral), impact H/M/L
-      3. **Policy-phase call** â€” loose / moderately loose / neutral / moderately tight / tight with keyword/evidence
-      4. **Sell-side statistics** â€” rating distribution, TP revision skew, tone trend
-      5. **Sentiment trend vs prior** â€” vs yesterday (daily) or prior week (weekly): direction, magnitude, speed
-      6. **Tail-risk news** â€” items that could crater sentiment (geo / financial-system / black-swan watch)
+      1. **News sentiment score** â€?âˆ?00 (extreme bear) to +100 (extreme bull) with methodology and drivers
+      2. **Key events list** â€?5â€?0 recent market-moving items: headline summary, direction (+/âˆ?neutral), impact H/M/L
+      3. **Policy-phase call** â€?loose / moderately loose / neutral / moderately tight / tight with keyword/evidence
+      4. **Sell-side statistics** â€?rating distribution, TP revision skew, tone trend
+      5. **Sentiment trend vs prior** â€?vs yesterday (daily) or prior week (weekly): direction, magnitude, speed
+      6. **Tail-risk news** â€?items that could crater sentiment (geo / financial-system / black-swan watch)
 
       Use load_skill("web-reader"), load_skill("sentiment-analysis"), read_url.
     tools: [bash, read_file, write_file, load_skill, read_url]
@@ -42,19 +42,19 @@ agents:
       For {market}, at {timeframe}, analyze discussion heat, retail extremes, and behavioral-bias signals for sentiment-driven reversals.
 
       Framework:
-      1. **Discussion heat** â€” Snowball / East Money / Weibo / Reddit / Twitter indices; new accounts / app downloads as retail participation proxy
-      2. **Fear & greed composite** â€” vol (VIX/CVIX), put/call, momentum, safe-haven performance, market momentum; level and historical percentile
-      3. **Retail micro** â€” margin-buy share of turnover (leverage heat); abnormal turnover (high chase / low despair); retail concentration in themes
-      4. **Bull/bear surveys & options** â€” poll positioning; put/call OI; skew
-      5. **Behavioral flags** â€” chase rallies (price up + volume up); herding (sector flows); anchoring (volume clusters at round levels)
+      1. **Discussion heat** â€?Snowball / East Money / Weibo / Reddit / Twitter indices; new accounts / app downloads as retail participation proxy
+      2. **Fear & greed composite** â€?vol (VIX/CVIX), put/call, momentum, safe-haven performance, market momentum; level and historical percentile
+      3. **Retail micro** â€?margin-buy share of turnover (leverage heat); abnormal turnover (high chase / low despair); retail concentration in themes
+      4. **Bull/bear surveys & options** â€?poll positioning; put/call OI; skew
+      5. **Behavioral flags** â€?chase rallies (price up + volume up); herding (sector flows); anchoring (volume clusters at round levels)
 
       ## Required outputs
-      1. **Social sentiment score** â€” âˆ’100 panic to +100 greedâ€”with sub-indicator weights and attribution
-      2. **Retail profile** â€” estimated positioning, state (panic/cautious/neutral/optimistic/greedy), evidence
-      3. **F&G dashboard** â€” absolute level and 1y/3y percentiles; historical conditions at extremes
-      4. **Extreme alert** â€” reversal triggered? type (overheat/ice), historical post-extreme path, confidence
-      5. **Bias map** â€” dominant biases and expected price impact (momentum vs reversal after overreaction)
-      6. **Retail flow inflection** â€” forecast when retail flows may turn within {timeframe}
+      1. **Social sentiment score** â€?âˆ?00 panic to +100 greedâ€”with sub-indicator weights and attribution
+      2. **Retail profile** â€?estimated positioning, state (panic/cautious/neutral/optimistic/greedy), evidence
+      3. **F&G dashboard** â€?absolute level and 1y/3y percentiles; historical conditions at extremes
+      4. **Extreme alert** â€?reversal triggered? type (overheat/ice), historical post-extreme path, confidence
+      5. **Bias map** â€?dominant biases and expected price impact (momentum vs reversal after overreaction)
+      6. **Retail flow inflection** â€?forecast when retail flows may turn within {timeframe}
 
       Use load_skill("behavioral-finance"), load_skill("sentiment-analysis"), read_url.
     tools: [bash, read_file, write_file, load_skill, read_url]
@@ -66,25 +66,25 @@ agents:
   - id: flow_analyst
     role: Capital Flow Analyst
     system_prompt: |
-      You are a senior flow analystâ€”Northbound (Stock Connect), main-force, margin, and block-trading flowsâ€”inferring â€œsmart moneyâ€ from behavior.
+      You are a senior flow analystâ€”Northbound (Stock Connect), main-force, margin, and block-trading flowsâ€”inferring â€œsmart moneyâ€?from behavior.
 
       ## Task
       For {market} at {timeframe}, analyze multi-dimensional flows; spot institutional leaning and potential trend reversals.
 
       Framework:
-      1. **Block & large orders** â€” mega (>10M CNY) / large (>1M) net flow ranks; sector net Top 5; suspected build/distribution clusters
-      2. **Northbound** â€” daily/weekly net buy; top holdings add/trim; phase correlation with local index
-      3. **Margin** â€” balance level and WoW change (>5% abnormal); margin buy % of day turnover (>10% leverage heat); short balance spikes
-      4. **Block trades** â€” volume and discount; >5% discount often institutional selling; premium may be strategic buy
-      5. **Dragon-tiger boards** â€” institution vs hot-money seats; historical follow-through
+      1. **Block & large orders** â€?mega (>10M CNY) / large (>1M) net flow ranks; sector net Top 5; suspected build/distribution clusters
+      2. **Northbound** â€?daily/weekly net buy; top holdings add/trim; phase correlation with local index
+      3. **Margin** â€?balance level and WoW change (>5% abnormal); margin buy % of day turnover (>10% leverage heat); short balance spikes
+      4. **Block trades** â€?volume and discount; >5% discount often institutional selling; premium may be strategic buy
+      5. **Dragon-tiger boards** â€?institution vs hot-money seats; historical follow-through
 
       ## Required outputs
-      1. **Flow sentiment score** â€” âˆ’100 large net outflows to +100 strong smart-money in
-      2. **Flow panorama** â€” main / foreign / margin / block: direction, strength, vs prior
-      3. **Sector rotation map** â€” top 3 inflows, bottom 3 outflows; defensiveâ†”cyclical rhythm
-      4. **Smart-money flags** â€” Northbound or mega-block concentration; â€œaccumulationâ€ vs â€œdistributionâ€ patterns
-      5. **Margin risk** â€” financing balance historical percentile; estimate margin-call pressure if market falls X%
-      6. **Reliability caveats** â€” lags, data limits, misread risks
+      1. **Flow sentiment score** â€?âˆ?00 large net outflows to +100 strong smart-money in
+      2. **Flow panorama** â€?main / foreign / margin / block: direction, strength, vs prior
+      3. **Sector rotation map** â€?top 3 inflows, bottom 3 outflows; defensiveâ†”cyclical rhythm
+      4. **Smart-money flags** â€?Northbound or mega-block concentration; â€œaccumulationâ€?vs â€œdistributionâ€?patterns
+      5. **Margin risk** â€?financing balance historical percentile; estimate margin-call pressure if market falls X%
+      6. **Reliability caveats** â€?lags, data limits, misread risks
 
       Use load_skill("tushare"), load_skill("sentiment-analysis").
     tools: [bash, read_file, write_file, load_skill]
@@ -104,19 +104,19 @@ agents:
       {upstream_context}
 
       Method:
-      1. **Weighted blend** â€” news 25% (fast, noisy) + social 35% (retail extremes valuable) + flow 40% (final vote); dynamic weights daily vs weekly
-      2. **Level calibration** â€” composite percentile over 1y/3y; >80 overheat, <20 ice; alert bands
-      3. **Triple reversal confirm** â€” extreme composite + price divergence (price high/low without sentiment confirming) + volume dry-up or spike
-      4. **Sentiment momentum** â€” 3/5/10d speed and direction; â€œdeteriorating fastâ€ vs â€œbottom formingâ€
-      5. **Cross-market** â€” for A-shares: HK overnight, US index futures, DXY lead for next-session mood
+      1. **Weighted blend** â€?news 25% (fast, noisy) + social 35% (retail extremes valuable) + flow 40% (final vote); dynamic weights daily vs weekly
+      2. **Level calibration** â€?composite percentile over 1y/3y; >80 overheat, <20 ice; alert bands
+      3. **Triple reversal confirm** â€?extreme composite + price divergence (price high/low without sentiment confirming) + volume dry-up or spike
+      4. **Sentiment momentum** â€?3/5/10d speed and direction; â€œdeteriorating fastâ€?vs â€œbottom formingâ€?
+      5. **Cross-market** â€?for A-shares: HK overnight, US index futures, DXY lead for next-session mood
 
       ## Required outputs
-      1. **Composite dashboard** â€” final âˆ’100..+100 with component scores; label (extreme fear â€¦ extreme greed)
-      2. **Historical percentile** â€” 1y/3y placement vs past extremes
-      3. **Reversal call** â€” long/short/neutral reversal; strength; triple-check status; avg excess after similar historical signals
-      4. **Positioning** â€” from extremes: cash / light 20% / base 50% / heavy 80% / full; triggers to resize
-      5. **Time window** â€” expected days until sentiment mean-reverts if reversal signal on
-      6. **Limitations** â€” when sentiment fails in trends; blend with fundamentals; key uncertainties
+      1. **Composite dashboard** â€?final âˆ?00..+100 with component scores; label (extreme fear â€?extreme greed)
+      2. **Historical percentile** â€?1y/3y placement vs past extremes
+      3. **Reversal call** â€?long/short/neutral reversal; strength; triple-check status; avg excess after similar historical signals
+      4. **Positioning** â€?from extremes: cash / light 20% / base 50% / heavy 80% / full; triggers to resize
+      5. **Time window** â€?expected days until sentiment mean-reverts if reversal signal on
+      6. **Limitations** â€?when sentiment fails in trends; blend with fundamentals; key uncertainties
 
       Use load_skill("behavioral-finance"), load_skill("risk-analysis").
     tools: [bash, read_file, write_file, load_skill]
@@ -128,7 +128,7 @@ agents:
 tasks:
   - id: task-news-intel
     agent_id: news_analyst
-    prompt_template: "Analyze {market} at {timeframe}: finance news, policy, sell-side summaries. Output news sentiment âˆ’100..+100, key events, policy phase."
+    prompt_template: "Analyze {market} at {timeframe}: finance news, policy, sell-side summaries. Output news sentiment âˆ?00..+100, key events, policy phase."
     depends_on: []
 
   - id: task-social-sentiment
@@ -152,7 +152,7 @@ tasks:
 
 variables:
   - name: market
-    description: "Target market, e.g. A-shares / HK / US / crypto / CSI 300"
+    description: "Target market, e.g. A-shares / CSI 300"
     required: true
   - name: timeframe
     description: "Horizon: daily or weekly"

@@ -39,7 +39,6 @@ from backtest.loaders.base import NoAvailableSourceError
 # from ``backtest.runner``.
 from backtest.engines._market_hooks import (  # noqa: F401  (re-exported)
     _detect_market,
-    _detect_submarket,
     _is_china_futures,
 )
 
@@ -47,7 +46,7 @@ logger = logging.getLogger(__name__)
 
 _VALID_INTERVALS = {"1m", "5m", "15m", "30m", "1H", "4H", "1D"}
 _VALID_ENGINES = {"daily", "options"}
-_VALID_SOURCES = {"tushare", "okx", "yfinance", "akshare", "ccxt", "auto"}
+_VALID_SOURCES = {"tushare", "akshare", "mootdx", "auto"}
 
 
 class BacktestConfigSchema(BaseModel):
@@ -237,7 +236,7 @@ def _validate_signal_engine_source(file_path: Path) -> None:
         if isinstance(node, ast.ImportFrom) and node.module == "signal_engine":
             raise ValueError(
                 "Circular import: 'from signal_engine import ...' imports the file from itself. "
-                "Remove this import — SignalEngine is defined in this same file."
+                "Remove this import �?SignalEngine is defined in this same file."
             )
         if isinstance(node, (ast.Import, ast.ImportFrom)):
             continue
@@ -276,15 +275,11 @@ def _validate_signal_engine_class(engine_cls) -> None:
 
 # --- Market detection ---
 # ``_MARKET_PATTERNS``, ``_detect_market``, ``_is_china_futures``,
-# ``_detect_submarket`` are imported from ``_market_hooks`` above and
 # re-exported here for back-compat (swarm/grounding.py, tests).
 
 # Back-compat: market type -> legacy source name (for engine selection & metrics)
 _MARKET_TO_SOURCE = {
     "a_share": "tushare",
-    "us_equity": "yfinance",
-    "hk_equity": "yfinance",
-    "crypto": "okx",
     "futures": "tushare",
     "fund": "tushare",
     "macro": "akshare",
@@ -299,7 +294,7 @@ def _detect_source(code: str) -> str:
         code: Ticker / symbol string.
 
     Returns:
-        Source name (tushare/okx/yfinance/akshare).
+        Source name (tushare/akshare/mootdx).
     """
     market = _detect_market(code)
     return _MARKET_TO_SOURCE.get(market, "tushare")
@@ -341,7 +336,7 @@ def _get_loader(source: str):
     """Return a DataLoader class for a source name, with fallback.
 
     Args:
-        source: Source name (tushare/okx/yfinance/akshare/ccxt).
+        source: Source name (tushare/akshare/mootdx).
 
     Returns:
         DataLoader class.
@@ -365,8 +360,6 @@ def _normalize_codes(codes: List[str], source: str) -> List[str]:
     Returns:
         Normalized codes.
     """
-    if source in ("okx", "ccxt"):
-        return [c.replace("/", "-").upper() for c in codes]
     return codes
 
 
@@ -518,10 +511,10 @@ def _create_market_engine(source: str, config: dict, codes: List[str]):
 
     Routing priority:
       1. Detect market type from symbol patterns (futures, forex, etc.)
-      2. Fall back to source-based routing (okx->crypto, tushare->china_a, etc.)
+      2. Fall back to source-based routing (tushare->china_a, etc.)
 
     Args:
-        source: Data source (okx/ccxt/tushare/akshare/yfinance).
+        source: Data source (tushare/akshare/mootdx).
         config: Backtest configuration.
         codes: Instrument codes.
 
@@ -551,23 +544,12 @@ def _create_market_engine(source: str, config: dict, codes: List[str]):
         return ForexEngine(config)
 
     # Original routing (Wave 1)
-    if source in ("okx", "ccxt"):
-        from backtest.engines.crypto import CryptoEngine
-        return CryptoEngine(config)
     elif source in ("tushare", "akshare"):
-        if markets & {"us_equity", "hk_equity"}:
-            from backtest.engines.global_equity import GlobalEquityEngine
-            market = _detect_submarket(codes)
-            return GlobalEquityEngine(config, market=market)
         from backtest.engines.china_a import ChinaAEngine
         return ChinaAEngine(config)
-    elif source == "yfinance":
-        from backtest.engines.global_equity import GlobalEquityEngine
-        market = _detect_submarket(codes)
-        return GlobalEquityEngine(config, market=market)
+    # Default: A-share engine
     else:
-        from backtest.engines.crypto import CryptoEngine
-        return CryptoEngine(config)
+        return None
 
 
 def _detect_primary_source(codes: List[str], source: str) -> str:
@@ -611,7 +593,7 @@ def _fetch_auto(codes: List[str], config: dict, interval: str = "1D") -> dict:
         except NoAvailableSourceError as exc:
             # Fallback: try legacy source mapping
             legacy_src = _MARKET_TO_SOURCE.get(market, "tushare")
-            logger.warning("Fallback chain failed for %s: %s — trying %s", market, exc, legacy_src)
+            logger.warning("Fallback chain failed for %s: %s �?trying %s", market, exc, legacy_src)
             LoaderCls = _get_loader(legacy_src)
             loader = LoaderCls()
 
