@@ -230,7 +230,7 @@ tasks:
 
 variables:
   - name: target
-    description: "Security (e.g., 600519.SH Kweichow Moutai, BTC-USDT, AAPL)"
+    description: "Security (e.g., 600519.SH Kweichow Moutai)"
     required: true
   - name: market
     description: "Market (e.g., A-shares, A-share futures)"

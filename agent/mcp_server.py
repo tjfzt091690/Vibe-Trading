@@ -2,7 +2,7 @@
 """Vibe-Trading MCP Server — expose 22 finance research tools to any MCP client.
 
 Works with OpenClaw, Claude Desktop, Cursor, and any MCP-compatible client.
-Zero API key required for HK/US/crypto markets (yfinance, OKX, AKShare are free).
+Zero API key required for HK/US/crypto markets (AKShare are free).
 
 Usage:
     python mcp_server.py                    # stdio transport (default)
@@ -298,7 +298,7 @@ def add_goal_evidence(
         evidence_type: Evidence category, default evidence.
         tool_call_id: Source tool call id for traceability; it does not verify evidence by itself.
         run_id: Vibe-Trading run id. It verifies evidence only when the run directory exists.
-        source_provider: Data/provider name such as yfinance, OKX, tushare.
+        source_provider: Data/provider name such as tushare.
         source_type: Source category such as market_data, document, backtest.
         source_uri: Optional source URL/path.
         symbol_universe: Symbols covered by the evidence.
@@ -413,11 +413,8 @@ def backtest(run_dir: str) -> str:
     - code/signal_engine.py: strategy signal generation code
 
     Supported data sources (set in config.json "source" field):
-    - "yfinance": HK/US equities (free, no API key needed)
-    - "okx": cryptocurrency (free, no API key needed)
     - "tushare": China A-shares (requires TUSHARE_TOKEN env var)
     - "akshare": A-shares, US, HK, futures, forex (free, no API key)
-    - "ccxt": crypto from 100+ exchanges (free, no API key)
     - "auto": auto-detect based on symbol format (with fallback)
 
     Returns metrics (Sharpe, return, drawdown, etc.) and artifact paths.
@@ -759,11 +756,7 @@ async def run_swarm(
 DEFAULT_MAX_ROWS = 250
 
 _SOURCE_PATTERNS = [
-    (re.compile(r"^\d{6}\.(SZ|SH|BJ)$", re.I), "tushare"),
-    (re.compile(r"^[A-Z]+\.US$", re.I), "yfinance"),
-    (re.compile(r"^\d{3,5}\.HK$", re.I), "yfinance"),
-    (re.compile(r"^[A-Z]+-USDT$", re.I), "okx"),
-    (re.compile(r"^[A-Z]+/USDT$", re.I), "ccxt"),
+    (re.compile(r"^\d{6}\.(SZ|SH|BJ)$", re.I), "tushare")
 ]
 
 
@@ -823,18 +816,15 @@ def get_market_data(
     """Fetch OHLCV market data for stocks, crypto, or mixed symbols.
 
     Supported sources:
-    - "yfinance": HK/US equities (free, e.g. AAPL.US, 700.HK)
-    - "okx": cryptocurrency (free, e.g. BTC-USDT, ETH-USDT)
     - "tushare": China A-shares (requires TUSHARE_TOKEN, e.g. 000001.SZ)
     - "akshare": A-shares, US, HK, futures, forex (free, e.g. 000001.SZ, AAPL.US)
-    - "ccxt": crypto from 100+ exchanges (free, e.g. BTC/USDT)
     - "auto": auto-detect based on symbol format (with fallback)
 
     Args:
         codes: List of symbols (e.g. ["AAPL.US", "BTC-USDT", "000001.SZ"]).
         start_date: Start date (YYYY-MM-DD).
         end_date: End date (YYYY-MM-DD).
-        source: Data source ("auto", "yfinance", "okx", "tushare", "akshare", "ccxt").
+        source: Data source ("auto", "tushare", "akshare").
         interval: Bar size (1m/5m/15m/30m/1H/4H/1D, default "1D").
         max_rows: Per-symbol row cap (default 250) so the response stays
             within the MCP token budget. A symbol exceeding it returns an

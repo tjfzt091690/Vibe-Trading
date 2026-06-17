@@ -1,4 +1,4 @@
-"""Pre-trade mandate enforcement (SPEC.md Mandate Enforcement Â§5â€“Â?).
+"""Pre-trade mandate enforcement (SPEC.md Mandate Enforcement Â§5â€“ï¿½?).
 
 This module owns the broker-agnostic order representation
 (:class:`OrderIntent`), the breach contract the consent layer consumes
@@ -8,8 +8,8 @@ on every live order before forwarding it to the broker.
 
 Every check is **fail-closed**: any unparseable input, missing market data, or
 ambiguous field denies the order rather than waving it through. Checks run in a
-fixed order â€?exclude-list â†?instrument â†?asset-class â†?single-order notional â†?
-total exposure â†?leverage â†?daily count â†?funding (defense-in-depth). The first
+fixed order ï¿½?exclude-list ï¿½?instrument ï¿½?asset-class ï¿½?single-order notional ï¿½?
+total exposure ï¿½?leverage ï¿½?daily count ï¿½?funding (defense-in-depth). The first
 failing check produces the verdict; the broker-side funding ceiling remains the
 backstop the agent physically cannot breach regardless of any data staleness on
 our side.
@@ -17,10 +17,10 @@ our side.
 The verdict is a :class:`BreachEvent` whose ``kind`` is one of
 ``"universe"`` / ``"instrument"`` / ``"quantitative"``:
 
-* ``universe`` / ``instrument`` â†?structural violation; the gate DENIES outright
+* ``universe`` / ``instrument`` ï¿½?structural violation; the gate DENIES outright
   (no widening short of editing the mandate could permit it, and the agent may
   never edit the mandate).
-* ``quantitative`` â†?the gate emits the event and PAUSES for re-authorization.
+* ``quantitative`` ï¿½?the gate emits the event and PAUSES for re-authorization.
 
 ``check_mandate`` returns ``None`` when the order is fully in-mandate (ALLOW).
 """
@@ -45,15 +45,11 @@ logger = logging.getLogger(__name__)
 class UniverseDataUnavailable(Exception):
     """Raised when no data loader can return a usable universe figure.
 
-    Callers treat this exactly like a ``None`` result â€?fail-closed DENY â€?but
+    Callers treat this exactly like a ``None`` result ï¿½?fail-closed DENY ï¿½?but
     it lets the market-cap / liquidity helpers distinguish "loader said the
     figure is missing" from "loader chain is entirely unavailable".
     """
 
-
-#: AssetClass â†?the loader market key (``backtest.loaders.registry`` fallback
-#: chains). US equities/ETFs route to the ``us_equity`` chain (yfinance â†?
-#: akshare); crypto routes to the ``crypto`` chain (okx â†?ccxt).
 _ASSET_CLASS_MARKET: dict[AssetClass, str] = {
     AssetClass.US_EQUITY: "us_equity",
     AssetClass.US_ETF: "us_equity",
@@ -66,7 +62,7 @@ BREACH_KIND_UNIVERSE = "universe"
 BREACH_KIND_INSTRUMENT = "instrument"
 BREACH_KIND_QUANTITATIVE = "quantitative"
 
-#: InstrumentType â†?the AssetClass bucket it belongs to. OPTION has no
+#: InstrumentType ï¿½?the AssetClass bucket it belongs to. OPTION has no
 #: universe-level asset-class bucket (the user permits asset classes, not
 #: option chains), so an option is gated purely by ``allowed_instruments``.
 _INSTRUMENT_ASSET_CLASS: dict[InstrumentType, AssetClass] = {
@@ -135,7 +131,7 @@ class BreachEvent:
             breach.
         remote_tool: Broker remote tool name the agent invoked.
         created_at: ISO-8601 UTC timestamp.
-        kind: One of ``"universe"`` / ``"instrument"`` / ``"quantitative"`` â€?
+        kind: One of ``"universe"`` / ``"instrument"`` / ``"quantitative"`` ï¿½?
             the gate routes structural kinds to DENY and quantitative to
             PAUSE_FOR_REAUTH.
         detail: Human-readable explanation, mainly for structural breaches whose
@@ -203,7 +199,7 @@ def _resolve_order_notional(intent: OrderIntent) -> float | None:
 
     Returns:
         The order notional in USD, or ``None`` when it cannot be resolved
-        (â†?fail-closed DENY upstream).
+        (ï¿½?fail-closed DENY upstream).
     """
     notional = intent.notional_usd
     if notional is None:
@@ -222,8 +218,7 @@ def last_price_usd(symbol: str, asset_class: AssetClass) -> float | None:
 
     The fallback path the gate uses when the broker's own quote read tool is
     unavailable: pull the most recent daily close from the first available
-    loader in the asset-class market chain (yfinance/akshare for US equity,
-    okx/ccxt for crypto â€?the project's standard auto-fallback). Used to convert
+    loader in the asset-class market chain (akshare for US equity, the project's standard auto-fallback). Used to convert
     a quantity-only order into a USD notional so the notional cap stays
     enforceable (SPEC Â§4).
 
@@ -233,7 +228,7 @@ def last_price_usd(symbol: str, asset_class: AssetClass) -> float | None:
 
     Returns:
         Last close price in USD, or ``None`` when no loader can return a usable
-        price (â†?fail-closed DENY upstream â€?never a wave-through).
+        price (ï¿½?fail-closed DENY upstream ï¿½?never a wave-through).
     """
     try:
         loader = _resolve_loader(asset_class)
@@ -248,7 +243,7 @@ def last_price_usd(symbol: str, asset_class: AssetClass) -> float | None:
             end.isoformat(),
             interval="1D",
         )
-    except Exception as exc:  # loader / network failure â†?fail-closed
+    except Exception as exc:  # loader / network failure ï¿½?fail-closed
         logger.warning("quote fetch failed for %s via %s: %s", symbol, loader.name, exc)
         return None
     frame = frames.get(symbol) if isinstance(frames, dict) else None
@@ -276,7 +271,7 @@ def _positions_market_value(positions: object) -> float | None:
 
     Returns:
         Total market value in USD, or ``None`` when any position cannot be
-        parsed (â†?fail-closed DENY upstream).
+        parsed (ï¿½?fail-closed DENY upstream).
     """
     rows = _coerce_position_rows(positions)
     if rows is None:
@@ -323,7 +318,7 @@ def _position_market_value(row: dict) -> float | None:
     for key in ("market_value", "marketValue", "value_usd", "value"):
         if key in row:
             parsed = _as_float(row[key])
-            return parsed  # may be None â†?fail-closed upstream
+            return parsed  # may be None ï¿½?fail-closed upstream
     qty = None
     for key in ("quantity", "qty", "shares"):
         if key in row:
@@ -411,7 +406,7 @@ def check_mandate(
             detail="order intent missing symbol or side",
         )
 
-    # 1. Exclude-list â€?takes precedence over every other universe rule.
+    # 1. Exclude-list ï¿½?takes precedence over every other universe rule.
     if symbol in {s.strip().upper() for s in universe.exclude_symbols}:
         return _breach(
             broker=broker, remote_tool=remote_tool, intent=intent,
@@ -456,7 +451,7 @@ def check_mandate(
             limit_value=caps.max_order_notional_usd, attempted_value=notional,
         )
 
-    # 5â€?. Exposure + leverage need observable positions; fail-closed on any
+    # 5ï¿½?. Exposure + leverage need observable positions; fail-closed on any
     #      unparseable position. A sell reduces gross exposure (signed by side).
     current_exposure = _positions_market_value(positions)
     if current_exposure is None:
@@ -502,7 +497,7 @@ def check_mandate(
         )
 
     # 8. Funding (defense-in-depth; broker is the real ceiling). Only a buy can
-    #    push us past funding â€?never block a sell on this.
+    #    push us past funding ï¿½?never block a sell on this.
     if intent.side == "buy" and post_exposure > caps.account_funding_usd:
         return _breach(
             broker=broker, remote_tool=remote_tool, intent=intent,
@@ -630,7 +625,7 @@ def avg_daily_dollar_volume(symbol: str, asset_class: AssetClass) -> float | Non
 
     Returns:
         Average daily dollar volume in USD, or ``None`` when no loader can
-        return usable OHLCV for the symbol (â†?fail-closed DENY upstream).
+        return usable OHLCV for the symbol (ï¿½?fail-closed DENY upstream).
     """
     loader = _resolve_loader(asset_class)
     end = datetime.now(timezone.utc).date()
@@ -642,7 +637,7 @@ def avg_daily_dollar_volume(symbol: str, asset_class: AssetClass) -> float | Non
             end.isoformat(),
             interval="1D",
         )
-    except Exception as exc:  # loader / network failure â†?fail-closed
+    except Exception as exc:  # loader / network failure ï¿½?fail-closed
         logger.warning("ADV fetch failed for %s via %s: %s", symbol, loader.name, exc)
         return None
     frame = frames.get(symbol) if isinstance(frames, dict) else None
@@ -662,8 +657,8 @@ def market_cap_usd(symbol: str, asset_class: AssetClass) -> float | None:
 
     The existing OHLCV loaders do not expose a unified market-cap field, so this
     is best-effort: for US equities/ETFs it reads ``yfinance``'s ``.info``
-    when available; it returns ``None`` (â†?fail-closed DENY) whenever the figure
-    cannot be obtained. This keeps the contract honest â€?an unenforceable floor
+    when available; it returns ``None`` (ï¿½?fail-closed DENY) whenever the figure
+    cannot be obtained. This keeps the contract honest ï¿½?an unenforceable floor
     denies rather than waves the order through.
 
     TODO(L6): once the real Robinhood read-tool catalog is observed, prefer a
@@ -678,7 +673,7 @@ def market_cap_usd(symbol: str, asset_class: AssetClass) -> float | None:
         Market cap in USD, or ``None`` when unavailable.
     """
     if asset_class not in (AssetClass.US_EQUITY, AssetClass.US_ETF):
-        # No unified market-cap source for crypto/other here â€?fail-closed.
+        # No unified market-cap source for crypto/other here ï¿½?fail-closed.
         return None
     try:
         import yfinance  # type: ignore

@@ -1,7 +1,7 @@
 ---
 name: vibe-trading
 version: 0.1.8
-description: Professional finance research toolkit — backtesting (7 engines + benchmark comparison panel), factor analysis, Alpha Zoo (452 pre-built alphas across qlib158/alpha101/gtja191/academic), options pricing, 75 finance skills, 29 multi-agent swarm teams, Trade Journal analyzer, and Shadow Account (extract → backtest → render) across 7 data sources (tushare, yfinance, okx, akshare, mootdx, ccxt, futu).
+description: Professional finance research toolkit — backtesting (7 engines + benchmark comparison panel), factor analysis, Alpha Zoo (452 pre-built alphas across qlib158/alpha101/gtja191/academic), options pricing, 75 finance skills, 29 multi-agent swarm teams, Trade Journal analyzer, and Shadow Account (extract → backtest → render) across 7 data sources (tushare, akshare, mootdx).
 dependencies:
   python: ">=3.11"
   pip:
@@ -57,7 +57,6 @@ Add to your agent's MCP config:
 
 | Feature | Key needed | When |
 |---------|-----------|------|
-| HK/US equities & crypto | None | Always free (yfinance + OKX) |
 | China A-share data | `TUSHARE_TOKEN` | Only if you query A-share symbols |
 | Multi-agent swarm (`run_swarm`) | `OPENAI_API_KEY` + `LANGCHAIN_MODEL_NAME` | Swarm spawns internal LLM workers |
 
@@ -74,11 +73,8 @@ Feed a CSV broker export (同花顺 / 东财 / 富途 / generic), and the agent 
 
 ### Backtesting
 Create and run quantitative strategies across 7 engines (ChinaA, GlobalEquity, Crypto, ChinaFutures, GlobalFutures, Forex + options) with 7 data sources:
-- **HK/US equities** via yfinance (free, no API key)
-- **Cryptocurrency** via OKX or CCXT/100+ exchanges (free, no API key)
 - **China A-shares** via Tushare (token) or AKShare (free fallback)
 - **Futures, forex, macro** via AKShare (free, no API key)
-- **HK & A-share equities** via Futu (broker login required, optional)
 
 Example workflow:
 1. Use `list_skills()` to discover strategy patterns

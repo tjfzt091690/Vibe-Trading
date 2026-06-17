@@ -128,9 +128,9 @@ Self-check after writing `signal_engine.py`:
 }
 ```
 
-- `source`: `"auto"` (recommended, auto-select by code format) / `"tushare"` / `"yfinance"` / `"okx"` / `"akshare"` / `"ccxt"`
-  - `"auto"` supports mixed instruments. For example, `["000001.SZ", "BTC-USDT"]` will be automatically routed to `tushare` and `okx`
-  - Futures codes (e.g. `"IF2406.CFFEX"`, `"ESZ4"`) and forex pairs (e.g. `"EUR/USD"`) are also auto-routed
+- `source`: `"auto"` (recommended, auto-select by code format) / `"tushare"` / `"akshare"`
+  - `"auto"` supports mixed instruments. For example, `["000001.SZ"]` will be automatically routed to `tushare`
+  - Futures codes (e.g. `"IF2406.CFFEX"`) and forex pairs (e.g. `"EUR/USD"`) are also auto-routed
 - `interval`: candlestick interval, default `"1D"`. Supported values: `"1m"` / `"5m"` / `"15m"` / `"30m"` / `"1H"` / `"4H"` / `"1D"`
   - The annualization factor for minute backtests is inferred automatically from `source` (252 trading days for China A-shares, 365 calendar days for crypto)
   - Minute backtests can be very data-heavy. Recommended limits are no more than 30 days for `1m`, or 1 year for `1H`
