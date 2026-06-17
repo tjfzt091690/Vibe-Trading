@@ -39,9 +39,9 @@ agents:
       - Key metrics (revenue growth, margins, PE, PEG) vs 3-5 closest peers
       - Relative valuation: is this name cheap or expensive relative to peers?
 
-      Use load_skill for SEC filing analysis, financial statement frameworks, and yfinance data.
+      Use load_skill for financial statement frameworks and fundamental data.
     tools: [bash, read_file, write_file, load_skill, read_url]
-    skills: [edgar-sec-filings, financial-statement, yfinance, fundamental-filter, valuation-model]
+    skills: [financial-statement, fundamental-filter, valuation-model]
     max_iterations: 50
     timeout_seconds: 1800
     max_retries: 1

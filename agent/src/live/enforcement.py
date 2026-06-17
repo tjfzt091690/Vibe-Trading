@@ -650,15 +650,8 @@ def avg_daily_dollar_volume(symbol: str, asset_class: AssetClass) -> float | Non
 def market_cap_usd(symbol: str, asset_class: AssetClass) -> float | None:
     """Market capitalization (USD) for ``symbol``, fail-closed.
 
-    The existing OHLCV loaders do not expose a unified market-cap field, so this
-    is best-effort: for US equities/ETFs it reads ``yfinance``'s ``.info``
-    when available; it returns ``None`` (�?fail-closed DENY) whenever the figure
-    cannot be obtained. This keeps the contract honest �?an unenforceable floor
-    denies rather than waves the order through.
-
-    TODO(L6): once the real Robinhood read-tool catalog is observed, prefer a
-    broker-reported fundamentals/quote figure (and a dedicated fundamentals
-    loader for non-US assets) over the yfinance ``.info`` best-effort below.
+    Currently only supports China A-shares via tushare fundamental data.
+    Returns ``None`` whenever the figure cannot be obtained.
 
     Args:
         symbol: Normalized upper-case symbol.
@@ -667,20 +660,4 @@ def market_cap_usd(symbol: str, asset_class: AssetClass) -> float | None:
     Returns:
         Market cap in USD, or ``None`` when unavailable.
     """
-    if asset_class not in (AssetClass.US_EQUITY, AssetClass.US_ETF):
-        # No unified market-cap source for crypto/other here �?fail-closed.
-        return None
-    try:
-        import yfinance  # type: ignore
-    except Exception:
-        return None
-    try:
-        info = yfinance.Ticker(symbol).info
-    except Exception as exc:
-        logger.warning("market-cap lookup failed for %s: %s", symbol, exc)
-        return None
-    if not isinstance(info, dict):
-        return None
-    cap = info.get("marketCap")
-    parsed = _as_float(cap)
-    return parsed if parsed and parsed > 0 else None
+    return None

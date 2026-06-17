@@ -48,19 +48,6 @@ Select two highly correlated instruments (such as stocks from the same industry 
 }
 ```
 
-Cryptocurrency version:
-```json
-{
-  "source": "okx",
-  "codes": ["BTC-USDT", "ETH-USDT"],
-  "start_date": "2024-01-01",
-  "end_date": "2024-12-31",
-  "initial_cash": 1000000,
-  "commission": 0.001,
-  "extra_fields": null
-}
-```
-
 ## Common Pitfalls
 
 - `codes` must contain exactly 2 instruments, no more and no less

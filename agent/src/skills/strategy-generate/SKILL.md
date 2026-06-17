@@ -82,29 +82,14 @@ Self-check after writing `signal_engine.py`:
 ## Instrument Code Normalization
 
 - 6-digit China A-share codes → automatically append suffix: codes starting with `600/601/603` → `.SH`, all others → `.SZ`
-- US stocks: uppercase letters + `.US`, such as `AAPL.US` (`yfinance` converts automatically)
-- Hong Kong stocks: digits + `.HK`, such as `700.HK` (`yfinance` converts automatically)
-- Cryptocurrencies: `BTC-USDT` format (OKX spot pairs, **must use the hyphen `-`, not slash `/`**)
-  - The user may write `BTC/USDT`, but `config.json` must use `"BTC-USDT"`
-
-## Cryptocurrency Notes
-
-- **Code format**: must be `XXX-USDT` (uppercase + hyphen), such as `BTC-USDT` and `ETH-USDT`
-- **source**: must be set to `"okx"`
-- **extra_fields**: must be `null` (OKX does not support fundamentals)
-- **Data format**: `DataLoader` has already normalized the output to match China A-shares exactly: `open, high, low, close, volume` + `DatetimeIndex`
-- **No special handling needed in strategy code**: `signal_engine.py` should be written the same way as for China A-shares; do not add extra data conversion for OKX
 
 ## Market Detection and Data Sources
 
 | Pattern | Market | source | Extra Fields |
 |------|------|--------|----------|
 | `^\d{6}\.(SZ\|SH\|BJ)$` | China A-shares | tushare | `extra_fields`: pe, pb, pe_ttm, ps_ttm, dv_ttm, total_mv, circ_mv, roe; `fundamental_fields`: income/balancesheet/cashflow/fina_indicator |
-| `^[A-Z]+\.US$` | US stocks | yfinance | - |
-| `^\d{3,5}\.HK$` | Hong Kong stocks | yfinance | - |
-| `^[A-Z]+-USDT$` | Cryptocurrency | okx | - |
 
-**`extra_fields` selection logic**: only China A-shares (`tushare`) support daily valuation fields. If the strategy needs `PE/PB/ROE` and similar daily_basic fields, specify them in `config.json.extra_fields` and `DataLoader` will retrieve them automatically. Hong Kong stocks, US stocks, and crypto do not support `extra_fields`.
+**`extra_fields` selection logic**: China A-shares (`tushare`) support daily valuation fields. If the strategy needs `PE/PB/ROE` and similar daily_basic fields, specify them in `config.json.extra_fields` and `DataLoader` will retrieve them automatically.
 
 **`fundamental_fields` selection logic**: use this for China A-share financial statement pre-filters. The runner queries `income`, `balancesheet`, `cashflow`, and/or `fina_indicator` through the Tushare fundamental provider, then merges rows into daily bars only after their announcement/disclosure date. Output columns are prefixed by table name, for example `income_total_revenue`, `income_n_income`, `balancesheet_total_hldr_eqy_exc_min_int`, and `fina_indicator_roe`.
 
@@ -128,11 +113,11 @@ Self-check after writing `signal_engine.py`:
 }
 ```
 
-- `source`: `"auto"` (recommended, auto-select by code format) / `"tushare"` / `"akshare"`
+- `source`: `"auto"` (recommended, auto-select by code format) / `"tushare"` / `"akshare"` / `"mootdx"`
   - `"auto"` supports mixed instruments. For example, `["000001.SZ"]` will be automatically routed to `tushare`
   - Futures codes (e.g. `"IF2406.CFFEX"`) and forex pairs (e.g. `"EUR/USD"`) are also auto-routed
 - `interval`: candlestick interval, default `"1D"`. Supported values: `"1m"` / `"5m"` / `"15m"` / `"30m"` / `"1H"` / `"4H"` / `"1D"`
-  - The annualization factor for minute backtests is inferred automatically from `source` (252 trading days for China A-shares, 365 calendar days for crypto)
+  - The annualization factor for minute backtests is inferred automatically from `source` (252 trading days for China A-shares)
   - Minute backtests can be very data-heavy. Recommended limits are no more than 30 days for `1m`, or 1 year for `1H`
 - `extra_fields`: China A-shares can use values such as `["pe", "pb", "roe"]`; other markets should use `null`
 - `fundamental_fields`: optional China A-share statement fields, such as `{"income": ["total_revenue", "n_income"], "fina_indicator": ["roe"]}`; use `null` unless the strategy needs financial statement pre-filtering
@@ -191,11 +176,10 @@ If improvements are needed after evaluation, write `action_items`:
 
 ## Cross-Market Strategies
 
-When the user requests a backtest with codes from **different markets** (e.g. `["000001.SZ", "BTC-USDT"]`):
+When the user requests a backtest with codes from **different markets** (e.g. `["000001.SZ", "IF2406.CFFEX"]`):
 - Set `source: "auto"` in `config.json`
 - The `CompositeEngine` handles calendar alignment, shared capital, and per-market rules automatically
-- Use volatility-adjusted weights so high-vol assets (crypto) don't dominate the risk budget
-- See the [cross-market-strategy](../cross-market-strategy/SKILL.md) skill for per-market parameters, vol-adjustment, and example code
+- See the [cross-market-strategy](../cross-market-strategy/SKILL.md) skill for per-market parameters and example code
 
 ## Supporting Files
 

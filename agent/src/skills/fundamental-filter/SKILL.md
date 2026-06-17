@@ -1,13 +1,13 @@
 ---
 name: fundamental-filter
-description: Fundamental factor screening — filter stocks by PE/PB/ROE, financial statement fields, and other metrics for value or growth selection. Supports A-shares (via tushare extra_fields or fundamental_fields) and HK/US stocks (via yfinance Ticker info).
+description: Fundamental factor screening — filter stocks by PE/PB/ROE, financial statement fields, and other metrics for value or growth selection. Supports A-shares (via tushare extra_fields or fundamental_fields).
 category: flow
 ---
 # Fundamental Factor Screening
 
 ## Purpose
 
-Filter stocks using fundamental financial data (PE/PB/ROE, etc.) to build value or growth screen signals for backtesting. Supports multiple markets with different data sources.
+Filter stocks using fundamental financial data (PE/PB/ROE, etc.) to build value or growth screen signals for backtesting.
 
 ## Market Support
 
@@ -15,8 +15,6 @@ Filter stocks using fundamental financial data (PE/PB/ROE, etc.) to build value 
 |--------|-----------|--------|------------------|
 | A-shares | tushare `daily_basic` | `extra_fields` in config.json | pe, pb, pe_ttm, ps_ttm, dv_ttm, total_mv, circ_mv, roe |
 | A-shares | Tushare statements | `fundamental_fields` in config.json | income, balancesheet, cashflow, fina_indicator fields |
-| US stocks | yfinance `Ticker.info` | Direct API call | trailingPE, forwardPE, priceToBook, returnOnEquity, marketCap, dividendYield |
-| HK stocks | yfinance `Ticker.info` | Direct API call | trailingPE, priceToBook, returnOnEquity, marketCap |
 
 ## Signal Logic
 
@@ -96,53 +94,6 @@ passes = (
 )
 ```
 
-## HK/US Stock Usage (yfinance)
-
-For HK/US stocks, fundamental data is not available as daily time-series via the backtest loader. Instead, use `yfinance` Ticker info for point-in-time screening:
-
-```python
-import yfinance as yf
-
-def screen_us_stocks(tickers, criteria):
-    """Screen US/HK stocks by fundamental criteria."""
-    passed = []
-    for symbol in tickers:
-        info = yf.Ticker(symbol).info
-        pe = info.get("trailingPE")
-        pb = info.get("priceToBook")
-        roe = info.get("returnOnEquity")  # Decimal (e.g., 0.25 = 25%)
-        mcap = info.get("marketCap")
-
-        if pe is None or pb is None or roe is None:
-            continue  # Skip stocks with missing data
-
-        if (0 < pe < criteria["pe_max"]
-            and pb < criteria["pb_max"]
-            and roe > criteria["roe_min"]
-            and (mcap or 0) > criteria.get("mcap_min", 0)):
-            passed.append({
-                "symbol": symbol,
-                "pe": pe,
-                "pb": pb,
-                "roe": round(roe * 100, 1),  # Convert to percentage
-                "mcap": mcap,
-            })
-
-    return passed
-
-# Example: screen S&P 500 components
-criteria = {"pe_max": 20, "pb_max": 3.0, "roe_min": 0.08, "mcap_min": 10_000_000_000}
-results = screen_us_stocks(["AAPL", "MSFT", "JNJ", "JPM", "XOM"], criteria)
-```
-
-### HK Stock Screening
-
-```python
-# HK stocks use the same yfinance interface
-hk_tickers = ["0700.HK", "9988.HK", "1810.HK", "2318.HK", "0005.HK"]
-results = screen_us_stocks(hk_tickers, criteria)  # Same function works
-```
-
 ## Parameters
 
 | Parameter | Default | Description |
@@ -151,7 +102,6 @@ results = screen_us_stocks(hk_tickers, criteria)  # Same function works
 | pb_max | 3.0 | PB ceiling |
 | roe_min | 8.0 | ROE floor (%), exclude low-profitability |
 | pe_min | 0.0 | PE floor (exclude loss-making stocks) |
-| mcap_min | 0 | Market cap floor (for US/HK, in USD) |
 
 ## Common Pitfalls
 
@@ -159,15 +109,13 @@ results = screen_us_stocks(hk_tickers, criteria)  # Same function works
 - `fundamental_fields` columns are prefixed by table and may be NaN before the first statement is published in the backtest window
 - Do not forward-fill statement rows manually before their `ann_date` / `f_ann_date`; the runner's merge already enforces point-in-time visibility
 - Negative PE means loss-making — always filter with `pe > 0`
-- ROE units differ: tushare uses percentage (e.g., 15 = 15%), yfinance uses decimal (e.g., 0.15 = 15%)
+- ROE units: tushare uses percentage (e.g., 15 = 15%)
 - For portfolio strategies: N stocks passing the screen each get weight 1/N
-- yfinance `Ticker.info` is a point-in-time snapshot, not historical time-series — cannot directly use for daily rebalancing backtests on US/HK stocks
-- For US/HK daily fundamental backtests, consider using the screening results as a stock universe, then applying technical signals within that universe
 
 ## Dependencies
 
 ```bash
-pip install pandas numpy yfinance
+pip install pandas numpy
 ```
 
 ## Signal Convention
