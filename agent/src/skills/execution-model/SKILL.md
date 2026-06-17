@@ -47,11 +47,6 @@ def fixed_slippage(price: float, direction: int, bps: float = 5.0) -> float:
 | China A-share large cap | CSI 300 constituents | 3-5 | Good liquidity |
 | China A-share small cap | CSI 1000 constituents | 5-10 | Average liquidity |
 | China micro-cap | market cap < 5 billion RMB | 10-30 | Poor liquidity |
-| US large cap | AAPL / MSFT | 1-3 | Excellent liquidity |
-| Hong Kong stocks | Hang Seng constituents | 5-10 | Less liquid than A / US |
-| BTC spot | BTC-USDT | 2-5 | Good OKX liquidity |
-| ETH spot | ETH-USDT | 3-8 | Slightly worse than BTC |
-| Small altcoins | other `-USDT` pairs | 10-50 | Liquidity varies widely |
 
 ### 2. Linear Impact Model
 
@@ -209,11 +204,11 @@ Implicit cost:
 
 ### Reference Trading Costs by Market
 
-| Cost Item | China A-shares | Hong Kong | US | Crypto (OKX) |
-|--------|-----|------|------|-----------|
-| Commission (one way) | 0.025% | 0.05% | 0 (zero commission) | 0.08% (maker) |
-| Stamp duty | 0.05% (sell) | 0.1% (both sides) | 0 | 0 |
-| Bid-ask spread | 0.03-0.1% | 0.05-0.2% | 0.01-0.05% | 0.01-0.05% |
+| Cost Item | China A-shares |
+|--------|-----|
+| Commission (one way) | 0.025% |
+| Stamp duty | 0.05% (sell) |
+| Bid-ask spread | 0.03-0.1% |
 | Total one-way | ~0.1% | ~0.2% | ~0.03% | ~0.1% |
 | Total round-trip | ~0.2% | ~0.4% | ~0.06% | ~0.2% |
 

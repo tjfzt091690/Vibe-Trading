@@ -1,12 +1,12 @@
 ---
 name: akshare
 category: data-source
-description: AKShare financial data aggregator (18k+ stars). Free, no API key. Covers A-shares, US, HK, futures, macro, forex. Primary fallback for tushare and yfinance.
+description: AKShare financial data aggregator (18k+ stars). Free, no API key. Covers A-shares, futures, macro, forex. Primary fallback for tushare.
 ---
 
 ## Overview
 
-AKShare is a completely free, open-source Python financial data library. No registration or API key required. It aggregates data from public sources (Sina, East Money, etc.) covering Chinese and global markets.
+AKShare is a completely free, open-source Python financial data library. No registration or API key required. It aggregates data from public sources (Sina, East Money, etc.) covering Chinese markets.
 
 - GitHub: https://github.com/akfamily/akshare (18k+ stars)
 - Install: `pip install akshare`
@@ -19,14 +19,6 @@ import akshare as ak
 # A-share daily OHLCV (前复权)
 df = ak.stock_zh_a_hist(symbol="000001", period="daily",
                          start_date="20240101", end_date="20260101", adjust="qfq")
-
-# US stock daily
-df = ak.stock_us_hist(symbol="105.AAPL", period="daily",
-                       start_date="20240101", end_date="20260101", adjust="qfq")
-
-# HK stock daily
-df = ak.stock_hk_hist(symbol="00700", period="daily",
-                       start_date="20240101", end_date="20260101", adjust="qfq")
 ```
 
 ## Top 10 High-Frequency Interfaces
@@ -39,13 +31,6 @@ df = ak.stock_hk_hist(symbol="00700", period="daily",
 | `stock_zh_a_spot_em()` | Real-time A-share quotes | (none) |
 | `stock_individual_info_em()` | Stock basic info | symbol |
 | `stock_zh_a_hist_min_em()` | Intraday bars | symbol, period(1/5/15/30/60) |
-
-### US / HK
-
-| Function | Description | Key Params |
-|----------|-------------|------------|
-| `stock_us_hist()` | US stock OHLCV | symbol (e.g. "105.AAPL"), period, start_date, end_date |
-| `stock_hk_hist()` | HK stock OHLCV | symbol (e.g. "00700"), period, start_date, end_date |
 
 ### Macro / Forex / Futures
 
@@ -80,12 +65,10 @@ AKShare returns Chinese column names by default:
 ## Symbol Format
 
 - A-shares: pure digits `"000001"` (no .SZ suffix)
-- US stocks: `"105.AAPL"` (NASDAQ prefix 105), `"106.BABA"` (NYSE prefix 106)
-- HK stocks: `"00700"` (5-digit zero-padded)
 
 ## Built-in Loader
 
-The project has a built-in AKShare DataLoader at `backtest/loaders/akshare_loader.py`. When backtesting, the runner automatically falls back to AKShare when tushare/yfinance are unavailable.
+The project has a built-in AKShare DataLoader at `backtest/loaders/akshare_loader.py`. When backtesting, the runner automatically falls back to AKShare when tushare is unavailable.
 
 ## Reference Docs
 

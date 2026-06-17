@@ -39,8 +39,8 @@ export const DOCS_STRUCTURE = [
             body: `
               <ul>
                 <li>Natural-language CLI and web workflows.</li>
-                <li>Seven backtest engines across equities, crypto, futures, forex, composites, and options portfolios.</li>
-                <li>Market data routing across Tushare, OKX, yfinance, AKShare, CCXT, and Futu.</li>
+                <li>Seven backtest engines across equities, futures, forex, composites, and options portfolios.</li>
+                <li>Market data routing across Tushare, AKShare, Mootdx, and Futu.</li>
                 <li>Trade Journal and Shadow Account workflows for behavior diagnostics.</li>
                 <li>Swarm presets for committee-style research reviews.</li>
                 <li>MCP tools for Claude Desktop, OpenClaw, Cursor, and other MCP clients.</li>
@@ -68,7 +68,7 @@ vibe-trading</code></pre>
             id: "first-run",
             title: "First run",
             body: `
-              <pre><code>vibe-trading run -p "Backtest a BTC-USDT 20/50 moving-average strategy for 2024, summarize return and drawdown, then export the report"</code></pre>
+              <pre><code>vibe-trading run -p "Backtest a 000001.SZ 20/50 moving-average strategy for 2024, summarize return and drawdown, then export the report"</code></pre>
             `
           },
           {
@@ -224,9 +224,9 @@ vibe-trading --swarm-run investment_committee '{"topic":"BTC outlook"}'</code></
             body: `
               <ul>
                 <li>Tushare for China market and fundamental workflows when configured.</li>
-                <li>OKX and CCXT for crypto symbols such as <code>BTC-USDT</code>.</li>
-                <li>yfinance for global equities and common benchmarks.</li>
-                <li>AKShare and Futu for additional China, Hong Kong, and market-specific coverage.</li>
+                <li>AKShare for A-shares, futures, macro, and forex coverage (free, no key required).</li>
+                <li>Mootdx for A-shares via TCP direct connection (no IP throttle).</li>
+                <li>Futu for Hong Kong and additional market-specific coverage.</li>
               </ul>
             `
           },
@@ -234,7 +234,7 @@ vibe-trading --swarm-run investment_committee '{"topic":"BTC outlook"}'</code></
             id: "symbols",
             title: "Symbol conventions",
             body: `
-              <p>Crypto pairs use uppercase hyphen format, for example <code>BTC-USDT</code>. Mixed-market research should prefer automatic source routing where possible.</p>
+              <p>A-share codes use 6-digit format with exchange suffix, for example <code>000001.SZ</code>, <code>600036.SH</code>. Futures codes use product+delivery.exchange format, for example <code>IF2406.CFFEX</code>.</p>
             `
           }
         ]

@@ -8,7 +8,7 @@ category: tool
 ## Purpose
 
 Converts any URL into clean Markdown text, removing ads, navigation, styling, and other distractions. Suitable for:
-- Reading API documentation (`tushare`, `OKX`, `yfinance`, and similar)
+- Reading API documentation (`tushare`, `akshare`, and similar)
 - Reading technical articles and blogs
 - Retrieving research reports and announcements
 - Reading GitHub README / Wiki pages

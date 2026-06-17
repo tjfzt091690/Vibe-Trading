@@ -759,7 +759,7 @@ DATA_SOURCES = {
     },
     "commodity_futures": {
         "desc": "Commodity futures prices, including geopolitical premium",
-        "source": "Integrated in this project: Tushare commodity futures / OKX crypto",
+        "source": "Integrated in this project: Tushare commodity futures",
         "use_case": "Estimate war premium"
     }
 }

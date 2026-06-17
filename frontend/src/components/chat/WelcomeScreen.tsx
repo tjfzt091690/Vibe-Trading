@@ -20,19 +20,19 @@ const CATEGORIES: Category[] = [
     color: "text-red-400 border-red-500/30 hover:border-red-500/60 hover:bg-red-500/5",
     examples: [
       {
-        title: "Cross-Market Portfolio",
-        desc: "A-shares + crypto + US equities with risk-parity optimizer",
-        prompt: "Backtest a risk-parity portfolio of 000001.SZ, BTC-USDT, and AAPL for full-year 2024, compare against equal-weight baseline",
+        title: "A-Share Portfolio",
+        desc: "A-shares with risk-parity optimizer",
+        prompt: "Backtest a risk-parity portfolio of 000001.SZ, 600036.SH, 601318.SH for full-year 2024, compare against equal-weight baseline",
       },
       {
-        title: "BTC 5-Min MACD Strategy",
-        desc: "Minute-level crypto backtest with real-time OKX data",
-        prompt: "Backtest BTC-USDT 5-minute MACD strategy, fast=12 slow=26 signal=9, last 30 days",
+        title: "A-Share Dual MA Strategy",
+        desc: "Minute-level A-share backtest with tushare data",
+        prompt: "Backtest 000001.SZ 5-minute dual MA strategy, fast=5 slow=20, last 30 days",
       },
       {
-        title: "US Tech Max Diversification",
-        desc: "Portfolio optimizer across FAANG+ via yfinance",
-        prompt: "Backtest AAPL, MSFT, GOOGL, AMZN, NVDA with max_diversification portfolio optimizer, full-year 2024",
+        title: "Low PE Rotation",
+        desc: "Fundamental factor rotation on CSI 300",
+        prompt: "Backtest low PE rotation strategy on CSI 300 constituents, monthly rebalance, full-year 2024",
       },
     ],
   },
@@ -213,5 +213,3 @@ export function WelcomeScreen({ onExample }: Props) {
     </div>
   );
 }
-
-

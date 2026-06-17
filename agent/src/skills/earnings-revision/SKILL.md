@@ -219,7 +219,7 @@ earnings_quality = {
 
 ## Notes
 
-- Earnings revision data requires real-time consensus feeds (Bloomberg, Refinitiv) for professional-grade signals; yfinance provides historical actuals but not real-time consensus
+- Earnings revision data requires real-time consensus feeds (Wind, Choice) for professional-grade signals; Tushare provides historical actuals but not real-time consensus
 - PEAD is strongest in the first 30 days post-announcement; signal decays significantly after 60 days
 - Guidance withdrawals are almost always negative — companies rarely withdraw guidance when business is going well
 - Beware of "beat and lower" — beating current quarter but lowering forward guidance is often net negative

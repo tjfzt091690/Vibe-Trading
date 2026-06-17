@@ -151,8 +151,7 @@ Use this only as an event-risk analysis, not as a default recommendation.
 | Market | Useful Fields |
 |--------|---------------|
 | A-shares | Tushare `dividend`, `daily_basic.dv_ttm`, `fina_indicator`, `cashflow` |
-| US/HK | yfinance `Ticker.dividends`, `Ticker.info`, financial statements, cash flow |
-| ETFs | distribution yield, SEC yield, holdings yield, expense ratio, distribution history |
+| ETFs | distribution yield, holdings yield, expense ratio, distribution history |
 | REITs | FFO, AFFO, occupancy, debt maturities, AFFO payout |
 
 When live data is unavailable, state the limitation and provide the analysis template instead of inventing dividend figures.

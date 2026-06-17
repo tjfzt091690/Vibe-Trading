@@ -83,7 +83,7 @@
 - **2026-05-01** 🔥 **상관관계 히트맵 + OpenAI Codex OAuth + A주 pre-ST 필터**: 새 correlation dashboard/API가 rolling return correlation을 계산하고 포트폴리오 및 종목 분석용 ECharts heatmap을 렌더링합니다([#64](https://github.com/HKUDS/Vibe-Trading/pull/64)). OpenAI Codex provider support는 이제 `vibe-trading provider login openai-codex`를 통해 ChatGPT OAuth를 사용하며, Settings metadata와 adapter regression test가 포함됩니다([#65](https://github.com/HKUDS/Vibe-Trading/pull/65)). A주 ST/*ST 리스크 스크리닝용 `ashare-pre-st-filter` 스킬도 추가 및 강화되었고, Sina penalty relevance filtering으로 securities-account 언급이 E2 count를 부풀리지 않도록 했습니다([#63](https://github.com/HKUDS/Vibe-Trading/pull/63)).
 - **2026-04-30** ⚙️ **Web UI Settings + validation CLI 강화**: LLM provider/model, base URL, reasoning effort, data source credential을 위한 새 Settings page가 추가되었고, local/auth-protected settings API와 data-driven provider metadata가 이를 뒷받침합니다([#57](https://github.com/HKUDS/Vibe-Trading/pull/57)). 또한 `python -m backtest.validation <run_dir>`가 missing, blank, malformed, non-existent, non-directory input을 validation 시작 전에 operator-facing message로 명확히 실패하도록 강화했습니다([#60](https://github.com/HKUDS/Vibe-Trading/pull/60)).
 - **2026-04-28** 🚀 **v0.1.6 릴리스**(`pip install -U vibe-trading-ai`): `pip install` / `uv tool install` 이후 `vibe-trading --swarm-presets`가 비어 있던 문제를 수정했습니다([#55](https://github.com/HKUDS/Vibe-Trading/issues/55)). preset YAML은 이제 `src.swarm` 패키지 내부에 번들되며 6개 테스트 회귀 suite로 고정됩니다. AKShare loader도 ETF(`510300.SH`)와 forex(`USDCNH`)를 올바른 endpoint로 routing하고 registry fallback을 강화했습니다. v0.1.5 이후의 benchmark comparison panel, `/upload` streaming + size limit, Futu loader(HK + A주), vnpy export skill, security hardening, frontend lazy loading(688KB → 262KB)을 모두 포함합니다.
-- **2026-04-27** 📊 **벤치마크 패널 + 업로드 안전성**: 백테스트 출력에 yfinance 기반 SPY, CSI 300 등 resolution을 사용하는 benchmark comparison panel(ticker / benchmark return / excess return / information ratio)이 포함됩니다([#48](https://github.com/HKUDS/Vibe-Trading/issues/48)). 또한 `/upload`는 request body를 1MB chunk로 streaming하고 `MAX_UPLOAD_SIZE` 초과 시 중단하여 oversized/malformed client에서도 메모리를 제한합니다([#53](https://github.com/HKUDS/Vibe-Trading/pull/53)). 4-case regression suite로 고정되었습니다.
+- **2026-04-27** 📊 **벤치마크 패널 + 업로드 안전성**: 백테스트 출력에 tushare 기반 CSI 300 등 resolution을 사용하는 benchmark comparison panel(ticker / benchmark return / excess return / information ratio)이 포함됩니다([#48](https://github.com/HKUDS/Vibe-Trading/issues/48)). 또한 `/upload`는 request body를 1MB chunk로 streaming하고 `MAX_UPLOAD_SIZE` 초과 시 중단하여 oversized/malformed client에서도 메모리를 제한합니다([#53](https://github.com/HKUDS/Vibe-Trading/pull/53)). 4-case regression suite로 고정되었습니다.
 - **2026-04-22** 🛡️ **하드닝 + 신규 통합**: `safe_path`와 journal/shadow tool sandbox에서 path containment를 강제하고, `MANIFEST.in`이 sdist에 `.env.example` / tests / Docker files를 포함하며, route-level lazy loading으로 frontend initial bundle을 688KB → 262KB로 줄였습니다. Futu data loader for HK & A-share equities([#47](https://github.com/HKUDS/Vibe-Trading/pull/47))와 vnpy CtaTemplate export skill([#46](https://github.com/HKUDS/Vibe-Trading/pull/46))도 추가되었습니다.
 - **2026-04-21** 🛡️ **워크스페이스 + 문서**: 상대 `run_dir`이 active run dir로 정규화되었습니다([#43](https://github.com/HKUDS/Vibe-Trading/pull/43)). README usage example도 추가되었습니다([#45](https://github.com/HKUDS/Vibe-Trading/pull/45)).
 - **2026-04-20** 🔌 **Reasoning + Swarm**: 모든 `ChatOpenAI` 경로에서 `reasoning_content`가 보존되어 Kimi / DeepSeek / Qwen thinking이 end-to-end로 작동합니다([#39](https://github.com/HKUDS/Vibe-Trading/issues/39)). Swarm streaming과 깔끔한 Ctrl+C 처리도 반영되었습니다([#42](https://github.com/HKUDS/Vibe-Trading/issues/42)).
@@ -96,7 +96,7 @@
 - **2026-04-13** 🌐 **Cross-Market Composite Backtest**: 새 `CompositeEngine`이 A주 + crypto 같은 mixed-market portfolio를 shared capital pool과 per-market rule로 backtest합니다. swarm template variable fallback과 frontend timeout도 수정되었습니다.
 - **2026-04-12** 🌍 **Multi-Platform Export**: `/pine`은 TradingView(Pine Script v6), TDX(通达信/同花顺/东方财富), MetaTrader 5(MQL5)로 전략을 한 번에 내보냅니다.
 - **2026-04-11** 🛡️ **Reliability & DX**: `vibe-trading init` .env bootstrap([#19](https://github.com/HKUDS/Vibe-Trading/pull/19)), preflight checks, runtime data-source fallback, hardened backtest engine. Multi-language README([#21](https://github.com/HKUDS/Vibe-Trading/pull/21)).
-- **2026-04-10** 📦 **v0.1.4**: Docker fix([#8](https://github.com/HKUDS/Vibe-Trading/issues/8)), `web_search` MCP tool, LLM providers 12개, `akshare`/`ccxt` dependencies. PyPI와 ClawHub에 게시되었습니다.
+- **2026-04-10** 📦 **v0.1.4**: Docker fix([#8](https://github.com/HKUDS/Vibe-Trading/issues/8)), `web_search` MCP tool, LLM providers 12개, `akshare` dependencies. PyPI와 ClawHub에 게시되었습니다.
 - **2026-04-09** 📊 **Backtest Wave 2**: ChinaFutures, GlobalFutures, Forex, Options v2 engines. Monte Carlo, Bootstrap CI, Walk-Forward validation.
 - **2026-04-08** 🔧 **Multi-market backtest** with per-market rules, Pine Script v6 export, 5 data sources with auto-fallback.
 
@@ -240,7 +240,7 @@ vibe-trading run -p "Analyze my trading behavior, extract my shadow strategy, an
 
 | 카테고리 | 스킬 | 예시 |
 |----------|------|------|
-| Data Source | 7 | `data-routing`, `tushare`, `yfinance`, `okx-market`, `akshare`, `mootdx`, `ccxt` |
+| Data Source | 4 | `data-routing`, `tushare`, `akshare`, `mootdx` |
 | Strategy | 17 | `strategy-generate`, `cross-market-strategy`, `technical-basic`, `candlestick`, `ichimoku`, `elliott-wave`, `smc`, `multi-factor`, `ml-strategy` |
 | Analysis | 17 | `factor-research`, `macro-analysis`, `global-macro`, `valuation-model`, `earnings-forecast`, `credit-analysis`, `dividend-analysis` |
 | Asset Class | 9 | `options-strategy`, `options-advanced`, `convertible-bond`, `etf-analysis`, `asset-allocation`, `sector-rotation` |
@@ -368,7 +368,7 @@ vibe-trading-mcp               # start MCP server (stdio)
 
 > **지원 LLM provider:** OpenRouter, OpenAI, DeepSeek, Gemini, Groq, DashScope/Qwen, Zhipu, Moonshot/Kimi, MiniMax, Xiaomi MIMO, Z.ai, Ollama(local). 설정은 `.env.example`을 참고하세요.
 
-> **팁:** 자동 fallback 덕분에 모든 시장은 API key 없이도 작동합니다. yfinance(HK/US), OKX(crypto), mootdx(A주, TCP 직결, IP 제한 없음), AKShare(A주, US, HK, futures, forex)는 모두 무료입니다. Tushare token은 선택 사항이며, mootdx가 권장 no-token A주 fallback이고 AKShare는 더 넓은 커버리지의 백업입니다.
+> **팁:** 자동 fallback 덕분에 모든 시장은 API key 없이도 작동합니다. mootdx(A주, TCP 직결, IP 제한 없음), AKShare(A주, futures, forex)는 모두 무료입니다. Tushare token은 선택 사항이며, mootdx가 권장 no-token A주 fallback이고 AKShare는 더 넓은 커버리지의 백업입니다.
 
 ### 경로 A: Docker (설정 불필요)
 
@@ -455,7 +455,7 @@ skill + MCP config가 agent의 skills directory에 다운로드됩니다. 자세
 
 <sub>* Ollama는 API key가 필요 없습니다. OpenAI Codex는 ChatGPT OAuth를 사용하며 token을 `agent/.env`가 아니라 `oauth-cli-kit`을 통해 저장합니다.</sub>
 
-**무료 데이터(key 불필요):** AKShare를 통한 A주, yfinance를 통한 HK/US equities, OKX를 통한 crypto, CCXT를 통한 100개 이상 crypto exchanges. 시스템은 시장별로 가장 적합한 source를 자동 선택합니다.
+**무료 데이터(key 불필요):** AKShare와 mootdx를 통한 A주. 시스템은 시장별로 가장 적합한 source를 자동 선택합니다.
 
 ### 🎯 권장 모델
 
@@ -814,7 +814,7 @@ Vibe-Trading/
 │   │
 │   └── backtest/                   # Backtest engines
 │       ├── engines/                #   7 engines + composite cross-market engine + options_portfolio
-│       ├── loaders/                #   7 sources: tushare, okx, yfinance, akshare, mootdx, ccxt, futu
+│       ├── loaders/                #   4 sources: tushare, akshare, mootdx, futu
 │       │   ├── base.py             #   DataLoader Protocol
 │       │   └── registry.py         #   Registry + auto-fallback chains
 │       └── optimizers/             #   MVO, equal vol, max div, risk parity
