@@ -1,6 +1,6 @@
 name: equity_research_team
 title: "Equity Research Team"
-description: "Macro â†’ sector â†’ stock three-tier deep research â†’ research editor consolidates into a complete report"
+description: "Macro â†?sector â†?stock three-tier deep research â†?research editor consolidates into a complete report"
 
 agents:
   - id: macro_analyst
@@ -15,15 +15,15 @@ agents:
 
       ## Output Requirements
       Please produce a structured analysis report with the following sections:
-      1. **Macro Overview** â€” Interpretation of core indicators: GDP, CPI, PMI, etc.
-      2. **Monetary Policy and Liquidity** â€” Key signals from interest rates, M2, credit, etc.
-      3. **Global Market Linkages** â€” Spillover effects of Fed / ECB policy
-      4. **Risk Factors** â€” Identify 3â€“5 major macro risk points
-      5. **Conclusion for {market}** â€” Summarize the bullish / bearish / neutral rationale
+      1. **Macro Overview** â€?Interpretation of core indicators: GDP, CPI, PMI, etc.
+      2. **Monetary Policy and Liquidity** â€?Key signals from interest rates, M2, credit, etc.
+      3. **Global Market Linkages** â€?Spillover effects of Fed / ECB policy
+      4. **Risk Factors** â€?Identify 3â€? major macro risk points
+      5. **Conclusion for {market}** â€?Summarize the bullish / bearish / neutral rationale
 
       Use load_skill to access data query methods; prioritize using tools to obtain the latest data to support the analysis.
     tools: [bash, read_file, write_file, load_skill, read_url]
-    skills: [tushare, okx-market, yfinance, web-reader, global-macro]
+    skills: [tushare, akshare, web-reader, global-macro]
     max_iterations: 50
     timeout_seconds: 1800
     max_retries: 1
@@ -40,15 +40,15 @@ agents:
 
       ## Output Requirements
       Please produce a structured analysis report with the following sections:
-      1. **Sector Prosperity Ranking** â€” Top 5 sectors with scoring rationale
-      2. **Core Growth Drivers** â€” The growth logic for each recommended sector
-      3. **Industry Chain Analysis** â€” Degree of benefit across upstream, midstream, and downstream
-      4. **Competitive Landscape** â€” Concentration, entry barriers, leading companies
-      5. **Recommended Sectors and Rationale** â€” Explicitly recommend 2â€“3 sectors with suggested allocation weights
+      1. **Sector Prosperity Ranking** â€?Top 5 sectors with scoring rationale
+      2. **Core Growth Drivers** â€?The growth logic for each recommended sector
+      3. **Industry Chain Analysis** â€?Degree of benefit across upstream, midstream, and downstream
+      4. **Competitive Landscape** â€?Concentration, entry barriers, leading companies
+      5. **Recommended Sectors and Rationale** â€?Explicitly recommend 2â€? sectors with suggested allocation weights
 
       Use the factor_analysis tool for factor-based analysis to support judgments.
     tools: [bash, read_file, write_file, load_skill, factor_analysis]
-    skills: [tushare, yfinance, fundamental-filter, multi-factor, us-etf-flow, sector-rotation]
+    skills: [tushare, akshare, fundamental-filter, multi-factor, sector-rotation]
     max_iterations: 50
     timeout_seconds: 1800
     max_retries: 1
@@ -65,16 +65,16 @@ agents:
 
       ## Output Requirements
       Please produce a structured analysis report with the following sections:
-      1. **Recommended Target List** â€” Each target with ticker, name, and sector
-      2. **Fundamental Assessment** â€” Core metrics: P/E, P/B, ROE, revenue growth, etc.
-      3. **Technical Signals** â€” Trend, support/resistance levels, price-volume dynamics
-      4. **Entry Logic** â€” Buy trigger conditions for each target
-      5. **Risk Disclosure** â€” Primary risks for each target
+      1. **Recommended Target List** â€?Each target with ticker, name, and sector
+      2. **Fundamental Assessment** â€?Core metrics: P/E, P/B, ROE, revenue growth, etc.
+      3. **Technical Signals** â€?Trend, support/resistance levels, price-volume dynamics
+      4. **Entry Logic** â€?Buy trigger conditions for each target
+      5. **Risk Disclosure** â€?Primary risks for each target
 
       Always use load_skill("strategy-generate") for strategy writing standards.
       Use the backtest tool to validate the historical performance of stock selection logic.
     tools: [bash, read_file, write_file, load_skill, backtest, factor_analysis]
-    skills: [tushare, yfinance, strategy-generate, technical-basic, multi-factor, earnings-revision]
+    skills: [tushare, akshare, strategy-generate, technical-basic, multi-factor, earnings-revision]
     max_iterations: 50
     timeout_seconds: 1800
     max_retries: 1
@@ -91,12 +91,12 @@ agents:
 
       ## Output Requirements
       Please produce a complete Markdown-format research report with the following structure:
-      1. **Executive Summary** â€” Key investment points in under 200 words
-      2. **Macro Environment** â€” Integrate macro analyst conclusions
-      3. **Sector Allocation** â€” Integrate sector analyst recommendations
-      4. **Stock Recommendations** â€” Integrate stock analyst selections
-      5. **Risk Disclosures** â€” Aggregate all risk factors
-      6. **Action Recommendations** â€” Provide clear position and timing guidance
+      1. **Executive Summary** â€?Key investment points in under 200 words
+      2. **Macro Environment** â€?Integrate macro analyst conclusions
+      3. **Sector Allocation** â€?Integrate sector analyst recommendations
+      4. **Stock Recommendations** â€?Integrate stock analyst selections
+      5. **Risk Disclosures** â€?Aggregate all risk factors
+      6. **Action Recommendations** â€?Provide clear position and timing guidance
 
       Ensure the report is internally consistent, data is traceable, and conclusions are logically supported.
     tools: [bash, read_file, write_file]
@@ -137,7 +137,7 @@ tasks:
 
 variables:
   - name: market
-    description: "Target market (e.g.: A-shares, Hong Kong, Crypto)"
+    description: "Target market (e.g.: A-shares, A-share futures)"
     required: true
   - name: goal
     description: "Research focus (e.g.: Q2 2026 outlook, opportunities in the new energy sector)"

@@ -3,8 +3,6 @@
 Wave 1 (v1):
   - BaseEngine: ABC for bar-by-bar execution with market rules
   - ChinaAEngine: A-share (T+1, no short, price limits)
-  - GlobalEquityEngine: US / HK equities
-  - CryptoEngine: Crypto perpetuals (funding fees, liquidation)
   - options_portfolio: European/American options (Black-Scholes, v2 with IV smile)
 
 Wave 2:
@@ -15,16 +13,14 @@ Wave 2:
 
 Wave 3:
   - CompositeEngine: Cross-market engine with shared capital pool
-  - _market_hooks: Extracted on_bar logic (funding, liquidation, swap)
+  - _market_hooks: Extracted on_bar logic (swap)
 
 Inheritance:
   BaseEngine
-  â”œâ”€â”€ ChinaAEngine
-  â”œâ”€â”€ GlobalEquityEngine
-  â”œâ”€â”€ CryptoEngine
-  â”œâ”€â”€ ForexEngine
-  â”œâ”€â”€ CompositeEngine (delegates to sub-engines as rule providers)
-  â””â”€â”€ FuturesBaseEngine
-      â”œâ”€â”€ ChinaFuturesEngine
-      â””â”€â”€ GlobalFuturesEngine
+  ©À©¤©¤ ChinaAEngine
+  ©À©¤©¤ ForexEngine
+  ©À©¤©¤ CompositeEngine (delegates to sub-engines as rule providers)
+  ©¸©¤©¤ FuturesBaseEngine
+      ©À©¤©¤ ChinaFuturesEngine
+      ©¸©¤©¤ GlobalFuturesEngine
 """

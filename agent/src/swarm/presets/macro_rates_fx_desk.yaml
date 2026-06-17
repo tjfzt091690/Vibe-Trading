@@ -39,10 +39,10 @@ agents:
       - Rate volatility (MOVE index): high vol = uncertainty, low vol = complacency
       - Credit spreads: IG and HY OAS trends (widening = risk-off)
 
-      ### V. Rates â†’ Asset Class Implications
-      - Equities: earnings yield gap (E/P - 10Y yield) â€” narrow = equities expensive
+      ### V. Rates â†?Asset Class Implications
+      - Equities: earnings yield gap (E/P - 10Y yield) â€?narrow = equities expensive
       - Gold: real rate direction is the primary driver
-      - Crypto: historically rallies when real rates decline
+      - Commodities: historically rally when real rates decline
       - EM assets: US rate direction drives EM capital flows
 
       Use load_skill for macro analysis and global macro frameworks.
@@ -55,7 +55,7 @@ agents:
   - id: fx_strategist
     role: FX Strategist
     system_prompt: |
-      You are a senior FX strategist covering major currency pairs, with focus on USD/CNY, USD/HKD, and major crosses. You assess how FX movements impact equity and crypto positioning.
+      You are a senior FX strategist covering major currency pairs, with focus on USD/CNY and major crosses. You assess how FX movements impact equity positioning.
 
       ## Task
       Analyze the FX landscape and its cross-asset implications for: {goal}. Horizon: {timeframe}.
@@ -67,7 +67,7 @@ agents:
       ### I. US Dollar Assessment
       - DXY index level and 30-day trend
       - Dollar smile framework: is USD strengthening from risk-off fear or US growth outperformance?
-      - Dollar positioning: CFTC COT data â€” net long/short extremes
+      - Dollar positioning: CFTC COT data â€?net long/short extremes
 
       ### II. CNY Analysis
       - USD/CNY level and trend (onshore vs offshore USDCNH spread)
@@ -83,16 +83,16 @@ agents:
       ### IV. Other Key Pairs
       - EUR/USD: ECB vs Fed divergence
       - USD/JPY: BOJ intervention risk, carry trade dynamics
-      - Crypto exposure: BTC is implicitly a "short USD" trade â†’ dollar strength is headwind
+      - Crypto exposure: BTC is implicitly a "short USD" trade â†?dollar strength is headwind
 
-      ### V. FX â†’ Portfolio Implications
+      ### V. FX â†?Portfolio Implications
       - Currency hedging needs for cross-market portfolio
       - FX carry trade opportunities (high-yield vs low-yield currencies)
       - EM FX risk assessment: which EM currencies are vulnerable to USD strength?
 
       Use load_skill for global macro and commodity analysis (commodity currencies).
     tools: [bash, read_file, write_file, load_skill, read_url]
-    skills: [global-macro, macro-analysis, yfinance]
+    skills: [global-macro, macro-analysis, akshare]
     max_iterations: 50
     timeout_seconds: 1800
     max_retries: 1
@@ -112,7 +112,7 @@ agents:
       ### I. Energy Complex
       - Crude oil (WTI/Brent): supply-demand balance, OPEC stance, US production
       - Natural gas: seasonal demand, storage levels
-      - Energy â†’ inflation transmission: gasoline prices â†’ CPI impact
+      - Energy â†?inflation transmission: gasoline prices â†?CPI impact
 
       ### II. Metals
       - Gold: real rate sensitivity, central bank buying, safe-haven demand
@@ -124,7 +124,7 @@ agents:
       - China CPI/PPI: deflation risk or reflation signal
       - Global food prices (FAO index): agricultural commodity pressure
 
-      ### IV. Inflation â†’ Asset Allocation
+      ### IV. Inflation â†?Asset Allocation
       - Rising inflation: favor commodities, TIPS, real assets; underweight long-duration bonds
       - Falling inflation: favor growth equities, long-duration bonds; underweight commodities
       - Stagflation risk: favor gold, defensive equities; avoid cyclicals and bonds
@@ -161,8 +161,8 @@ agents:
       | Equities (A-share / HK / US) | X% | ... |
       | Fixed Income (duration stance) | X% | ... |
       | Commodities (gold / oil / copper) | X% | ... |
-      | Crypto (BTC / ETH) | X% | ... |
-      | Cash / stablecoins | X% | ... |
+      
+      | Cash | X% | ... |
 
       ### III. Key Trades
       - Top 3 macro trades with entry, target, stop, and rationale
@@ -171,10 +171,10 @@ agents:
       - Commodity position: which commodities to overweight/underweight?
 
       ### IV. Risk Scenarios
-      - **Bull case** (probability X%): [scenario description] â†’ [allocation shift]
-      - **Base case** (probability X%): [scenario description] â†’ [current allocation]
-      - **Bear case** (probability X%): [scenario description] â†’ [defensive shift]
-      - **Tail risk**: [black swan scenario] â†’ [hedging strategy]
+      - **Bull case** (probability X%): [scenario description] â†?[allocation shift]
+      - **Base case** (probability X%): [scenario description] â†?[current allocation]
+      - **Bear case** (probability X%): [scenario description] â†?[defensive shift]
+      - **Tail risk**: [black swan scenario] â†?[hedging strategy]
 
       ### V. Monitoring Dashboard
       - 5 key macro indicators to track with specific thresholds

@@ -16,8 +16,6 @@ from backtest.engines.base import BaseEngine
 from backtest.engines._market_hooks import (
     _detect_market,
     _is_china_futures,
-    calc_crypto_funding_fee,
-    check_crypto_liquidation,
     calc_forex_swap,
 )
 
@@ -31,15 +29,6 @@ def _build_rule_engines(config: dict, codes: List[str]) -> Dict[str, BaseEngine]
         if market == "a_share":
             from backtest.engines.china_a import ChinaAEngine
             engines["a_share"] = ChinaAEngine(config)
-        elif market == "us_equity":
-            from backtest.engines.global_equity import GlobalEquityEngine
-            engines["us_equity"] = GlobalEquityEngine(config, market="us")
-        elif market == "hk_equity":
-            from backtest.engines.global_equity import GlobalEquityEngine
-            engines["hk_equity"] = GlobalEquityEngine(config, market="hk")
-        elif market == "crypto":
-            from backtest.engines.crypto import CryptoEngine
-            engines["crypto"] = CryptoEngine(config)
         elif market == "forex":
             from backtest.engines.forex import ForexEngine
             engines["forex"] = ForexEngine(config)
@@ -60,8 +49,9 @@ def _build_rule_engines(config: dict, codes: List[str]) -> Dict[str, BaseEngine]
 class CompositeEngine(BaseEngine):
     """Cross-market engine with shared capital pool.
 
-    Sub-engines are stateless rule providers. All positions, capital,
-    and trades live here (inherited from BaseEngine).
+    Sub-engines provide market-specific rules (commission, slippage, etc.).
+    All mutable state -- positions, capital, and trades live here (inherited
+    from BaseEngine).
 
     Args:
         config: Backtest configuration dict.
@@ -77,10 +67,6 @@ class CompositeEngine(BaseEngine):
         # Build sub-engines (one per market type)
         self._rule_engines = _build_rule_engines(config, codes)
 
-        # Crypto dedup state (owned by CompositeEngine, not sub-engine)
-        self._funding_applied: set = set()
-        self._funding_daily_done: set = set()
-
         # Forex dedup state
         self._last_swap_dates: dict = {}
 
@@ -89,7 +75,7 @@ class CompositeEngine(BaseEngine):
         market = self._symbol_market.get(symbol, "a_share")
         return self._rule_engines[market]
 
-    # â”€â”€ Stateless method dispatch â”€â”€
+    # ©¤©¤ Stateless method dispatch ©¤©¤
 
     def can_execute(self, symbol: str, direction: int, bar: pd.Series) -> bool:
         """Market-rule check with T+1 interceptor for A-shares."""
@@ -132,7 +118,7 @@ class CompositeEngine(BaseEngine):
         sub._active_symbol = self._active_symbol
         return sub.apply_slippage(price, direction)
 
-    # â”€â”€ PnL / margin dispatch (route by symbol, not _active_symbol) â”€â”€
+    # ©¤©¤ PnL / margin dispatch (route by symbol, not _active_symbol) ©¤©¤
 
     def _calc_pnl(
         self, symbol: str, direction: int, size: float,
@@ -152,29 +138,13 @@ class CompositeEngine(BaseEngine):
     ) -> float:
         return self._rule_for(symbol)._calc_raw_size(symbol, target_notional, price)
 
-    # â”€â”€ Stateful hooks (implemented directly, NO delegation) â”€â”€
+    # ©¤©¤ Stateful hooks (implemented directly, NO delegation) ©¤©¤
 
     def on_bar(self, symbol: str, bar: pd.Series, timestamp: pd.Timestamp) -> None:
         """Per-bar hooks dispatched by market type."""
         market = self._symbol_market.get(symbol)
 
-        if market == "crypto":
-            crypto_sub = self._rule_engines["crypto"]
-            fee = calc_crypto_funding_fee(
-                symbol, bar, timestamp, self.positions,
-                crypto_sub.funding_rate,
-                self._funding_applied, self._funding_daily_done,
-            )
-            self.capital -= fee
-
-            if check_crypto_liquidation(symbol, bar, self.positions):
-                pos = self.positions.get(symbol)
-                if pos is not None:
-                    mark_price = float(bar.get("close", pos.entry_price))
-                    liq_price = crypto_sub.apply_slippage(mark_price, -pos.direction)
-                    self._close_position(symbol, liq_price, timestamp, "liquidation")
-
-        elif market == "forex":
+        if market == "forex":
             forex_sub = self._rule_engines["forex"]
             if forex_sub.swap_enabled:
                 swap = calc_forex_swap(

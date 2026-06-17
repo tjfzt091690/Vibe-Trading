@@ -1,6 +1,6 @@
 name: investment_committee
 title: "Investment Committee"
-description: "Long‚Äìshort debate ‚Üí risk review ‚Üí PM final call: buy-side fund investment committee workflow."
+description: "Long‚Äìshort debate ‚Ü?risk review ‚Ü?PM final call: buy-side fund investment committee workflow."
 
 agents:
   - id: bull_advocate
@@ -35,17 +35,17 @@ agents:
       - Retail sentiment (fear/greed, buzz): whether levels are low (contrarian)
 
       ## Required outputs
-      1. **Bull thesis bullets** ‚Äî 3‚Äì5 one-line strongest bull points, each with confidence (high/medium)
-      2. **Technical detail** ‚Äî All bullish technical signals, with key levels (support, target)
-      3. **Fundamental upside** ‚Äî Quantified valuation room, earnings leverage, core catalysts
-      4. **Sentiment & flow support** ‚Äî Capital flows, institutional stance, sentiment cycle stage
-      5. **Catalyst calendar** ‚Äî Specific events over the next 1‚Äì3 months that could drive upside, with timing
-      6. **Bull target prices** ‚Äî Range from three angles: valuation re-rating, earnings growth, technical objectives
-      7. **Main risk to the bull case** ‚Äî Honestly list 2‚Äì3 scenarios that would invalidate the bull thesis
+      1. **Bull thesis bullets** ‚Ä?3‚Ä? one-line strongest bull points, each with confidence (high/medium)
+      2. **Technical detail** ‚Ä?All bullish technical signals, with key levels (support, target)
+      3. **Fundamental upside** ‚Ä?Quantified valuation room, earnings leverage, core catalysts
+      4. **Sentiment & flow support** ‚Ä?Capital flows, institutional stance, sentiment cycle stage
+      5. **Catalyst calendar** ‚Ä?Specific events over the next 1‚Ä? months that could drive upside, with timing
+      6. **Bull target prices** ‚Ä?Range from three angles: valuation re-rating, earnings growth, technical objectives
+      7. **Main risk to the bull case** ‚Ä?Honestly list 2‚Ä? scenarios that would invalidate the bull thesis
 
       Use factor_analysis for quant support; use load_skill for frameworks.
     tools: [bash, read_file, write_file, load_skill, factor_analysis]
-    skills: [technical-basic, fundamental-filter, yfinance, earnings-revision, sentiment-analysis]
+    skills: [technical-basic, fundamental-filter, akshare, earnings-revision, sentiment-analysis]
     max_iterations: 50
     timeout_seconds: 1800
     max_retries: 1
@@ -88,17 +88,17 @@ agents:
       - Macro headwinds: rates, FX, regulation
 
       ## Required outputs
-      1. **Bear risk bullets** ‚Äî 3‚Äì5 one-line top bear points, each with severity (high/medium)
-      2. **Technical breakdown risk** ‚Äî All topping patterns and divergences, with resistance and stop levels
-      3. **Valuation bubble assessment** ‚Äî Quantify premium vs fair value; fair-value / mean-reversion downside target
-      4. **Fundamental deterioration evidence** ‚Äî Concrete data for weakening quality
-      5. **Risk metrics** ‚Äî VaR, expected max drawdown, downside under stress scenarios
-      6. **Bear target prices** ‚Äî Downside range from multiple mean reversion and earnings cuts
-      7. **What would disprove the bear case** ‚Äî Signals that would invalidate the bear thesis (i.e., bull-side rebuttal points)
+      1. **Bear risk bullets** ‚Ä?3‚Ä? one-line top bear points, each with severity (high/medium)
+      2. **Technical breakdown risk** ‚Ä?All topping patterns and divergences, with resistance and stop levels
+      3. **Valuation bubble assessment** ‚Ä?Quantify premium vs fair value; fair-value / mean-reversion downside target
+      4. **Fundamental deterioration evidence** ‚Ä?Concrete data for weakening quality
+      5. **Risk metrics** ‚Ä?VaR, expected max drawdown, downside under stress scenarios
+      6. **Bear target prices** ‚Ä?Downside range from multiple mean reversion and earnings cuts
+      7. **What would disprove the bear case** ‚Ä?Signals that would invalidate the bear thesis (i.e., bull-side rebuttal points)
 
       Use factor_analysis for risk-factor views; use load_skill for risk frameworks.
     tools: [bash, read_file, write_file, load_skill, factor_analysis]
-    skills: [technical-basic, fundamental-filter, yfinance, risk-analysis, volatility]
+    skills: [technical-basic, fundamental-filter, akshare, risk-analysis, volatility]
     max_iterations: 50
     timeout_seconds: 1800
     max_retries: 1
@@ -135,18 +135,18 @@ agents:
       - Hedges: options or related shorts to trim tail risk
 
       ### Compliance & concentration
-      - Single-name cap (often 5‚Äì10% of NAV)
+      - Single-name cap (often 5‚Ä?0% of NAV)
       - Industry / market concentration
       - Whether informational edge raises compliance issues
 
       ## Required outputs
-      1. **Risk review conclusion** ‚Äî Clear stance: support / conditional support / oppose, with core reasons
-      2. **Risk scorecard on bull points** ‚Äî Reliability 1‚Äì5 per bull point plus pushback
-      3. **Risk scorecard on bear points** ‚Äî Reliability 1‚Äì5 per bear point plus pushback
-      4. **Blind-spot risks** ‚Äî Important risks neither analyst stressed but risk deems material
-      5. **Position sizing** ‚Äî Explicit suggested range (e.g., not more than X% of portfolio)
-      6. **Stop & hedge** ‚Äî Specific stop prices, triggers, recommended hedges and sizing
-      7. **Risk conditions** ‚Äî If approval is conditional, state prerequisites (e.g., wait for earnings)
+      1. **Risk review conclusion** ‚Ä?Clear stance: support / conditional support / oppose, with core reasons
+      2. **Risk scorecard on bull points** ‚Ä?Reliability 1‚Ä? per bull point plus pushback
+      3. **Risk scorecard on bear points** ‚Ä?Reliability 1‚Ä? per bear point plus pushback
+      4. **Blind-spot risks** ‚Ä?Important risks neither analyst stressed but risk deems material
+      5. **Position sizing** ‚Ä?Explicit suggested range (e.g., not more than X% of portfolio)
+      6. **Stop & hedge** ‚Ä?Specific stop prices, triggers, recommended hedges and sizing
+      7. **Risk conditions** ‚Ä?If approval is conditional, state prerequisites (e.g., wait for earnings)
 
       Stay independent; do not cheerlead either side; optimize portfolio-level risk.
     tools: [bash, read_file, write_file, load_skill]
@@ -187,15 +187,15 @@ agents:
       - Final position size within risk bounds
 
       ## Required outputs
-      1. **PM decision statement** ‚Äî One paragraph: direction, size, core rationale‚Äîno ambiguity
-      2. **Ruling on arguments** ‚Äî Which points adopted/rejected, with PM reasoning
-      3. **How risk input was used** ‚Äî Accept / adjust / reject each CRO item with reasons
-      4. **Execution plan** ‚Äî First tranche, add triggers, trim triggers, timeline
-      5. **Targets & stops** ‚Äî PM-final bull/base/bear price objectives and hard stop
-      6. **Confidence & review triggers** ‚Äî Confidence 0‚Äì100% and what forces a re-evaluation
-      7. **Backtest summary** ‚Äî If run: historical win rate, mean return, max drawdown
+      1. **PM decision statement** ‚Ä?One paragraph: direction, size, core rationale‚Äîno ambiguity
+      2. **Ruling on arguments** ‚Ä?Which points adopted/rejected, with PM reasoning
+      3. **How risk input was used** ‚Ä?Accept / adjust / reject each CRO item with reasons
+      4. **Execution plan** ‚Ä?First tranche, add triggers, trim triggers, timeline
+      5. **Targets & stops** ‚Ä?PM-final bull/base/bear price objectives and hard stop
+      6. **Confidence & review triggers** ‚Ä?Confidence 0‚Ä?00% and what forces a re-evaluation
+      7. **Backtest summary** ‚Ä?If run: historical win rate, mean return, max drawdown
 
-      Decisions must be executable; reject vague ‚Äúit depends.‚Äù Every key number must be explicit.
+      Decisions must be executable; reject vague ‚Äúit depends.‚Ä?Every key number must be explicit.
     tools: [bash, read_file, write_file, load_skill, backtest]
     skills: [strategy-generate, asset-allocation]
     max_iterations: 50
@@ -233,5 +233,5 @@ variables:
     description: "Security (e.g., 600519.SH Kweichow Moutai, BTC-USDT, AAPL)"
     required: true
   - name: market
-    description: "Market (e.g., A-shares, Hong Kong, US, crypto)"
+    description: "Market (e.g., A-shares, A-share futures)"
     required: true

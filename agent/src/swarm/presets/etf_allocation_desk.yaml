@@ -1,6 +1,6 @@
 name: etf_allocation_desk
 title: "ETF Allocation Desk"
-description: "ETF screening + macro allocation + risk budgeting three-dimensional parallel analysis â†’ portfolio optimizer constructs the final ETF portfolio and backtests"
+description: "ETF screening + macro allocation + risk budgeting three-dimensional parallel analysis â†?portfolio optimizer constructs the final ETF portfolio and backtests"
 
 agents:
   - id: etf_screener
@@ -35,7 +35,7 @@ agents:
       #### Equity ETFs
       - **Broad Market**: CSI 300 / CSI 500 / CSI 1000 / SSE 50 / ChiNext / STAR Market (A-shares); SPY / IVV / QQQ / VTI (US equities)
       - **Sector / Thematic**: Technology / Consumer / Healthcare / Financials / New Energy / Defense (based on macro allocation needs)
-      - **Cross-Market**: HK Connect / Nasdaq / S&P 500 / NDX Tech / Nikkei / India and other cross-border ETFs
+      - **Cross-Market**: cross-border ETFs
 
       #### Bond ETFs
       - **Rate Bonds**: Government bond ETF / policy bank bond ETF (various durations)
@@ -57,11 +57,11 @@ agents:
       - Product architecture quality (20 pts)
 
       ## Output Requirements
-      1. **Candidate ETF Pool Summary** â€” Grouped by asset class; list Top 3â€“5 ETFs passing screening for each class, with AUM / fee / tracking error / composite score
-      2. **Tracking Quality Comparison Table** â€” Cross-sectional comparison of tracking error / tracking difference for peer ETF products; flag the best-in-class product
-      3. **Fee Cost Analysis** â€” Fee distribution across ETF categories; compute impact of fee differences on compounding over a 10-year holding period (based on CNY 10,000 initial investment)
-      4. **Liquidity and Premium/Discount Monitoring** â€” 20-day premium/discount distribution for candidate ETFs; flag products with abnormal premium/discounts; assess transaction cost risk
-      5. **Best ETF Recommendation per Asset Class** â€” Final recommendation of 1â€“2 ETFs per asset class (primary + backup), with rationale and applicable scenarios
+      1. **Candidate ETF Pool Summary** â€?Grouped by asset class; list Top 3â€? ETFs passing screening for each class, with AUM / fee / tracking error / composite score
+      2. **Tracking Quality Comparison Table** â€?Cross-sectional comparison of tracking error / tracking difference for peer ETF products; flag the best-in-class product
+      3. **Fee Cost Analysis** â€?Fee distribution across ETF categories; compute impact of fee differences on compounding over a 10-year holding period (based on CNY 10,000 initial investment)
+      4. **Liquidity and Premium/Discount Monitoring** â€?20-day premium/discount distribution for candidate ETFs; flag products with abnormal premium/discounts; assess transaction cost risk
+      5. **Best ETF Recommendation per Asset Class** â€?Final recommendation of 1â€? ETFs per asset class (primary + backup), with rationale and applicable scenarios
 
       Use load_skill("etf-analysis") for ETF research methodology; load_skill("fund-analysis") for fund product evaluation; load_skill("tushare") for A-share ETF data.
       Use the factor_analysis tool for ETF tracking error and factor exposure analysis.
@@ -116,11 +116,11 @@ agents:
       Adjust from baseline based on current macro environment (deviation cap Â±15% per asset class).
 
       ## Output Requirements
-      1. **Economic Cycle Positioning Report** â€” Explicitly state current cycle position (Merrill Lynch clock quadrant) with key indicator data (PMI / inflation / credit); compare cycle migration vs. 6 months ago
-      2. **Global Macro Driver Ranking** â€” List the Top 5 macro factors currently influencing asset allocation, ranked by importance, each with directional assessment (positive / neutral / negative for each asset class)
-      3. **Asset Expected Return Matrix** â€” Expected return range (low / base / high scenario) for equities / bonds / commodities / international / cash over the next 12 months, with uncertainty rating
-      4. **{risk_profile} Baseline Allocation Proposal** â€” Deviation adjustments from baseline based on macro view; final recommended allocation weights with allocation logic per asset class (1â€“2 sentences)
-      5. **Macro Scenario Rotation Contingency Plans** â€” Define 3 macro environment change scenarios (e.g., recession accelerates / inflation rebounds / China policy upside surprise); indicate the allocation adjustment direction under each scenario
+      1. **Economic Cycle Positioning Report** â€?Explicitly state current cycle position (Merrill Lynch clock quadrant) with key indicator data (PMI / inflation / credit); compare cycle migration vs. 6 months ago
+      2. **Global Macro Driver Ranking** â€?List the Top 5 macro factors currently influencing asset allocation, ranked by importance, each with directional assessment (positive / neutral / negative for each asset class)
+      3. **Asset Expected Return Matrix** â€?Expected return range (low / base / high scenario) for equities / bonds / commodities / international / cash over the next 12 months, with uncertainty rating
+      4. **{risk_profile} Baseline Allocation Proposal** â€?Deviation adjustments from baseline based on macro view; final recommended allocation weights with allocation logic per asset class (1â€? sentences)
+      5. **Macro Scenario Rotation Contingency Plans** â€?Define 3 macro environment change scenarios (e.g., recession accelerates / inflation rebounds / China policy upside surprise); indicate the allocation adjustment direction under each scenario
 
       Use load_skill("macro-analysis") for macro analysis framework; load_skill("asset-allocation") for cross-asset allocation methodology; load_skill("global-macro") for global macro comparison analysis.
       Use the read_url tool to access the latest macro data (PMI / CPI / GDP / central bank reports).
@@ -141,12 +141,12 @@ agents:
       ## Risk Budgeting Framework
 
       ### Asset Volatility and Correlation Estimation
-      - **Historical Volatility**: 3-year annualized volatility for each asset class (daily return standard deviation Ã— âˆš252)
+      - **Historical Volatility**: 3-year annualized volatility for each asset class (daily return standard deviation Ã— âˆ?52)
       - **Volatility Tiers**:
         - Low volatility (<5%): money market / short-term bonds
-        - Low-to-medium volatility (5â€“10%): long-term government bonds / REITs
-        - Medium-to-high volatility (10â€“20%): broad-market equities / commodities
-        - High volatility (>20%): sector ETFs / cryptocurrencies
+        - Low-to-medium volatility (5â€?0%): long-term government bonds / REITs
+        - Medium-to-high volatility (10â€?0%): broad-market equities / commodities
+        - High volatility (>20%): sector ETFs / commodity ETFs
       - **Cross-Asset Correlation Matrix**: Compute historical correlation coefficients between asset classes; identify highly correlated pairs (low diversification value)
 
       ### Risk Parity Weight Calculation
@@ -166,9 +166,9 @@ agents:
 
       ### Risk Budget and Constraint Design
       Set risk budgets based on {risk_profile}:
-      - **Conservative**: Annualized volatility target 4â€“6%, max drawdown target -8%
-      - **Balanced**: Annualized volatility target 8â€“12%, max drawdown target -15%
-      - **Aggressive**: Annualized volatility target 14â€“18%, max drawdown target -25%
+      - **Conservative**: Annualized volatility target 4â€?%, max drawdown target -8%
+      - **Balanced**: Annualized volatility target 8â€?2%, max drawdown target -15%
+      - **Aggressive**: Annualized volatility target 14â€?8%, max drawdown target -25%
 
       Weight constraints (to prevent over-concentration):
       - Max weight per asset class (Conservative 40% / Balanced 50% / Aggressive 60%)
@@ -181,11 +181,11 @@ agents:
       - **Rebalancing cost estimation**: Estimate annual average rebalancing turnover and transaction costs
 
       ## Output Requirements
-      1. **Asset Class Risk Characteristics Table** â€” Historical volatility / max drawdown / average correlation with other assets for equities / bonds / commodities / international / cash / REITs; annotate diversification value
-      2. **Three-Method Weight Comparison** â€” Weight comparison table from risk parity / equal volatility / max diversification; analyze differences and applicable conditions for each method
-      3. **{risk_profile} Recommended Weight Constraints** â€” Based on risk budget targets, provide min / target / max triplets for each asset class, plus recommended risk budget allocation (risk contribution % per asset)
-      4. **Portfolio Risk Decomposition Report** â€” Risk decompose the target weight scheme: marginal risk contribution / risk contribution rate per asset; confirm no single asset dominates portfolio risk
-      5. **Rebalancing Strategy Recommendation** â€” Recommend rebalancing trigger conditions (time + threshold dual trigger); estimate annual average rebalancing frequency and transaction costs (%); compare with no-rebalancing scenario risk
+      1. **Asset Class Risk Characteristics Table** â€?Historical volatility / max drawdown / average correlation with other assets for equities / bonds / commodities / international / cash / REITs; annotate diversification value
+      2. **Three-Method Weight Comparison** â€?Weight comparison table from risk parity / equal volatility / max diversification; analyze differences and applicable conditions for each method
+      3. **{risk_profile} Recommended Weight Constraints** â€?Based on risk budget targets, provide min / target / max triplets for each asset class, plus recommended risk budget allocation (risk contribution % per asset)
+      4. **Portfolio Risk Decomposition Report** â€?Risk decompose the target weight scheme: marginal risk contribution / risk contribution rate per asset; confirm no single asset dominates portfolio risk
+      5. **Rebalancing Strategy Recommendation** â€?Recommend rebalancing trigger conditions (time + threshold dual trigger); estimate annual average rebalancing frequency and transaction costs (%); compare with no-rebalancing scenario risk
 
       Use load_skill("risk-analysis") for risk budgeting and risk decomposition methods; load_skill("volatility") for volatility modeling and correlation estimation; load_skill("etf-analysis") for ETF product risk characteristic analysis.
     tools: [bash, read_file, write_file, load_skill]
@@ -233,11 +233,11 @@ agents:
       - Sources of excess return vs. simple passive equal-weight allocation
 
       ## Output Requirements
-      1. **Final ETF Portfolio Holdings** â€” Complete holdings list (ETF ticker / name / asset class / target weight / rationale), sorted by weight descending, totaling 100%
-      2. **Portfolio Risk/Return Expectations** â€” Expected annualized return / volatility / Sharpe ratio (estimated from historical data); compare vs. {risk_profile} risk budget targets to confirm compliance
-      3. **Historical Backtest Report** â€” 5-year backtest core metrics: annualized return / max drawdown / Sharpe ratio / Calmar ratio / longest consecutive losing months; annual return distribution chart
-      4. **Portfolio Contribution Attribution** â€” Asset class contribution breakdown to total portfolio return and total risk; identify core return sources and risk concentration points
-      5. **Investor Implementation Guide** â€” Concise investor-facing execution guide: build-up sequence / recommended initial investment amount / rebalancing operation tips / emergency plan for extreme market volatility
+      1. **Final ETF Portfolio Holdings** â€?Complete holdings list (ETF ticker / name / asset class / target weight / rationale), sorted by weight descending, totaling 100%
+      2. **Portfolio Risk/Return Expectations** â€?Expected annualized return / volatility / Sharpe ratio (estimated from historical data); compare vs. {risk_profile} risk budget targets to confirm compliance
+      3. **Historical Backtest Report** â€?5-year backtest core metrics: annualized return / max drawdown / Sharpe ratio / Calmar ratio / longest consecutive losing months; annual return distribution chart
+      4. **Portfolio Contribution Attribution** â€?Asset class contribution breakdown to total portfolio return and total risk; identify core return sources and risk concentration points
+      5. **Investor Implementation Guide** â€?Concise investor-facing execution guide: build-up sequence / recommended initial investment amount / rebalancing operation tips / emergency plan for extreme market volatility
 
       Use load_skill("etf-analysis") for ETF portfolio construction framework; load_skill("strategy-generate") for standardized backtest code; load_skill("asset-allocation") for portfolio optimization methods.
       Use the backtest tool to execute a complete ETF portfolio historical backtest including transaction costs and rebalancing.
