@@ -168,27 +168,20 @@ earnings_quality = {
 
 ## Multi-Market Considerations
 
-### US Equities
-- Earnings season: Jan/Apr/Jul/Oct (roughly 2-6 weeks after quarter-end)
-- Data: SEC filings (10-Q within 40 days, 10-K within 60 days for large accelerated filers)
-- Consensus: Bloomberg, Refinitiv, FactSet, Visible Alpha
-- Via yfinance: `ticker.earnings_dates`, `ticker.earnings_history`
-
-### Hong Kong Equities
+### China A-Shares
 - Earnings season: Mar-Apr (annual), Aug-Sep (interim)
-- Many HK-listed companies report semi-annually, not quarterly
-- Dual-listed (A+H): compare A-share analyst estimates vs HK analyst estimates for arbitrage
-- Via yfinance: `yf.Ticker("0700.HK").financials`
+- Most A-share companies report semi-annually, with some quarterly voluntary disclosures
+- Data: Tushare `income`, `balancesheet`, `cashflow`, `fina_indicator` tables with PIT-safe merge
+- Consensus: Wind, Choice, and other domestic platforms
 
-### Key Differences
+### Key Points
 
-| Dimension | US | HK |
-|-----------|----|----|
-| Reporting frequency | Quarterly | Semi-annual (most) |
-| Guidance practice | Common | Rare |
-| Analyst coverage | Deep (>20 for large caps) | Thinner (5-15 for large caps) |
-| Pre-announcement | Regulated (Reg FD) | Less regulated |
-| Earnings call | Standard | Less common for mid/small caps |
+| Dimension | A-Shares |
+|-----------|----------|
+| Reporting frequency | Semi-annual (mandatory), quarterly (voluntary for some) |
+| Guidance practice | Rare |
+| Analyst coverage | Varies widely (5-30+ for large caps) |
+| Pre-announcement | Required for significant changes |
 
 ## Output Format
 
