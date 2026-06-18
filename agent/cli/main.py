@@ -109,7 +109,7 @@ def _probe_model_name() -> str:
     if name:
         return name
     try:
-        text = _ENV_PATH.read_text(encoding="utf-8")
+        text = _ENV_PATH.read_text(encoding="utf-8", errors="replace")
         for line in text.splitlines():
             if line.startswith("LANGCHAIN_MODEL_NAME="):
                 return line.split("=", 1)[1].strip()

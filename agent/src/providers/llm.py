@@ -156,7 +156,7 @@ def _load_env_file(path: Path) -> None:
     if load_dotenv is not None:
         load_dotenv(dotenv_path=path, override=False)
     else:
-        for raw in path.read_text(encoding="utf-8").splitlines():
+        for raw in path.read_text(encoding="utf-8", errors="replace").splitlines():
             line = raw.strip()
             if not line or line.startswith("#") or "=" not in line:
                 continue
@@ -167,7 +167,7 @@ def _load_env_file(path: Path) -> None:
 
 
 def _ensure_dotenv() -> None:
-    """Load `.env` from the first found candidate path."""
+    """Load `.env` from all candidate paths (earlier wins on conflict)."""
     global _dotenv_loaded
     if _dotenv_loaded:
         return
@@ -175,8 +175,8 @@ def _ensure_dotenv() -> None:
     for candidate in _ENV_CANDIDATES:
         if candidate.exists():
             _load_env_file(candidate)
-            loaded = candidate
-            break
+            if loaded is None:
+                loaded = candidate
     _dotenv_loaded = True
     # P08 R1: one-time, behavior-preserving diagnostic so a stale or
     # shadowed .env is observable instead of costing hours. The path is
@@ -302,4 +302,3 @@ def build_llm(*, model_name: Optional[str] = None, callbacks: Any = None) -> Any
         callbacks=callbacks,
         extra_body={"reasoning": {"effort": effort}} if effort else None,
     )
-

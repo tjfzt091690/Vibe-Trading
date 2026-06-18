@@ -856,7 +856,7 @@ def _format_env_value(value: str) -> str:
 def _write_env_values(path: Path, updates: Dict[str, str]) -> None:
     """Upsert active dotenv values while preserving comments and ordering."""
     _ensure_agent_env_file()
-    lines = path.read_text(encoding="utf-8").splitlines()
+    lines = path.read_text(encoding="utf-8", errors="replace").splitlines()
     seen: set[str] = set()
     for index, raw in enumerate(lines):
         stripped = raw.lstrip()
