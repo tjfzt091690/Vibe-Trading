@@ -58,8 +58,6 @@ _FOREX_RE = _re.compile(r"^[A-Z]{3}/[A-Z]{3}$|^[A-Z]{6}\.FX$")
 
 def _detect_market_for_align(code: str) -> str:
     """Lightweight market detection for ffill_limit calculation."""
-    if _CRYPTO_RE.match(code):
-        return "crypto"
     if _FOREX_RE.match(code):
         return "forex"
     return "equity"
