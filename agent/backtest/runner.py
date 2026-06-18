@@ -57,7 +57,7 @@ class BacktestConfigSchema(BaseModel):
     codes: List[str]
     start_date: str
     end_date: str
-    source: str = "tushare"
+    source: str = "akshare"
     interval: str = "1D"
     engine: str = "daily"
     fundamental_fields: Optional[Dict[str, List[str]]] = None
@@ -279,9 +279,9 @@ def _validate_signal_engine_class(engine_cls) -> None:
 
 # Back-compat: market type -> legacy source name (for engine selection & metrics)
 _MARKET_TO_SOURCE = {
-    "a_share": "tushare",
-    "futures": "tushare",
-    "fund": "tushare",
+    "a_share": "akshare",
+    "futures": "akshare",
+    "fund": "akshare",
     "macro": "akshare",
     "forex": "akshare",
 }
@@ -297,7 +297,7 @@ def _detect_source(code: str) -> str:
         Source name (tushare/akshare/mootdx).
     """
     market = _detect_market(code)
-    return _MARKET_TO_SOURCE.get(market, "tushare")
+    return _MARKET_TO_SOURCE.get(market, "akshare")
 
 
 def _group_codes_by_market(codes: List[str]) -> Dict[str, List[str]]:
@@ -406,7 +406,7 @@ def main(run_dir: Path) -> None:
         sys.exit(1)
 
     config = raw_config
-    source = config.get("source", "tushare")
+    source = config.get("source", "akshare")
     codes = config.get("codes", [])
 
     # Load signal engine
@@ -592,7 +592,7 @@ def _fetch_auto(codes: List[str], config: dict, interval: str = "1D") -> dict:
             loader = resolve_loader(market)
         except NoAvailableSourceError as exc:
             # Fallback: try legacy source mapping
-            legacy_src = _MARKET_TO_SOURCE.get(market, "tushare")
+            legacy_src = _MARKET_TO_SOURCE.get(market, "akshare")
             logger.warning("Fallback chain failed for %s: %s — trying %s", market, exc, legacy_src)
             LoaderCls = _get_loader(legacy_src)
             loader = LoaderCls()

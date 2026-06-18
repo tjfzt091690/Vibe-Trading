@@ -26,7 +26,7 @@ _BARS_PER_DAY = {
 }
 
 
-def calc_bars_per_year(interval: str = "1D", source: str = "tushare") -> int:
+def calc_bars_per_year(interval: str = "1D", source: str = "akshare") -> int:
     """Number of bars per year for annualisation.
 
     Args:

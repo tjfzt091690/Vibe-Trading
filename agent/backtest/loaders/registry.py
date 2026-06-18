@@ -64,9 +64,9 @@ def _ensure_registered() -> None:
 # ---------------------------------------------------------------------------
 
 FALLBACK_CHAINS: dict[str, list[str]] = {
-    "a_share":   ["tushare", "mootdx", "akshare"],
-    "futures":   ["tushare", "akshare"],
-    "fund":      ["tushare", "akshare"],
+    "a_share":   ["akshare", "mootdx", "tushare"],
+    "futures":   ["akshare", "tushare"],
+    "fund":      ["akshare", "tushare"],
     "macro":     ["akshare", "tushare"],
     "forex":     ["akshare"],
 }

@@ -26,7 +26,7 @@ const CATEGORIES: Category[] = [
       },
       {
         title: "A股双均线策略",
-        desc: "分钟级 A 股回测，使用 tushare 数据",
+        desc: "分钟级 A 股回测，使用 akshare 数据",
         prompt: "Backtest 000001.SZ 5-minute dual MA strategy, fast=5 slow=20, last 30 days",
       },
       {

@@ -298,7 +298,7 @@ def add_goal_evidence(
         evidence_type: Evidence category, default evidence.
         tool_call_id: Source tool call id for traceability; it does not verify evidence by itself.
         run_id: Vibe-Trading run id. It verifies evidence only when the run directory exists.
-        source_provider: Data/provider name such as tushare.
+        source_provider: Data/provider name such as akshare.
         source_type: Source category such as market_data, document, backtest.
         source_uri: Optional source URL/path.
         symbol_universe: Symbols covered by the evidence.
@@ -453,7 +453,7 @@ def factor_analysis(
         factor_name: Factor column name in daily_basic data (e.g. "pe_ttm", "pb", "turnover_rate").
         start_date: Start date (YYYY-MM-DD).
         end_date: End date (YYYY-MM-DD).
-        source: Data source ("tushare", "akshare", "auto").
+        source: Data source ("akshare", "tushare", "auto").
         top_n: Number of top-ranked stocks per period.
         bottom_n: Number of bottom-ranked stocks per period.
     """
@@ -757,7 +757,7 @@ async def run_swarm(
 DEFAULT_MAX_ROWS = 250
 
 _SOURCE_PATTERNS = [
-    (re.compile(r"^\d{6}\.(SZ|SH|BJ)$", re.I), "tushare")
+    (re.compile(r"^\d{6}\.(SZ|SH|BJ)$", re.I), "akshare")
 ]
 
 
@@ -765,7 +765,7 @@ def _detect_source(code: str) -> str:
     for pattern, source in _SOURCE_PATTERNS:
         if pattern.match(code):
             return source
-    return "tushare"
+    return "akshare"
 
 
 def _get_loader(source: str):
@@ -825,7 +825,7 @@ def get_market_data(
         codes: List of symbols (e.g. ["AAPL.US", "BTC-USDT", "000001.SZ"]).
         start_date: Start date (YYYY-MM-DD).
         end_date: End date (YYYY-MM-DD).
-        source: Data source ("auto", "tushare", "akshare").
+        source: Data source ("auto", "akshare", "tushare").
         interval: Bar size (1m/5m/15m/30m/1H/4H/1D, default "1D").
         max_rows: Per-symbol row cap (default 250) so the response stays
             within the MCP token budget. A symbol exceeding it returns an

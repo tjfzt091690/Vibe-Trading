@@ -423,9 +423,14 @@ def reconstruct_price_series(run_dir: Path) -> List[Dict[str, Any]]:
     fetch_start_date = _compute_fetch_start_date(run_dir, start_date)
 
     try:
-        source = context.get("source", "tushare")
-        from backtest.loaders.tushare import DataLoader
-        loader = DataLoader()
+        source = context.get("source", "akshare")
+        from backtest.loaders.registry import LOADER_REGISTRY, _ensure_registered
+        _ensure_registered()
+        LoaderCls = LOADER_REGISTRY.get(source)
+        if LoaderCls is None:
+            from backtest.loaders.akshare_loader import DataLoader as AkshareLoader
+            LoaderCls = AkshareLoader
+        loader = LoaderCls()
         data_map = loader.fetch(codes, fetch_start_date, end_date)
     except Exception as exc:
         print(f"[WARN] reconstruct_price_series: DataLoader failed ({exc})")
