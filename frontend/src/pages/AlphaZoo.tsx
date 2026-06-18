@@ -49,8 +49,7 @@ interface ZooCard {
   accent: string;
 }
 
-// IMPORTANT: The Kakushadze 101 zoo must use the author's name as the label.
-// The legacy / trademark name is forbidden by a CI grep gate — do not add it.
+// IMPORTANT: Zoo card IDs must match the backend _VALID_ZOOS set.
 const ZOO_CARDS: ZooCard[] = [
   {
     id: "qlib158",
@@ -59,14 +58,6 @@ const ZOO_CARDS: ZooCard[] = [
       "微软 Qlib 完整的 158 特征库，涵盖动量、波动率、成交量和滚动统计信号。",
     approxCount: 154,
     accent: "from-sky-500/20 to-sky-500/5",
-  },
-  {
-    id: "alpha101",
-    title: "Kakushadze 101 Formulaic Alphas",
-    description:
-      "来自 Kakushadze（2015）的 101 个公式化 Alpha；短期截面信号。",
-    approxCount: 101,
-    accent: "from-emerald-500/20 to-emerald-500/5",
   },
   {
     id: "gtja191",
@@ -194,18 +185,18 @@ function BrowseView() {
           <Layers className="h-3.5 w-3.5" aria-hidden="true" /> Alpha Zoo
         </div>
         <h1 className="text-2xl md:text-3xl font-bold tracking-tight">
-          {total > 0 ? total : 452} pre-built quant alphas across 4 zoos
+          {total > 0 ? total : 351} pre-built quant alphas across 3 zoos
         </h1>
         <p className="text-sm text-muted-foreground max-w-2xl">
-          Browse formula-driven cross-sectional signals from Qlib, the
-          Kakushadze 101 set, GTJA 191, and the academic anomaly literature.
+          Browse formula-driven cross-sectional signals from Qlib,
+          GTJA 191, and the academic anomaly literature.
           Click any alpha to read its formula and source code, or run a bench
           to score the whole zoo on a universe and period.
         </p>
       </div>
 
       {/* Zoo cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
         {ZOO_CARDS.map((z) => {
           const active = zooFilter === z.id;
           return (
@@ -582,7 +573,7 @@ function BenchView() {
   const initial = useMemo(() => {
     const q = new URLSearchParams(locSearch);
     return {
-      zoo: q.get("zoo") || "alpha101",
+      zoo: q.get("zoo") || "gtja191",
       universe: q.get("universe") || "csi300",
       period: q.get("period") || "2020-2025",
       top: Number(q.get("top") || "20"),
