@@ -206,7 +206,7 @@ def run_preflight(console: Optional[Console] = None) -> List[CheckResult]:
     has_critical = any(r.critical and r.status != "ready" for r in results)
     if has_critical:
         console.print("\n[bold red]Critical check failed - agent cannot start without a working LLM provider.[/bold red]")
-        console.print("[dim]  See: agent/.env.example for configuration reference[/dim]")
+        console.print("[dim]  See: agent/.env for configuration reference[/dim]")
     else:
         ready_count = sum(1 for r in results if r.status == "ready")
         console.print(f"\n[dim]{ready_count}/{len(results)} services ready[/dim]")

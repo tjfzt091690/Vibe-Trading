@@ -42,7 +42,7 @@ SESSIONS_DIR = Path(__file__).resolve().parent / "sessions"
 UPLOADS_DIR = Path(__file__).resolve().parent / "uploads"
 AGENT_DIR = Path(__file__).resolve().parent
 ENV_PATH = AGENT_DIR / ".env"
-ENV_EXAMPLE_PATH = AGENT_DIR / ".env.example"
+ENV_EXAMPLE_PATH = AGENT_DIR / ".env"
 
 MAX_UPLOAD_SIZE = 50 * 1024 * 1024  # 50 MB
 _UPLOAD_CHUNK_SIZE = 1024 * 1024  # 1 MB
@@ -824,7 +824,7 @@ def _read_settings_env_values() -> Dict[str, str]:
     """Read settings without creating agent/.env.
 
     Prefer the user's active agent/.env. If it does not exist yet, fall back to
-    agent/.env.example for display defaults only.
+    agent/.env for display defaults only.
     """
     if ENV_PATH.exists():
         return _read_env_values(ENV_PATH)

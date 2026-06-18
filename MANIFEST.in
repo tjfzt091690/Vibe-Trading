@@ -10,7 +10,7 @@ include Dockerfile
 include docker-compose.yml
 
 # Developer entry-point template
-include agent/.env.example
+include agent/.env
 
 # Alpha Zoo factor metadata and per-zoo LICENSE / NOTICE files
 recursive-include agent/src/factors *.yaml *.md
