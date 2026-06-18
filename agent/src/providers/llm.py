@@ -89,18 +89,18 @@ else:
 
 AGENT_DIR = Path(__file__).resolve().parents[2]
 
-# .env search order: ~/.vibe-trading/.env → agent/.env → $CWD/.env
+# .env search order: agent/.env → ~/.vibe-trading/.env → $CWD/.env
+# Project-local .env takes priority over the global one so that per-project
+# credentials (e.g. a fresh API key) are not shadowed by stale global values.
 _ENV_CANDIDATES = [
-    Path.home() / ".vibe-trading" / ".env",
-    AGENT_DIR / ".env",
-    Path.cwd() / ".env",
+    AGENT_DIR / ".env"
 ]
 
 # Index-aligned with _ENV_CANDIDATES. CWE-209: never log the absolute
 # .env path (it leaks the OS username / home / CWD). The label names
 # which slot won - the entire P08 R1 signal - using compile-time
 # constants only.
-_ENV_LABELS = ("~/.vibe-trading/.env", "<AGENT_DIR>/.env", "<CWD>/.env")
+_ENV_LABELS = ("<AGENT_DIR>/.env")
 
 logger = logging.getLogger(__name__)
 
