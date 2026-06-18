@@ -120,7 +120,7 @@ class ZooSignalEngine:
         """Build an engine that pulls alphas from the (bundled) Alpha Zoo.
 
         Args:
-            alpha_ids: Alpha IDs to combine, e.g. ``["alpha101_001", "guotai_002"]``.
+            alpha_ids: Alpha IDs to combine, e.g. ``["gtja191_001", "qlib158_001"]``.
             weights: Optional per-alpha weights; defaults to equal weights.
             standardize: Cross-sectionally z-score each alpha per date.
             top_n: Long top-N names (positive integer).
