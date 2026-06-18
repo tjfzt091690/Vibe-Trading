@@ -111,7 +111,7 @@ def _expand_artifacts_spec(spec: Dict[str, Any] | None) -> Dict[str, Dict[str, A
 class Runner:
     """Execute entry scripts inside a run directory and collect outputs."""
 
-    def __init__(self, timeout: int = 300, artifacts_spec: Optional[Dict[str, Any]] = None) -> None:
+    def __init__(self, timeout: int = 600, artifacts_spec: Optional[Dict[str, Any]] = None) -> None:
         """Initialize runner.
 
         Args:

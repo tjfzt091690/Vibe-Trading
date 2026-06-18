@@ -54,7 +54,7 @@ def run_backtest(run_dir: str) -> str:
         "simulate",
         message=f"running backtest engine (source={source})",
     )
-    runner = Runner(timeout=300)
+    runner = Runner(timeout=600)
     result = runner.execute(
         entry_script,
         run_path,

@@ -321,10 +321,10 @@ class SwarmStore:
         heartbeat_floor = max(60.0, interval * 10.0)
 
         agent_budgets = [
-            max(1, int(agent.timeout_seconds or 300)) * (max(0, int(agent.max_retries)) + 1)
+            max(1, int(agent.timeout_seconds or 600)) * (max(0, int(agent.max_retries)) + 1)
             for agent in run.agents
         ]
-        retry_ceiling = (max(agent_budgets) if agent_budgets else 300) + 60
+        retry_ceiling = (max(agent_budgets) if agent_budgets else 600) + 60
 
         return float(max(60.0, min(heartbeat_floor, retry_ceiling)))
 

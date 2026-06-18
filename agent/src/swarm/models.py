@@ -80,7 +80,7 @@ class SwarmAgentSpec(BaseModel):
     tools: list[str] = Field(default_factory=list)
     skills: list[str] = Field(default_factory=list)
     max_iterations: int = 25
-    timeout_seconds: int = 300
+    timeout_seconds: int = 600
     model_name: str | None = None
     max_retries: int = 2
 

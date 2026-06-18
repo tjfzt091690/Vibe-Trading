@@ -33,7 +33,7 @@ from src.tools.redaction import is_sensitive_arg, redact_payload
 logger = logging.getLogger(__name__)
 
 _DEFAULT_MAX_ITERATIONS = int(os.getenv("SWARM_WORKER_MAX_ITER", "50"))
-_DEFAULT_TIMEOUT_SECONDS = int(os.getenv("SWARM_WORKER_TIMEOUT", "300"))
+_DEFAULT_TIMEOUT_SECONDS = int(os.getenv("SWARM_WORKER_TIMEOUT", "600"))
 
 
 def _heartbeat_interval_s() -> float:

@@ -244,7 +244,7 @@ def build_run_from_preset(preset_name: str, user_vars: dict[str, str]) -> SwarmR
             tools=agent_data.get("tools", []),
             skills=agent_data.get("skills", []),
             max_iterations=agent_data.get("max_iterations", 25),
-            timeout_seconds=agent_data.get("timeout_seconds", 300),
+            timeout_seconds=agent_data.get("timeout_seconds", 600),
             model_name=agent_data.get("model_name"),
             max_retries=agent_data.get("max_retries", 2),
         ))
