@@ -745,7 +745,7 @@ class AgentLoop:
         runnable: list[tuple] = []
         for tc in tool_calls:
             args = _normalize_tool_run_dir(tc.arguments, self.memory.run_dir)
-            self._emit("tool_call", {"tool": tc.name, "arguments": {k: str(v)[:200] for k, v in args.items()}, "iter": iteration})
+            self._emit("tool_call", {"tool": tc.name, "id": tc.id, "arguments": {k: str(v)[:200] for k, v in args.items()}, "iter": iteration})
             trace.write({"type": "tool_call", "iter": iteration, "tool": tc.name, "args": {k: str(v)[:200] for k, v in args.items()}})
             runnable.append((tc, args))
 
@@ -790,7 +790,7 @@ class AgentLoop:
         """
         args = _normalize_tool_run_dir(tc.arguments, self.memory.run_dir)
 
-        self._emit("tool_call", {"tool": tc.name, "arguments": {k: str(v)[:200] for k, v in args.items()}, "iter": iteration})
+        self._emit("tool_call", {"tool": tc.name, "id": tc.id, "arguments": {k: str(v)[:200] for k, v in args.items()}, "iter": iteration})
         trace.write({"type": "tool_call", "iter": iteration, "tool": tc.name, "args": {k: str(v)[:200] for k, v in args.items()}})
         logger.info(f"Tool call: {tc.name}({list(args.keys())})")
 
@@ -872,7 +872,7 @@ class AgentLoop:
 
         trace.write({"type": "tool_result", "iter": iteration, "tool": tc.name, "status": status, "elapsed_ms": elapsed_ms, "preview": result[:200]})
         react_trace.append({"type": "tool_call", "tool": tc.name, "result_preview": result[:200]})
-        self._emit("tool_result", {"tool": tc.name, "status": status, "elapsed_ms": elapsed_ms, "preview": result[:200]})
+        self._emit("tool_result", {"tool": tc.name, "id": tc.id, "status": status, "elapsed_ms": elapsed_ms, "preview": result[:200]})
 
     # -- Context compression ---------------------------------------------------
 

@@ -64,9 +64,27 @@ export const useAgentStore = create<AgentState>((set) => ({
   addToolCall: (entry) =>
     set((s) => ({ toolCalls: [...s.toolCalls, entry] })),
   updateToolCall: (id, update) =>
-    set((s) => ({
-      toolCalls: s.toolCalls.map((tc) => tc.id === id ? { ...tc, ...update } : tc),
-    })),
+    set((s) => {
+      const idx = s.toolCalls.findIndex((tc: ToolCallEntry) => tc.id === id);
+      if (idx !== -1) {
+        const next = [...s.toolCalls];
+        next[idx] = { ...next[idx], ...update };
+        return { toolCalls: next };
+      }
+      let runningIdx = -1;
+      for (let i = s.toolCalls.length - 1; i >= 0; i--) {
+        if (s.toolCalls[i].tool === id && s.toolCalls[i].status === "running") {
+          runningIdx = i;
+          break;
+        }
+      }
+      if (runningIdx !== -1) {
+        const next = [...s.toolCalls];
+        next[runningIdx] = { ...next[runningIdx], ...update };
+        return { toolCalls: next };
+      }
+      return { toolCalls: s.toolCalls.map((tc: ToolCallEntry) => tc.id === id ? { ...tc, ...update } : tc) };
+    }),
 
   cacheSession: (sid, msgs) => {
     _sessionCache.delete(sid);

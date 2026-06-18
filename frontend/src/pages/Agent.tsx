@@ -374,9 +374,9 @@ export function Agent() {
       tool_call: (d) => {
         touch();
         const toolName = String(d.tool || "");
-        // Only update toolCalls tracker (no message creation during streaming)
+        const callId = d.id ? String(d.id) : `${toolName}_${Date.now()}`;
         act().addToolCall({
-          id: toolName, tool: toolName,
+          id: callId, tool: toolName,
           arguments: (d.arguments as Record<string, string>) ?? {},
           status: "running", timestamp: Date.now(),
         });
@@ -386,10 +386,9 @@ export function Agent() {
       tool_result: (d) => {
         touch();
         const toolName = String(d.tool || "");
-        // Drop any in-flight coalesced progress for this tool.
         pendingProgressRef.current.delete(toolName);
-        // Only update tracker (no message creation during streaming)
-        act().updateToolCall(toolName, {
+        const resultId = d.id ? String(d.id) : undefined;
+        act().updateToolCall(resultId || toolName, {
           status: d.status === "ok" ? "ok" : "error",
           preview: String(d.preview || ""),
           elapsed_ms: Number(d.elapsed_ms || 0),
