@@ -47,7 +47,7 @@ _MULTIPLIER: dict[str, float] = {
 }
 
 # ── Margin per contract (approximate USD, initial margin) ──
-# Reference table �?future use for margin-call checks. Not yet consumed.
+# Reference table — future use for margin-call checks. Not yet consumed.
 
 _MARGIN_PER_CONTRACT: dict[str, float] = {
     # Equity index
@@ -135,7 +135,7 @@ class GlobalFuturesEngine(FuturesBaseEngine):
     """
 
     def __init__(self, config: dict):
-        # Leverage: most futures have 5-15% margin �?7-20x leverage.
+        # Leverage: most futures have 5-15% margin → 7-20x leverage.
         # Price is unknown at init, so use a reasonable fixed default.
         # User can override via config["leverage"].
         leverage = config.get("leverage", 10.0)
@@ -182,7 +182,7 @@ class GlobalFuturesEngine(FuturesBaseEngine):
     def calc_commission(self, size: float, price: float, _direction: int, is_open: bool) -> float:
         """Per-contract fixed commission (uses _active_symbol for product lookup).
 
-        ``_direction`` is unused �?reserved for future borrow/financing
+        ``_direction`` is unused — reserved for future borrow/financing
         asymmetry on short positions.
         """
         if self._comm_override is not None:
@@ -197,7 +197,7 @@ class GlobalFuturesEngine(FuturesBaseEngine):
         Args:
             symbol: Futures code.
             size: Number of contracts.
-            price: Execution price (unused �?fixed per-lot).
+            price: Execution price (unused — fixed per-lot).
             is_open: Opening or closing.
 
         Returns:

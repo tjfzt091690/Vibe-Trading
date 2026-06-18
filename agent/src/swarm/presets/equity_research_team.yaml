@@ -1,6 +1,6 @@
 name: equity_research_team
 title: "Equity Research Team"
-description: "Macro â†?sector â†?stock three-tier deep research â†?research editor consolidates into a complete report"
+description: "Macro éˆ«?sector éˆ«?stock three-tier deep research éˆ«?research editor consolidates into a complete report"
 
 agents:
   - id: macro_analyst
@@ -15,11 +15,11 @@ agents:
 
       ## Output Requirements
       Please produce a structured analysis report with the following sections:
-      1. **Macro Overview** â€?Interpretation of core indicators: GDP, CPI, PMI, etc.
-      2. **Monetary Policy and Liquidity** â€?Key signals from interest rates, M2, credit, etc.
-      3. **Global Market Linkages** â€?Spillover effects of Fed / ECB policy
-      4. **Risk Factors** â€?Identify 3â€? major macro risk points
-      5. **Conclusion for {market}** â€?Summarize the bullish / bearish / neutral rationale
+      1. **Macro Overview** éˆ¥?Interpretation of core indicators: GDP, CPI, PMI, etc.
+      2. **Monetary Policy and Liquidity** éˆ¥?Key signals from interest rates, M2, credit, etc.
+      3. **Global Market Linkages** éˆ¥?Spillover effects of Fed / ECB policy
+      4. **Risk Factors** éˆ¥?Identify 3éˆ¥? major macro risk points
+      5. **Conclusion for {market}** éˆ¥?Summarize the bullish / bearish / neutral rationale
 
       Use load_skill to access data query methods; prioritize using tools to obtain the latest data to support the analysis.
     tools: [bash, read_file, write_file, load_skill, read_url]
@@ -40,11 +40,11 @@ agents:
 
       ## Output Requirements
       Please produce a structured analysis report with the following sections:
-      1. **Sector Prosperity Ranking** â€?Top 5 sectors with scoring rationale
-      2. **Core Growth Drivers** â€?The growth logic for each recommended sector
-      3. **Industry Chain Analysis** â€?Degree of benefit across upstream, midstream, and downstream
-      4. **Competitive Landscape** â€?Concentration, entry barriers, leading companies
-      5. **Recommended Sectors and Rationale** â€?Explicitly recommend 2â€? sectors with suggested allocation weights
+      1. **Sector Prosperity Ranking** éˆ¥?Top 5 sectors with scoring rationale
+      2. **Core Growth Drivers** éˆ¥?The growth logic for each recommended sector
+      3. **Industry Chain Analysis** éˆ¥?Degree of benefit across upstream, midstream, and downstream
+      4. **Competitive Landscape** éˆ¥?Concentration, entry barriers, leading companies
+      5. **Recommended Sectors and Rationale** éˆ¥?Explicitly recommend 2éˆ¥? sectors with suggested allocation weights
 
       Use the factor_analysis tool for factor-based analysis to support judgments.
     tools: [bash, read_file, write_file, load_skill, factor_analysis]
@@ -65,11 +65,11 @@ agents:
 
       ## Output Requirements
       Please produce a structured analysis report with the following sections:
-      1. **Recommended Target List** â€?Each target with ticker, name, and sector
-      2. **Fundamental Assessment** â€?Core metrics: P/E, P/B, ROE, revenue growth, etc.
-      3. **Technical Signals** â€?Trend, support/resistance levels, price-volume dynamics
-      4. **Entry Logic** â€?Buy trigger conditions for each target
-      5. **Risk Disclosure** â€?Primary risks for each target
+      1. **Recommended Target List** éˆ¥?Each target with ticker, name, and sector
+      2. **Fundamental Assessment** éˆ¥?Core metrics: P/E, P/B, ROE, revenue growth, etc.
+      3. **Technical Signals** éˆ¥?Trend, support/resistance levels, price-volume dynamics
+      4. **Entry Logic** éˆ¥?Buy trigger conditions for each target
+      5. **Risk Disclosure** éˆ¥?Primary risks for each target
 
       Always use load_skill("strategy-generate") for strategy writing standards.
       Use the backtest tool to validate the historical performance of stock selection logic.
@@ -91,12 +91,12 @@ agents:
 
       ## Output Requirements
       Please produce a complete Markdown-format research report with the following structure:
-      1. **Executive Summary** â€?Key investment points in under 200 words
-      2. **Macro Environment** â€?Integrate macro analyst conclusions
-      3. **Sector Allocation** â€?Integrate sector analyst recommendations
-      4. **Stock Recommendations** â€?Integrate stock analyst selections
-      5. **Risk Disclosures** â€?Aggregate all risk factors
-      6. **Action Recommendations** â€?Provide clear position and timing guidance
+      1. **Executive Summary** éˆ¥?Key investment points in under 200 words
+      2. **Macro Environment** éˆ¥?Integrate macro analyst conclusions
+      3. **Sector Allocation** éˆ¥?Integrate sector analyst recommendations
+      4. **Stock Recommendations** éˆ¥?Integrate stock analyst selections
+      5. **Risk Disclosures** éˆ¥?Aggregate all risk factors
+      6. **Action Recommendations** éˆ¥?Provide clear position and timing guidance
 
       Ensure the report is internally consistent, data is traceable, and conclusions are logically supported.
     tools: [bash, read_file, write_file]

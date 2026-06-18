@@ -20,7 +20,7 @@ import pandas as pd
 from backtest.models import Position
 
 
-# ©¤©¤ Symbol -> market classification (shared by runner.py + composite.py) ©¤©¤
+# â”€â”€ Symbol -> market classification (shared by runner.py + composite.py) â”€â”€
 
 _MARKET_PATTERNS = [
     (re.compile(r"^\d{6}\.(SZ|SH|BJ)$", re.I), "a_share"),
@@ -105,7 +105,7 @@ def _is_china_futures(code: str) -> bool:
     return False
 
 
-# ©¤©¤ Forex: swap tables ©¤©¤
+# â”€â”€ Forex: swap tables â”€â”€
 
 _SWAP_LONG: dict[str, float] = {
     "EUR/USD": -6.5, "GBP/USD": -3.0, "USD/JPY": 8.0, "USD/CHF": 4.0,

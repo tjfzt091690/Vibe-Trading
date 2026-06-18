@@ -75,7 +75,7 @@ class CompositeEngine(BaseEngine):
         market = self._symbol_market.get(symbol, "a_share")
         return self._rule_engines[market]
 
-    # ©¤©¤ Stateless method dispatch ©¤©¤
+    # â”€â”€ Stateless method dispatch â”€â”€
 
     def can_execute(self, symbol: str, direction: int, bar: pd.Series) -> bool:
         """Market-rule check with T+1 interceptor for A-shares."""
@@ -118,7 +118,7 @@ class CompositeEngine(BaseEngine):
         sub._active_symbol = self._active_symbol
         return sub.apply_slippage(price, direction)
 
-    # ©¤©¤ PnL / margin dispatch (route by symbol, not _active_symbol) ©¤©¤
+    # â”€â”€ PnL / margin dispatch (route by symbol, not _active_symbol) â”€â”€
 
     def _calc_pnl(
         self, symbol: str, direction: int, size: float,
@@ -138,7 +138,7 @@ class CompositeEngine(BaseEngine):
     ) -> float:
         return self._rule_for(symbol)._calc_raw_size(symbol, target_notional, price)
 
-    # ©¤©¤ Stateful hooks (implemented directly, NO delegation) ©¤©¤
+    # â”€â”€ Stateful hooks (implemented directly, NO delegation) â”€â”€
 
     def on_bar(self, symbol: str, bar: pd.Series, timestamp: pd.Timestamp) -> None:
         """Per-bar hooks dispatched by market type."""

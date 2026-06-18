@@ -3,7 +3,7 @@
 Loaders self-register via the ``@register`` decorator when their module is
 first imported.  The ``_ensure_registered()`` helper lazily imports every
 known loader module so that callers of ``resolve_loader`` /
-``get_loader_cls_with_fallback`` never see an empty registry â€?regardless
+``get_loader_cls_with_fallback`` never see an empty registry éˆ¥?regardless
 of import order.
 """
 
@@ -37,7 +37,7 @@ def register(cls: Type[Any]) -> Type[Any]:
 def _ensure_registered() -> None:
     """Import every known loader module so ``@register`` decorators fire.
 
-    Safe to call multiple times â€?only runs the imports once.
+    Safe to call multiple times éˆ¥?only runs the imports once.
     Loaders whose dependencies are missing (e.g. ``akshare`` not installed)
     are silently skipped.
     """
@@ -94,7 +94,7 @@ def resolve_loader(market: str) -> Any:
         if name not in LOADER_REGISTRY:
             continue
         tried.append(name)
-        # Issue #50 â€?some loaders (e.g. Tushare) call into the SDK during
+        # Issue #50 éˆ¥?some loaders (e.g. Tushare) call into the SDK during
         # __init__ and raise on missing credentials. Treat that the same as
         # is_available()=False so the fallback chain keeps walking.
         try:
@@ -135,7 +135,7 @@ def get_loader_cls_with_fallback(source: str) -> Type[Any]:
     if instance is not None and instance.is_available():
         return loader_cls
 
-    # Source unavailable â€?try same-market fallback
+    # Source unavailable éˆ¥?try same-market fallback
     for market in loader_cls.markets:
         try:
             fallback = resolve_loader(market)

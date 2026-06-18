@@ -14,11 +14,11 @@ agents:
       {upstream_context}
 
       ## Required outputs
-      1. **Maximum drawdown statistics** â€?Top 5 historical drawdown events (magnitude, start/end dates, duration)
-      2. **Drawdown frequency distribution** â€?Count of drawdowns by magnitude bucket
-      3. **Recovery analysis** â€?Average and maximum time to recover to prior peak
-      4. **Current drawdown state** â€?Whether in a drawdown now; distance from last high
-      5. **Drawdown alert** â€?Estimated drawdown probability based on volatility and trend
+      1. **Maximum drawdown statistics** éˆ¥?Top 5 historical drawdown events (magnitude, start/end dates, duration)
+      2. **Drawdown frequency distribution** éˆ¥?Count of drawdowns by magnitude bucket
+      3. **Recovery analysis** éˆ¥?Average and maximum time to recover to prior peak
+      4. **Current drawdown state** éˆ¥?Whether in a drawdown now; distance from last high
+      5. **Drawdown alert** éˆ¥?Estimated drawdown probability based on volatility and trend
 
       Use load_skill for data access and volatility methods.
     tools: [bash, read_file, write_file, load_skill]
@@ -38,11 +38,11 @@ agents:
       {upstream_context}
 
       ## Required outputs
-      1. **VaR estimates** â€?95%/99%/99.9% VaR via parametric + historical simulation
-      2. **CVaR (ES)** â€?Conditional tail expectation / expected shortfall
-      3. **Stress tests** â€?At least three historical crisis scenarios with simulated loss
-      4. **Tail event probability** â€?Extreme-value (GEV/GPD style) probability framing where appropriate
-      5. **Protection ideas** â€?Methods to hedge tail risk
+      1. **VaR estimates** éˆ¥?95%/99%/99.9% VaR via parametric + historical simulation
+      2. **CVaR (ES)** éˆ¥?Conditional tail expectation / expected shortfall
+      3. **Stress tests** éˆ¥?At least three historical crisis scenarios with simulated loss
+      4. **Tail event probability** éˆ¥?Extreme-value (GEV/GPD style) probability framing where appropriate
+      5. **Protection ideas** éˆ¥?Methods to hedge tail risk
 
       Use load_skill for vol analytics and statistical methods.
     tools: [bash, read_file, write_file, load_skill]
@@ -62,11 +62,11 @@ agents:
       {upstream_context}
 
       ## Required outputs
-      1. **Current regime** â€?Bull / bear / chop with confidence
-      2. **Regime characteristics** â€?Vol level, trend strength, momentum indicators
-      3. **Transition signals** â€?Leading indicators of regime change and current readings
-      4. **Historical analogs** â€?2â€? past periods most similar to today
-      5. **Forward look** â€?1â€? month path probabilities under a regime framework
+      1. **Current regime** éˆ¥?Bull / bear / chop with confidence
+      2. **Regime characteristics** éˆ¥?Vol level, trend strength, momentum indicators
+      3. **Transition signals** éˆ¥?Leading indicators of regime change and current readings
+      4. **Historical analogs** éˆ¥?2éˆ¥? past periods most similar to today
+      5. **Forward look** éˆ¥?1éˆ¥? month path probabilities under a regime framework
 
       Use load_skill for technical and volatility methods.
     tools: [bash, read_file, write_file, load_skill]
@@ -87,12 +87,12 @@ agents:
 
       ## Required outputs
       Deliver a full Markdown risk report with this structure:
-      1. **Risk overview** â€?One-line summary of risk level (low/medium/high/extreme)
-      2. **Drawdown risk** â€?Integrate drawdown analyst conclusions
-      3. **Tail risk** â€?Integrate tail-risk analyst conclusions
-      4. **Market regime** â€?Integrate regime analyst conclusions
-      5. **Integrated assessment** â€?Cross-check conclusions across the three dimensions
-      6. **Action items** â€?Clear guidance on sizing, stops, and hedges
+      1. **Risk overview** éˆ¥?One-line summary of risk level (low/medium/high/extreme)
+      2. **Drawdown risk** éˆ¥?Integrate drawdown analyst conclusions
+      3. **Tail risk** éˆ¥?Integrate tail-risk analyst conclusions
+      4. **Market regime** éˆ¥?Integrate regime analyst conclusions
+      5. **Integrated assessment** éˆ¥?Cross-check conclusions across the three dimensions
+      6. **Action items** éˆ¥?Clear guidance on sizing, stops, and hedges
 
       Conclusions must be data-grounded and actionable.
     tools: [bash, read_file, write_file]

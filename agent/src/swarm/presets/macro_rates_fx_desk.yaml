@@ -39,8 +39,8 @@ agents:
       - Rate volatility (MOVE index): high vol = uncertainty, low vol = complacency
       - Credit spreads: IG and HY OAS trends (widening = risk-off)
 
-      ### V. Rates â†?Asset Class Implications
-      - Equities: earnings yield gap (E/P - 10Y yield) â€?narrow = equities expensive
+      ### V. Rates éˆ«?Asset Class Implications
+      - Equities: earnings yield gap (E/P - 10Y yield) éˆ¥?narrow = equities expensive
       - Gold: real rate direction is the primary driver
       - Commodities: historically rally when real rates decline
       - EM assets: US rate direction drives EM capital flows
@@ -67,7 +67,7 @@ agents:
       ### I. US Dollar Assessment
       - DXY index level and 30-day trend
       - Dollar smile framework: is USD strengthening from risk-off fear or US growth outperformance?
-      - Dollar positioning: CFTC COT data â€?net long/short extremes
+      - Dollar positioning: CFTC COT data éˆ¥?net long/short extremes
 
       ### II. CNY Analysis
       - USD/CNY level and trend (onshore vs offshore USDCNH spread)
@@ -83,9 +83,9 @@ agents:
       ### IV. Other Key Pairs
       - EUR/USD: ECB vs Fed divergence
       - USD/JPY: BOJ intervention risk, carry trade dynamics
-      - Crypto exposure: BTC is implicitly a "short USD" trade â†?dollar strength is headwind
+      - Crypto exposure: BTC is implicitly a "short USD" trade éˆ«?dollar strength is headwind
 
-      ### V. FX â†?Portfolio Implications
+      ### V. FX éˆ«?Portfolio Implications
       - Currency hedging needs for cross-market portfolio
       - FX carry trade opportunities (high-yield vs low-yield currencies)
       - EM FX risk assessment: which EM currencies are vulnerable to USD strength?
@@ -112,7 +112,7 @@ agents:
       ### I. Energy Complex
       - Crude oil (WTI/Brent): supply-demand balance, OPEC stance, US production
       - Natural gas: seasonal demand, storage levels
-      - Energy â†?inflation transmission: gasoline prices â†?CPI impact
+      - Energy éˆ«?inflation transmission: gasoline prices éˆ«?CPI impact
 
       ### II. Metals
       - Gold: real rate sensitivity, central bank buying, safe-haven demand
@@ -124,7 +124,7 @@ agents:
       - China CPI/PPI: deflation risk or reflation signal
       - Global food prices (FAO index): agricultural commodity pressure
 
-      ### IV. Inflation â†?Asset Allocation
+      ### IV. Inflation éˆ«?Asset Allocation
       - Rising inflation: favor commodities, TIPS, real assets; underweight long-duration bonds
       - Falling inflation: favor growth equities, long-duration bonds; underweight commodities
       - Stagflation risk: favor gold, defensive equities; avoid cyclicals and bonds
@@ -149,7 +149,7 @@ agents:
       ## Synthesis Requirements
 
       ### I. Macro Regime Identification
-      Classify the current macro regime using the 2Ã—2 framework:
+      Classify the current macro regime using the 2è„³2 framework:
       - **Goldilocks** (growth up, inflation down): overweight equities, underweight commodities
       - **Reflation** (growth up, inflation up): overweight cyclicals, commodities, short duration
       - **Stagflation** (growth down, inflation up): overweight gold, cash; underweight equities, bonds
@@ -171,10 +171,10 @@ agents:
       - Commodity position: which commodities to overweight/underweight?
 
       ### IV. Risk Scenarios
-      - **Bull case** (probability X%): [scenario description] â†?[allocation shift]
-      - **Base case** (probability X%): [scenario description] â†?[current allocation]
-      - **Bear case** (probability X%): [scenario description] â†?[defensive shift]
-      - **Tail risk**: [black swan scenario] â†?[hedging strategy]
+      - **Bull case** (probability X%): [scenario description] éˆ«?[allocation shift]
+      - **Base case** (probability X%): [scenario description] éˆ«?[current allocation]
+      - **Bear case** (probability X%): [scenario description] éˆ«?[defensive shift]
+      - **Tail risk**: [black swan scenario] éˆ«?[hedging strategy]
 
       ### V. Monitoring Dashboard
       - 5 key macro indicators to track with specific thresholds

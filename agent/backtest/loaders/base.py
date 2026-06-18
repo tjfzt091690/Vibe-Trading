@@ -81,8 +81,8 @@ def retry_with_budget(
 
     Between attempts sleeps ``min(backoff[attempt], remaining_budget)`` so a
     short remaining budget never spends the full backoff. The terminal
-    transient failure â€?whether ``max_retries`` is exhausted OR the deadline
-    has passed â€?is wrapped in :class:`TimeoutError`, preserving the original
+    transient failure éˆ¥?whether ``max_retries`` is exhausted OR the deadline
+    has passed éˆ¥?is wrapped in :class:`TimeoutError`, preserving the original
     exception as ``__cause__``. Anything not in ``transient`` propagates
     unchanged on the first occurrence (we never retry an exception class
     the caller didn't opt in to).

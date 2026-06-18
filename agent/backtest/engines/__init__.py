@@ -17,10 +17,10 @@ Wave 3:
 
 Inheritance:
   BaseEngine
-  ©À©¤©¤ ChinaAEngine
-  ©À©¤©¤ ForexEngine
-  ©À©¤©¤ CompositeEngine (delegates to sub-engines as rule providers)
-  ©¸©¤©¤ FuturesBaseEngine
-      ©À©¤©¤ ChinaFuturesEngine
-      ©¸©¤©¤ GlobalFuturesEngine
+  â”œâ”€â”€ ChinaAEngine
+  â”œâ”€â”€ ForexEngine
+  â”œâ”€â”€ CompositeEngine (delegates to sub-engines as rule providers)
+  â””â”€â”€ FuturesBaseEngine
+      â”œâ”€â”€ ChinaFuturesEngine
+      â””â”€â”€ GlobalFuturesEngine
 """
