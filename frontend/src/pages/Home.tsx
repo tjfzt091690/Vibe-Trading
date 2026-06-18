@@ -3,22 +3,22 @@ import { ArrowRight, Bot, BarChart3, Zap, UserCircle2 } from "lucide-react";
 
 export function Home() {
   const FEATURES = [
-    { icon: Bot, title: "AI Agent", desc: "Natural language strategy generation with ReAct reasoning" },
-    { icon: BarChart3, title: "Built-in Backtest", desc: "3 data sources: A-shares, US/HK, Crypto" },
-    { icon: Zap, title: "Real-time Streaming", desc: "Watch the agent think, call tools, and iterate" },
-    { icon: UserCircle2, title: "Strategy Replay", desc: "Trade journal analyzer + Shadow Account — extract your rules, backtest them, attribute PnL delta" },
+    { icon: Bot, title: "AI 代理", desc: "基于 ReAct 推理的自然语言策略生成" },
+    { icon: BarChart3, title: "内置回测", desc: "3 大数据源：A股、港美、加密货币" },
+    { icon: Zap, title: "实时流式输出", desc: "实时观看代理思考、调用工具和迭代" },
+    { icon: UserCircle2, title: "策略复盘", desc: "交易日志分析 + 影子账户 — 提取规则、回测验证、归因损益差异" },
   ];
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen p-8">
       <div className="max-w-2xl text-center space-y-6">
-        <h1 className="text-4xl font-bold tracking-tight">AI-Powered Quant Strategy Research</h1>
-        <p className="text-lg text-muted-foreground">Describe a trading strategy in natural language. The agent generates code, runs backtests, and optimizes — all in real time.</p>
+        <h1 className="text-4xl font-bold tracking-tight">AI 驱动的量化策略研究</h1>
+        <p className="text-lg text-muted-foreground">用自然语言描述交易策略，代理将自动生成代码、运行回测并优化 — 全程实时呈现。</p>
         <Link
           to="/agent"
           className="inline-flex items-center gap-2 px-6 py-3 rounded-lg bg-primary text-primary-foreground font-medium hover:opacity-90 transition"
         >
-          Start Research <ArrowRight className="h-4 w-4" />
+          开始研究 <ArrowRight className="h-4 w-4" />
         </Link>
       </div>
 
