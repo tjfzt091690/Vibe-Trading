@@ -56,7 +56,7 @@ const ZOO_CARDS: ZooCard[] = [
     id: "qlib158",
     title: "Qlib 158",
     description:
-      "Microsoft Qlib's full 158-feature library covering momentum, volatility, volume and rolling statistical signals.",
+      "微软 Qlib 完整的 158 特征库，涵盖动量、波动率、成交量和滚动统计信号。",
     approxCount: 154,
     accent: "from-sky-500/20 to-sky-500/5",
   },
@@ -64,7 +64,7 @@ const ZOO_CARDS: ZooCard[] = [
     id: "alpha101",
     title: "Kakushadze 101 Formulaic Alphas",
     description:
-      "The 101 formulaic alphas from Kakushadze (2015); short-horizon cross-sectional signals.",
+      "来自 Kakushadze（2015）的 101 个公式化 Alpha；短期截面信号。",
     approxCount: 101,
     accent: "from-emerald-500/20 to-emerald-500/5",
   },
@@ -72,7 +72,7 @@ const ZOO_CARDS: ZooCard[] = [
     id: "gtja191",
     title: "GTJA 191",
     description:
-      "Guotai Junan Securities' 191 alphas; technical and microstructure signals tuned to China A-share markets.",
+      "国泰君安证券 191 个 Alpha；针对中国 A 股市场调优的技术和微观结构信号。",
     approxCount: 191,
     accent: "from-amber-500/20 to-amber-500/5",
   },
@@ -80,16 +80,16 @@ const ZOO_CARDS: ZooCard[] = [
     id: "academic",
     title: "Academic Anomalies",
     description:
-      "Curated long-horizon anomalies from the academic literature (value, momentum, quality, low-vol, etc.).",
+      "来自学术文献的精选长期异象（价值、动量、质量、低波动等）。",
     approxCount: 6,
     accent: "from-violet-500/20 to-violet-500/5",
   },
 ];
 
 const UNIVERSE_OPTIONS = [
-  { value: "csi300", label: "CSI 300 (China A)" },
-  { value: "sp500", label: "S&P 500 (US)" },
-  { value: "btc-usdt", label: "BTC-USDT (Crypto)" },
+  { value: "csi300", label: "沪深 300（中国 A 股）" },
+  { value: "sp500", label: "标普 500（美股）" },
+  { value: "btc-usdt", label: "BTC-USDT（加密货币）" },
 ];
 
 const PAGE_SIZE = 50;
@@ -155,7 +155,7 @@ function BrowseView() {
       })
       .catch((err: unknown) => {
         if (!alive) return;
-        const msg = err instanceof Error ? err.message : "Failed to load alphas";
+        const msg = err instanceof Error ? err.message : "加载 Alpha 失败";
         toast.error(msg);
         setAlphas([]);
         setTotal(0);
@@ -239,7 +239,7 @@ function BrowseView() {
       <div className="flex flex-col md:flex-row md:items-end gap-3 border rounded-xl p-4 bg-card">
         <div className="flex-1 min-w-0">
           <label htmlFor="alpha-search" className="text-xs text-muted-foreground block mb-1">
-            Search
+            搜索
           </label>
           <div className="relative">
             <Search
@@ -253,7 +253,7 @@ function BrowseView() {
                 setSearch(e.target.value);
                 setVisibleCount(PAGE_SIZE);
               }}
-              placeholder="Filter by id or nickname…"
+              placeholder="按 ID 或昵称筛选…"
               className="w-full pl-9 pr-3 py-2 rounded-lg border bg-background text-sm focus:outline-none focus:ring-2 focus:ring-primary/30"
             />
           </div>
@@ -266,7 +266,7 @@ function BrowseView() {
             onChange={(e) => setZooFilter(e.target.value)}
             className="w-full px-3 py-2 rounded-lg border bg-background text-sm focus:outline-none focus:ring-2 focus:ring-primary/30"
           >
-            <option value="">All zoos</option>
+            <option value="">全部因子库</option>
             {ZOO_CARDS.map((z) => (
               <option key={z.id} value={z.id}>
                 {z.title}
@@ -284,7 +284,7 @@ function BrowseView() {
             onChange={(e) => setThemeFilter(e.target.value)}
             className="w-full px-3 py-2 rounded-lg border bg-background text-sm focus:outline-none focus:ring-2 focus:ring-primary/30"
           >
-            <option value="">All themes</option>
+            <option value="">全部主题</option>
             {themeOptions.map((tname) => (
               <option key={tname} value={tname}>
                 {tname}
@@ -302,7 +302,7 @@ function BrowseView() {
             onChange={(e) => setUniverseFilter(e.target.value)}
             className="w-full px-3 py-2 rounded-lg border bg-background text-sm focus:outline-none focus:ring-2 focus:ring-primary/30"
           >
-            <option value="">All universes</option>
+            <option value="">全部市场</option>
             {UNIVERSE_OPTIONS.map((u) => (
               <option key={u.value} value={u.value}>
                 {u.label}
