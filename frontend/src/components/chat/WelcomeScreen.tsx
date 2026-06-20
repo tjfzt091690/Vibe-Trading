@@ -22,17 +22,17 @@ const CATEGORIES: Category[] = [
       {
         title: "A股组合",
         desc: "A股风险平价优化器",
-        prompt: "Backtest a risk-parity portfolio of 000001.SZ, 600036.SH, 601318.SH for full-year 2024, compare against equal-weight baseline",
+        prompt: "回测 000001.SZ、600036.SH、601318.SH 的风险平价组合，2024全年，与等权基准对比",
       },
       {
         title: "A股双均线策略",
         desc: "分钟级 A 股回测，使用 akshare 数据",
-        prompt: "Backtest 000001.SZ 5-minute dual MA strategy, fast=5 slow=20, last 30 days",
+        prompt: "回测 000001.SZ 5分钟双均线策略，快线=5 慢线=20，近30天",
       },
       {
         title: "低 PE 轮动",
         desc: "沪深 300 基本面因子轮动",
-        prompt: "Backtest low PE rotation strategy on CSI 300 constituents, monthly rebalance, full-year 2024",
+        prompt: "回测沪深300成分股低PE轮动策略，月度调仓，2024全年",
       },
     ],
   },
@@ -44,12 +44,12 @@ const CATEGORIES: Category[] = [
       {
         title: "多因子 Alpha 模型",
         desc: "300 只股票的 IC 加权因子合成",
-        prompt: "Build a multi-factor alpha model using momentum, reversal, volatility, and turnover on CSI 300 constituents with IC-weighted factor synthesis, backtest 2023-2024",
+        prompt: "在沪深300成分股上构建多因子Alpha模型，使用动量、反转、波动率和换手率因子，IC加权合成，回测2023-2024",
       },
       {
         title: "期权希腊字母分析",
         desc: "Black-Scholes 定价与 Delta/Gamma/Theta/Vega",
-        prompt: "Calculate option Greeks using Black-Scholes: spot=100, strike=105, risk-free rate=3%, vol=25%, expiry=90 days, analyze Delta/Gamma/Theta/Vega",
+        prompt: "使用Black-Scholes模型计算期权希腊字母：标的=100，行权=105，无风险利率=3%，波动率=25%，期限=90天，分析Delta/Gamma/Theta/Vega",
       },
     ],
   },
@@ -61,12 +61,12 @@ const CATEGORIES: Category[] = [
       {
         title: "投资委员会评审",
         desc: "多代理辩论：多空对决、风控审查、PM 决策",
-        prompt: "[Swarm Team Mode] Use the investment_committee preset to evaluate whether to go long or short on NVDA given current market conditions",
+        prompt: "[群体团队模式] 使用投资委员会预设，评估当前市场条件下NVDA应做多还是做空",
       },
       {
         title: "量化策略台",
         desc: "筛选 → 因子研究 → 回测 → 风控审计流水线",
-        prompt: "[Swarm Team Mode] Use the quant_strategy_desk preset to find and backtest the best momentum strategy on CSI 300 constituents",
+        prompt: "[群体团队模式] 使用量化策略台预设，在沪深300成分股上寻找并回测最佳动量策略",
       },
     ],
   },
@@ -78,12 +78,12 @@ const CATEGORIES: Category[] = [
       {
         title: "分析财报 PDF",
         desc: "上传 PDF 并提问财务相关问题",
-        prompt: "Summarize the key financial metrics, risks, and outlook from the uploaded earnings report",
+        prompt: "总结上传财报中的关键财务指标、风险和展望",
       },
       {
         title: "网络研究：宏观展望",
         desc: "阅读实时网络来源进行宏观分析",
-        prompt: "Read the latest Fed meeting minutes and summarize the key takeaways for equity and crypto markets",
+        prompt: "阅读最新的美联储会议纪要，总结对股票和加密货币市场的关键启示",
       },
     ],
   },
@@ -95,12 +95,12 @@ const CATEGORIES: Category[] = [
       {
         title: "分析我的券商导出",
         desc: "解析同花顺/东财/富途/通用 CSV — 持仓天数、胜率、盈亏比、时段分布",
-        prompt: "Analyze the trade journal I just uploaded — full profile with holding stats, win rate, top symbols, and hourly distribution",
+        prompt: "分析我刚上传的交易日志 — 完整画像，包括持仓统计、胜率、热门标的和时段分布",
       },
       {
         title: "诊断我的行为偏差",
         desc: "处置效应、过度交易、追涨、锚定 — 严重程度 + 数值证据",
-        prompt: "Run the 4 behavior diagnostics on my trade journal (disposition, overtrading, chasing, anchoring) and tell me which bias hurts my PnL most",
+        prompt: "对我的交易日志运行4项行为诊断（处置效应、过度交易、追涨、锚定），告诉我哪种偏差对盈亏影响最大",
       },
     ],
   },
@@ -112,17 +112,17 @@ const CATEGORIES: Category[] = [
       {
         title: "从日志训练我的影子",
         desc: "从券商 CSV 提取策略规则并持久化影子画像",
-        prompt: "Train my shadow account from the trading journal I just uploaded — show the extracted rules and confirm they look like my behavior",
+        prompt: "从我刚上传的交易日志训练影子账户 — 展示提取的规则并确认是否符合我的行为特征",
       },
       {
         title: "我少赚了多少？",
         desc: "回测影子策略，归因实际盈亏差异",
-        prompt: "Run a shadow backtest for the last 90 days on the US market and break down where my PnL diverged from the shadow (rule violations, early exits, missed signals)",
+        prompt: "在美国市场运行90天影子回测，分析我的实际盈亏与影子的差异来源（规则违反、提前退出、遗漏信号）",
       },
       {
         title: "生成影子报告",
         desc: "8 节 HTML/PDF — 权益曲线、分市场夏普、归因瀑布图",
-        prompt: "Render the shadow report and give me the URL — lead with the you-vs-shadow delta",
+        prompt: "生成影子报告并提供URL — 首先展示你与影子的差异",
       },
     ],
   },

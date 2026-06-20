@@ -6,6 +6,7 @@ import {
   ArrowLeft,
   BarChart3,
   CheckCircle2,
+  ChevronDown,
   Code2,
   Database,
   Download,
@@ -21,6 +22,7 @@ import ReactMarkdown from "react-markdown";
 import rehypeHighlight from "rehype-highlight";
 import { CandlestickChart } from "@/components/charts/CandlestickChart";
 import { EquityChart } from "@/components/charts/EquityChart";
+import { MultiSymbolOverlayChart } from "@/components/charts/MultiSymbolOverlayChart";
 import { MetricsCard } from "@/components/chat/MetricsCard";
 import { ValidationPanel } from "@/components/charts/ValidationPanel";
 import { Skeleton, SkeletonMetrics, SkeletonChart } from "@/components/common/Skeleton";
@@ -313,7 +315,18 @@ function shortHash(value: string): string {
 
 function ChartTab({ run }: { run: RunData }) {
   const entries = run.price_series ? Object.entries(run.price_series) : [];
+  const symbols = entries.map(([sym]) => sym);
   const hasEquity = run.equity_curve && run.equity_curve.length > 0;
+
+  const [selected, setSelected] = useState<Set<string>>(() => {
+    if (symbols.length === 0) return new Set<string>();
+    if (symbols.length <= 3) return new Set(symbols);
+    return new Set([symbols[0]]);
+  });
+  const [showEquity, setShowEquity] = useState(true);
+  const [showMenu, setShowMenu] = useState(false);
+  const [exportMenu, setExportMenu] = useState(false);
+  const [exportTargets, setExportTargets] = useState<Set<string>>(() => new Set(symbols));
 
   if (entries.length === 0 && !hasEquity) {
     return (
@@ -324,15 +337,196 @@ function ChartTab({ run }: { run: RunData }) {
     );
   }
 
+  const toggleSymbol = (sym: string) => {
+    setSelected(prev => {
+      const next = new Set(prev);
+      if (next.has(sym)) next.delete(sym); else next.add(sym);
+      return next;
+    });
+  };
+
+  const toggleExportTarget = (sym: string) => {
+    setExportTargets(prev => {
+      const next = new Set(prev);
+      if (next.has(sym)) next.delete(sym); else next.add(sym);
+      return next;
+    });
+  };
+
+  const selectedEntries = entries.filter(([sym]) => selected.has(sym));
+  const singleEntry = selectedEntries.length === 1 ? selectedEntries[0] : null;
+
+  const handleExportCsv = (includeEquity: boolean) => {
+    const rows: string[] = [];
+    const targetSyms = symbols.filter(s => exportTargets.has(s));
+
+    if (targetSyms.length > 0) {
+      rows.push("time,symbol,open,high,low,close,volume");
+      for (const sym of targetSyms) {
+        const bars = run.price_series?.[sym];
+        if (!bars) continue;
+        for (const bar of bars) {
+          rows.push(`${bar.time},${sym},${bar.open},${bar.high},${bar.low},${bar.close},${bar.volume}`);
+        }
+      }
+    }
+
+    if (includeEquity && run.equity_curve && run.equity_curve.length > 0) {
+      if (rows.length > 0) rows.push("");
+      rows.push("time,equity,drawdown");
+      for (const pt of run.equity_curve) {
+        rows.push(`${pt.time},${pt.equity},${pt.drawdown}`);
+      }
+    }
+
+    if (rows.length === 0) return;
+    downloadCsv(`chart_data_${run.run_id}.csv`, rows.join("\n"));
+    setExportMenu(false);
+  };
+
   return (
     <div className="p-4 space-y-4">
-      {entries.map(([sym, bars]) => (
-        <div key={sym}>
-          <h3 className="text-sm font-medium mb-1">{sym}</h3>
-          <CandlestickChart data={bars} markers={run.trade_markers?.filter(m => m.code === sym)} indicators={run.indicator_series?.[sym]} height={500} />
+      {/* Toolbar */}
+      <div className="flex items-center gap-2 flex-wrap">
+        {/* Symbol multi-select dropdown */}
+        <div className="relative">
+          <button
+            onClick={() => { setShowMenu(!showMenu); setExportMenu(false); }}
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-md border text-sm hover:bg-muted transition-colors"
+          >
+            <BarChart3 className="h-3.5 w-3.5 text-muted-foreground" />
+            标的选择 ({selected.size}/{symbols.length})
+            <ChevronDown className="h-3.5 w-3.5 text-muted-foreground" />
+          </button>
+          {showMenu && (
+            <div className="absolute top-full left-0 mt-1 z-50 bg-card border rounded-lg shadow-lg p-2 min-w-[200px] max-h-64 overflow-y-auto" onMouseLeave={() => setShowMenu(false)}>
+              <p className="text-[9px] text-muted-foreground/50 uppercase tracking-wider px-1 pt-1 pb-1">选择要展示的标的</p>
+              {symbols.map(sym => (
+                <label key={sym} className="flex items-center gap-2 px-1 py-0.5 rounded hover:bg-muted/30 cursor-pointer">
+                  <input
+                    type="checkbox"
+                    checked={selected.has(sym)}
+                    onChange={() => toggleSymbol(sym)}
+                    className="h-3 w-3 rounded accent-primary"
+                  />
+                  <span className="text-xs font-mono">{sym}</span>
+                </label>
+              ))}
+              <div className="border-t mt-1 pt-1 flex gap-1">
+                <button
+                  onClick={() => { setSelected(new Set(symbols)); setShowMenu(false); }}
+                  className="text-[10px] text-muted-foreground hover:text-foreground px-1.5 py-0.5 rounded hover:bg-muted/30"
+                >
+                  全选
+                </button>
+                <button
+                  onClick={() => { setSelected(new Set()); setShowMenu(false); }}
+                  className="text-[10px] text-muted-foreground hover:text-foreground px-1.5 py-0.5 rounded hover:bg-muted/30"
+                >
+                  清空
+                </button>
+              </div>
+            </div>
+          )}
         </div>
-      ))}
-      {hasEquity && (
+
+        {/* Equity toggle */}
+        {hasEquity && (
+          <label className="flex items-center gap-1.5 px-3 py-1.5 rounded-md border text-sm hover:bg-muted transition-colors cursor-pointer">
+            <input
+              type="checkbox"
+              checked={showEquity}
+              onChange={() => setShowEquity(!showEquity)}
+              className="h-3 w-3 rounded accent-primary"
+            />
+            权益曲线
+          </label>
+        )}
+
+        {/* Export dropdown */}
+        <div className="relative ml-auto">
+          <button
+            onClick={() => { setExportMenu(!exportMenu); setShowMenu(false); }}
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-md border text-sm hover:bg-muted transition-colors"
+          >
+            <Download className="h-3.5 w-3.5 text-muted-foreground" />
+            导出 CSV
+            <ChevronDown className="h-3.5 w-3.5 text-muted-foreground" />
+          </button>
+          {exportMenu && (
+            <div className="absolute top-full right-0 mt-1 z-50 bg-card border rounded-lg shadow-lg p-2 min-w-[220px]" onMouseLeave={() => setExportMenu(false)}>
+              <p className="text-[9px] text-muted-foreground/50 uppercase tracking-wider px-1 pt-1 pb-1">选择要导出的数据</p>
+              {symbols.map(sym => (
+                <label key={sym} className="flex items-center gap-2 px-1 py-0.5 rounded hover:bg-muted/30 cursor-pointer">
+                  <input
+                    type="checkbox"
+                    checked={exportTargets.has(sym)}
+                    onChange={() => toggleExportTarget(sym)}
+                    className="h-3 w-3 rounded accent-primary"
+                  />
+                  <span className="text-xs font-mono">{sym}</span>
+                </label>
+              ))}
+              {hasEquity && (
+                <label className="flex items-center gap-2 px-1 py-0.5 rounded hover:bg-muted/30 cursor-pointer border-t mt-1 pt-1">
+                  <input
+                    type="checkbox"
+                    checked={exportTargets.has("__equity__")}
+                    onChange={() => toggleExportTarget("__equity__")}
+                    className="h-3 w-3 rounded accent-primary"
+                  />
+                  <span className="text-xs">权益曲线</span>
+                </label>
+              )}
+              <div className="border-t mt-1 pt-1 space-y-1">
+                <button
+                  onClick={() => handleExportCsv(exportTargets.has("__equity__"))}
+                  disabled={exportTargets.size === 0 || (exportTargets.size === 1 && exportTargets.has("__equity__") && symbols.length === 0)}
+                  className={cn(
+                    "w-full text-xs px-2 py-1 rounded transition-colors",
+                    exportTargets.size === 0 || (exportTargets.size === 1 && exportTargets.has("__equity__") && symbols.length === 0)
+                      ? "text-muted-foreground/40 cursor-not-allowed"
+                      : "text-primary hover:bg-primary/10"
+                  )}
+                >
+                  导出已选数据
+                </button>
+              </div>
+            </div>
+          )}
+        </div>
+      </div>
+
+      {/* Chart area */}
+      {selected.size === 0 && (
+        <div className="p-8 text-center text-muted-foreground text-sm">
+          请从上方下拉菜单中选择要展示的标的
+        </div>
+      )}
+
+      {singleEntry && (
+        <div>
+          <h3 className="text-sm font-medium mb-1">{singleEntry[0]}</h3>
+          <CandlestickChart
+            data={singleEntry[1]}
+            markers={run.trade_markers?.filter(m => m.code === singleEntry[0])}
+            indicators={run.indicator_series?.[singleEntry[0]]}
+            height={500}
+          />
+        </div>
+      )}
+
+      {selected.size > 1 && (
+        <div>
+          <h3 className="text-sm font-medium mb-1">多标的叠加（归一化收盘价，基准=100）</h3>
+          <MultiSymbolOverlayChart
+            series={selectedEntries.map(([sym, bars]) => ({ symbol: sym, data: bars }))}
+            height={500}
+          />
+        </div>
+      )}
+
+      {showEquity && hasEquity && (
         <div>
           <h3 className="text-sm font-medium mb-1">权益与回撤</h3>
           <EquityChart data={run.equity_curve!} height={280} />
