@@ -72,17 +72,21 @@ FALLBACK_CHAINS: dict[str, list[str]] = {
 }
 
 
-def resolve_loader(market: str) -> Any:
+def resolve_loader(market: str, *, use_cache: bool = True) -> Any:
     """Return the first *available* loader instance for *market*.
 
     Walks the fallback chain and returns the first loader whose
-    ``is_available()`` returns ``True``.
+    ``is_available()`` returns ``True``.  When ``use_cache`` is True
+    (default), the loader is wrapped with :class:`CachedDataLoader` so
+    repeated fetches for the same symbol/date/interval hit Redis instead
+    of the upstream API.
 
     Args:
         market: Market type key (e.g. ``"a_share"``, ``"futures"``).
+        use_cache: Wrap the resolved loader with the market-data cache.
 
     Returns:
-        A loader instance.
+        A loader instance (cached or raw).
 
     Raises:
         NoAvailableSourceError: If every candidate is unavailable.
@@ -94,15 +98,18 @@ def resolve_loader(market: str) -> Any:
         if name not in LOADER_REGISTRY:
             continue
         tried.append(name)
-        # Issue #50 鈥?some loaders (e.g. Tushare) call into the SDK during
-        # __init__ and raise on missing credentials. Treat that the same as
-        # is_available()=False so the fallback chain keeps walking.
         try:
             loader = LOADER_REGISTRY[name]()
         except Exception as exc:
             logger.debug("loader %s failed to construct: %s", name, exc)
             continue
         if loader.is_available():
+            if use_cache:
+                try:
+                    from src.cache.data_cache import CachedDataLoader
+                    return CachedDataLoader(loader)
+                except Exception:
+                    pass
             return loader
     raise NoAvailableSourceError(
         f"No available data source for market '{market}'. "

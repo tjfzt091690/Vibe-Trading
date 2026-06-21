@@ -53,3 +53,7 @@ ddgs>=6.0.0
 jinja2>=3.1.0
 matplotlib>=3.7.0
 weasyprint>=60.0
+
+# Performance: Cache & Database
+redis>=5.0.0
+psycopg2-binary>=2.9.9

@@ -3,10 +3,13 @@
 from __future__ import annotations
 
 import json
+import logging
 import uuid
 from datetime import datetime
 from pathlib import Path
 from typing import Any, Dict
+
+logger = logging.getLogger(__name__)
 
 
 class RunStateStore:
@@ -43,6 +46,7 @@ class RunStateStore:
         """
         payload = {"prompt": prompt, "context": context}
         self._write_json(run_dir / "req.json", payload)
+        self._sync_to_db(run_dir)
         return payload
 
     def mark_success(self, run_dir: Path) -> None:
@@ -52,6 +56,8 @@ class RunStateStore:
             run_dir: Run directory.
         """
         self._write_json(run_dir / "state.json", {"status": "success"})
+        self._sync_to_db(run_dir)
+        self._invalidate_cache(run_dir)
 
     def mark_failure(self, run_dir: Path, reason: str) -> None:
         """Mark the run as failed.
@@ -61,6 +67,28 @@ class RunStateStore:
             reason: Failure reason.
         """
         self._write_json(run_dir / "state.json", {"status": "failed", "reason": reason})
+        self._sync_to_db(run_dir)
+        self._invalidate_cache(run_dir)
+
+    def _sync_to_db(self, run_dir: Path) -> None:
+        try:
+            from src.db.database import get_db
+
+            db = get_db()
+            if db.is_available:
+                db.sync_run_from_dir(run_dir)
+        except Exception as exc:
+            logger.debug("DB sync failed for %s: %s", run_dir.name, exc)
+
+    def _invalidate_cache(self, run_dir: Path) -> None:
+        try:
+            from src.cache.redis_cache import get_cache
+
+            cache = get_cache()
+            cache.delete(f"run_detail:{run_dir.name}")
+            cache.delete_pattern(f"run_list:*")
+        except Exception as exc:
+            logger.debug("Cache invalidation failed for %s: %s", run_dir.name, exc)
 
     @staticmethod
     def _write_json(path: Path, data: Any) -> None:

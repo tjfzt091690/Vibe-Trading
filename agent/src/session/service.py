@@ -119,6 +119,7 @@ class SessionService:
         session.last_attempt_id = attempt.attempt_id
         session.updated_at = datetime.now().isoformat()
         self.store.update_session(session)
+        self._sync_session_to_db(session)
         self.event_bus.emit(session_id, "attempt.created", {"attempt_id": attempt.attempt_id, "prompt": content})
 
         asyncio.create_task(self._run_attempt(session, attempt, include_shell_tools=include_shell_tools))
@@ -164,6 +165,8 @@ class SessionService:
             attempt.run_dir = result.get("run_dir")
 
             self.store.update_attempt(attempt)
+            self._sync_session_to_db(session)
+            self._sync_run_result_to_db(result)
             reply_metadata = {}
             if attempt.run_dir:
                 reply_metadata["run_id"] = Path(attempt.run_dir).name
@@ -349,3 +352,36 @@ class SessionService:
         if attempt.status == AttemptStatus.COMPLETED:
             return attempt.summary or "Strategy execution completed."
         return f"Execution failed: {attempt.error or 'unknown error'}"
+
+    @staticmethod
+    def _sync_session_to_db(session: Session) -> None:
+        try:
+            from src.db.database import get_db
+
+            db = get_db()
+            if db.is_available:
+                db.upsert_session(
+                    session.session_id,
+                    title=session.title,
+                    status=session.status.value,
+                    last_attempt_id=session.last_attempt_id,
+                )
+        except Exception:
+            pass
+
+    @staticmethod
+    def _sync_run_result_to_db(result: Dict[str, Any]) -> None:
+        try:
+            from src.db.database import get_db
+
+            db = get_db()
+            if not db.is_available:
+                return
+            run_dir_str = result.get("run_dir")
+            if not run_dir_str:
+                return
+            run_dir = Path(run_dir_str)
+            if run_dir.exists():
+                db.sync_run_from_dir(run_dir)
+        except Exception:
+            pass

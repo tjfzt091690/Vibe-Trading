@@ -446,17 +446,32 @@ def reconstruct_price_series(run_dir: Path) -> List[Dict[str, Any]]:
 def build_run_analysis(run_dir: Path) -> Dict[str, Any]:
     """Build the analysis payload consumed by the run detail page.
 
+    Results are cached in Redis for 5 minutes to avoid repeated
+    filesystem reads and indicator recomputation.
+
     Args:
         run_dir: The run directory under ``runs/``.
 
     Returns:
         A serializable dictionary of chart, trade, and log data.
     """
+    run_id = run_dir.name
+    try:
+        from src.cache.redis_cache import get_cache
+
+        cache = get_cache()
+        cache_key = f"run_analysis:{run_id}"
+        cached = cache.get(cache_key)
+        if cached is not None:
+            return cached
+    except Exception:
+        pass
+
     price_rows = load_price_series(run_dir)
     periods = infer_indicator_periods(run_dir)
     trades = load_csv_records(run_dir / "artifacts" / "trades.csv")
 
-    return {
+    result = {
         "run_stage": infer_run_stage(run_dir),
         "run_context": load_run_context(run_dir),
         "price_series": group_price_rows(price_rows),
@@ -464,6 +479,14 @@ def build_run_analysis(run_dir: Path) -> Dict[str, Any]:
         "trade_markers": build_trade_markers(trades),
         "run_logs": collect_run_logs(run_dir),
     }
+
+    try:
+        cache = get_cache()
+        cache.set(cache_key, result, ttl=300)
+    except Exception:
+        pass
+
+    return result
 
 
 def _safe_float(value: Any) -> Optional[float]:

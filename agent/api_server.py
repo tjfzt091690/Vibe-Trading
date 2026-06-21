@@ -578,6 +578,32 @@ async def _run_startup_preflight() -> None:
     from src.preflight import run_preflight
 
     run_preflight(console)
+    _warmup_db()
+
+
+def _warmup_db() -> None:
+    """Pre-populate PostgreSQL with run metadata on startup if DB is empty."""
+    try:
+        from src.db.database import get_db
+
+        db = get_db()
+        if not db.is_available:
+            return
+        existing = db.count_runs()
+        if existing > 0:
+            return
+        if not RUNS_DIR.exists():
+            return
+        run_dirs = sorted(
+            [d for d in RUNS_DIR.iterdir() if d.is_dir()],
+            key=lambda x: x.name,
+            reverse=True,
+        )
+        for d in run_dirs[:100]:
+            db.sync_run_from_dir(d)
+        logger.info("DB warmup: synced %d runs to PostgreSQL", min(len(run_dirs), 100))
+    except Exception as exc:
+        logger.debug("DB warmup failed: %s", exc)
 
 
 # ============================================================================
@@ -1235,7 +1261,24 @@ async def get_run_result(run_id: str):
             detail=f"Run {run_id} not found"
         )
 
+    try:
+        from src.cache.redis_cache import get_cache
+
+        cache = get_cache()
+        cache_key = f"run_detail:{run_id}"
+        cached = cache.get(cache_key)
+        if cached is not None:
+            return RunResponse(**cached)
+    except Exception:
+        pass
+
     response = _build_response_from_run_dir(run_dir, elapsed=0.0, include_analysis=True)
+
+    try:
+        cache = get_cache()
+        cache.set(cache_key, response.model_dump(mode="json"), ttl=300)
+    except Exception:
+        pass
 
     return response
 
@@ -1244,6 +1287,63 @@ async def get_run_result(run_id: str):
 async def list_runs(limit: int = 20):
     """List recent runs with summary fields."""
     limit = min(max(1, limit), 100)
+
+    try:
+        from src.cache.redis_cache import get_cache
+
+        cache = get_cache()
+        cache_key = f"run_list:{limit}"
+        cached = cache.get(cache_key)
+        if cached is not None:
+            return [RunInfo(**r) for r in cached]
+    except Exception:
+        pass
+
+    try:
+        from src.db.database import get_db
+
+        db = get_db()
+        if db.is_available:
+            db_rows = db.list_runs(limit=limit)
+            if db_rows is not None and len(db_rows) > 0:
+                results = []
+                for row in db_rows:
+                    created_at_raw = row.get("created_at")
+                    if isinstance(created_at_raw, datetime):
+                        created_at = created_at_raw.strftime("%Y-%m-%d %H:%M:%S")
+                    elif isinstance(created_at_raw, str):
+                        created_at = created_at_raw[:19].replace("T", " ")
+                    else:
+                        created_at = "Unknown"
+
+                    codes_raw = row.get("codes")
+                    if isinstance(codes_raw, list):
+                        codes = [str(c) for c in codes_raw]
+                    elif isinstance(codes_raw, str):
+                        codes = [c.strip() for c in codes_raw.split(",") if c.strip()]
+                    else:
+                        codes = []
+
+                    results.append(RunInfo(
+                        run_id=row.get("run_id", ""),
+                        status=row.get("status", "unknown"),
+                        created_at=created_at,
+                        prompt=row.get("prompt") or "Manual Analysis",
+                        total_return=row.get("total_return"),
+                        sharpe=row.get("sharpe"),
+                        codes=codes,
+                        start_date=row.get("start_date"),
+                        end_date=row.get("end_date"),
+                    ))
+
+                try:
+                    cache.set(cache_key, [r.model_dump() for r in results], ttl=60)
+                except Exception:
+                    pass
+                return results
+    except Exception:
+        pass
+
     runs_dir = RUNS_DIR
 
     if not runs_dir.exists():
@@ -1259,7 +1359,6 @@ async def list_runs(limit: int = 20):
     for d in run_dirs[:limit]:
         run_id = d.name
 
-        # Status from state.json or artifacts
         status_val = "unknown"
         state_file = _load_json_file(d / "state.json")
         if state_file:
@@ -1269,7 +1368,6 @@ async def list_runs(limit: int = 20):
         elif (d / "review_report.json").exists():
             status_val = "success"
 
-        # Parse created_at from run_id (YYYYMMDD_HHMMSS or run_YYYYMMDD_HHMMSS)
         created_at = "Unknown"
         if run_id.startswith("run_"):
             parts = run_id.split('_')
@@ -1337,6 +1435,19 @@ async def list_runs(limit: int = 20):
             start_date=run_context.get("start_date"),
             end_date=run_context.get("end_date"),
         ))
+
+    try:
+        db = get_db()
+        if db.is_available:
+            for d in run_dirs[:limit]:
+                db.sync_run_from_dir(d)
+    except Exception:
+        pass
+
+    try:
+        cache.set(cache_key, [r.model_dump() for r in results], ttl=60)
+    except Exception:
+        pass
 
     return results
 
@@ -1600,6 +1711,18 @@ async def create_session(request: CreateSessionRequest):
     if not svc:
         raise HTTPException(status_code=501, detail="Session runtime not enabled")
     session = svc.create_session(title=request.title, config=request.config)
+    try:
+        from src.db.database import get_db
+
+        db = get_db()
+        if db.is_available:
+            db.upsert_session(
+                session.session_id,
+                title=session.title,
+                status=session.status.value,
+            )
+    except Exception:
+        pass
     return SessionResponse(
         session_id=session.session_id,
         title=session.title,
@@ -1616,8 +1739,20 @@ async def list_sessions(limit: int = Query(50, ge=1, le=200)):
     svc = _get_session_service()
     if not svc:
         raise HTTPException(status_code=501, detail="Session runtime not enabled")
+
+    try:
+        from src.cache.redis_cache import get_cache
+
+        cache = get_cache()
+        cache_key = f"session_list:{limit}"
+        cached = cache.get(cache_key)
+        if cached is not None:
+            return [SessionResponse(**s) for s in cached]
+    except Exception:
+        pass
+
     sessions = svc.list_sessions(limit=limit)
-    return [
+    results = [
         SessionResponse(
             session_id=s.session_id,
             title=s.title,
@@ -1628,6 +1763,14 @@ async def list_sessions(limit: int = Query(50, ge=1, le=200)):
         )
         for s in sessions
     ]
+
+    try:
+        cache = get_cache()
+        cache.set(cache_key, [r.model_dump() for r in results], ttl=30)
+    except Exception:
+        pass
+
+    return results
 
 
 @app.get("/sessions/{session_id}", response_model=SessionResponse, dependencies=[Depends(require_auth)])
